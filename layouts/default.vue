@@ -6,7 +6,7 @@
     <div class="home">
       <nuxt />
     </div>
-<!--    <LoadingBar />-->
+    <LoadingBar />
 <!--    <FooterCommon/>-->
     </client-only>
   </div>
@@ -14,12 +14,12 @@
 
 <script>
 // import HeaderCommon from '../components/layout/HeaderCommon'
-// import LoadingBar from '../components/LoadingBar'
+import LoadingBar from '../components/LoadingBar'
 import NotificationBlock from '../components/block-ui/NotificationBlock'
 // import FooterCommon from '~/components/layout/FooterCommon'
 
 export default {
   name: 'DefaultLayout',
-  components: { NotificationBlock }
+  components: { NotificationBlock, LoadingBar }
 }
 </script>

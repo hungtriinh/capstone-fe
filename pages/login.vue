@@ -86,7 +86,7 @@
   </div>
 </template>
 <script>
-import { INDEX_SET_ERROR } from '@/store/store.const'
+import { INDEX_SET_ERROR, INDEX_SET_LOADING } from '@/store/store.const'
 import { validEmail } from '@/utils/validate'
 
 export default {
@@ -185,32 +185,34 @@ export default {
       //   return
       // }
       try {
-        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'tha' })
+        await this.$store.commit(INDEX_SET_LOADING, true)
+        // await this.$store.commit(INDEX_SET_LOADING, false)
 
-        // this.$store.commit(INDEX_SET_LOADING, true)
+        // this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'tha' })
+
         // const token = await this.$recaptcha.getResponse()
         // if (this.captcha == null || this.captcha !== token.toString()) {
         //   this.captcha = token.toString()
         // }
-        const dto = {
-          email: this.accountForm.email,
-          password: this.accountForm.password,
-          'g-recaptcha-response': this.captcha
-        }
-        let { result } = {}
-        result = await this.$auth.loginWith('local', {
-          data: { ...dto }
-        })
-
-        const data = result.data
-        switch (data.status_code) {
-          case 200:
-            await this.$router.push('/')
-            break
-          default:
-            this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
-            break
-        }
+        // const dto = {
+        //   email: this.accountForm.email,
+        //   password: this.accountForm.password,
+        //   'g-recaptcha-response': this.captcha
+        // }
+        // let { result } = {}
+        // result = await this.$auth.loginWith('local', {
+        //   data: { ...dto }
+        // })
+        //
+        // const data = result.data
+        // switch (data.status_code) {
+        //   case 200:
+        //     await this.$router.push('/')
+        //     break
+        //   default:
+        //     this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
+        //     break
+        // }
       } catch (err) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: this.$t('message.message_error') })
       }
