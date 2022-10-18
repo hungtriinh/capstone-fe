@@ -2,8 +2,9 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title">{{ $t('account.login_title') }}</h3>
+        <h3 class="title text-center">{{ $t('account.login_title') }}</h3>
         <el-form
+          v-if="step===1"
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
@@ -11,18 +12,22 @@
           label-position="left"
           @keyup.enter.native="login"
         >
-          <el-form-item class="email-login" prop="email" :error="(error.key === 'email') ? error.value : ''">
-            <label for="email">{{ $t('account.email') }}</label>
+          <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
+            <label for="email">{{ $t('account.phone') }}</label>
             <el-input
-              id="email"
-              ref="email"
-              v-model.trim="accountForm.email"
-              :placeholder="$t('account.email')"
-              name="email"
+              id="phone"
+              ref="phone"
+              v-model.trim="accountForm.phone"
+              :placeholder="$t('account.phone')"
+              autocomplete="off"
+              name="phone"
               type="text"
               tabindex="2"
-              maxlength="50"
-              @focus="resetValidate('email')"
+              maxlength="12"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+              pattern="[0-9]*"
+              inputmode="numeric"
+              @focus="resetValidate('phone')"
             />
           </el-form-item>
           <el-form-item class="email-login" prop="password" :error="(error.key === 'password') ? error.value : ''">
@@ -76,25 +81,32 @@
           </el-form-item>
           <div class="d-flex align-items-center no_account">
             <div
-              class="content cursor-pointer login-page__forgot-password align-items-center" @click="step=3">
+              class="content text-center cursor-pointer login-page__forgot-password align-items-center" @click="step=3">
               {{ $t('account.no_account') }} <span class="here" @click="handeRegister">{{ $t('account.here')  }}</span>
             </div>
           </div>
         </el-form>
+        <div v-if="step===2" class="otp">
+          <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { INDEX_SET_ERROR, INDEX_SET_LOADING } from '@/store/store.const'
-import { validEmail } from '@/utils/validate'
+import { validPhoneNoPrefix } from '@/utils/validate'
+import OtpPage from '@/components/auth/otp'
 
 export default {
   name: 'LoginPage',
+  components: { OtpPage },
   data() {
-    const validdateEmail = (rule, value, callback) => {
-      if (!validEmail(value)) {
-        callback(new Error(this.$t('validation.email_format')))
+    const validPhoneNumber = (rule, value, callback) => {
+      if (value == null || value === '') {
+        callback()
+      } else if (!validPhoneNoPrefix(value)) {
+        callback(new Error(this.$t('validation.phone_length')))
       } else {
         callback()
       }
@@ -110,13 +122,10 @@ export default {
     return {
       step: 1,
       token: '',
-      captcha: '',
-      isCaptchaExpireOrError: true,
       user: {},
       accountForm: {
-        email: '',
+        phone: '',
         password: '',
-        password_new_confirmation: '',
         remember: '',
         errors: {}
       },
@@ -125,14 +134,14 @@ export default {
         value: ''
       },
       accountRules: {
-        email: [
+        phone: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('account.email') }),
+            message: this.$t('validation.required', { _field_: this.$t('account.phone') }),
             trigger: 'blur'
           },
           {
-            validator: validdateEmail, trigger: 'blur'
+            validator: validPhoneNumber, trigger: 'blur'
           }
         ],
         password: [
@@ -142,25 +151,18 @@ export default {
             trigger: 'blur'
           }
         ],
-        // captcha: [
-        //   {
-        //     validator: validateCaptcha, trigger: 'blur'
-        //   }
-        // ],
         remember: []
       },
       valid: false,
-      capsToolPasswordTip: false,
       loading: false,
       fullscreenLoading: false,
       showPass: false,
-      isValid: false,
-      isAuthErr: false
+      isValid: false
     }
   },
   computed: {
     disabledButton() {
-      return this.accountForm.email === '' || this.accountForm.password === ''
+      return this.accountForm.phone === '' || this.accountForm.password === ''
     }
   },
   methods: {
@@ -179,13 +181,16 @@ export default {
       this[attr] = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     async login() {
-      // this.error = { key: null, value: '' }
-      // this.validateForm()
-      // if (!this.isValid) {
-      //   return
-      // }
+      this.error = { key: null, value: '' }
+      this.validateForm()
+      if (!this.isValid) {
+        return
+      }
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
+        this.step = 2
+        await this.$store.commit(INDEX_SET_LOADING, false)
+
         // await this.$store.commit(INDEX_SET_LOADING, false)
 
         // this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'tha' })
@@ -229,21 +234,6 @@ export default {
     },
     displayPass() {
       this.showPass = !this.showPass
-    },
-    async onError() {
-      this.isCaptchaExpireOrError = true
-      this.captcha = ''
-      await this.$recaptcha.reset()
-    },
-    onSuccess(token) {
-      this.isCaptchaExpireOrError = false
-      this.captcha = token
-      this.resetValidate('captcha')
-    },
-    async onExpired() {
-      this.isCaptchaExpireOrError = true
-      this.captcha = ''
-      await this.$recaptcha.reset()
     },
     closeModalErr() {
       this.isAuthErr = false

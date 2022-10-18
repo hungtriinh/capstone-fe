@@ -25,7 +25,38 @@
         <div style="text-align: center" class="code-sent-email">
           <span class="notify-sent">{{ $t('otp.notifySent', { email: hideEmail }) }}</span>
         </div>
+        <span class="resend">
+          <span>{{ $t('otp.notReceived') }}</span>
+          <span v-if="!isExpire">{{ $t('otp.reqCode1') }}</span><span v-if="!isExpire" class="color-field">{{
+            $t('otp.reqCode2', { time: countTime })
+          }}</span>
+          <span
+            v-else-if="!isResendOtp" :class="{'noselect':isResendOtp}" class="color-field cursor-pointer"
+            @click="resendOtp">{{
+              $t('otp.resendCode')
+            }}</span>
+        </span>
       </el-form-item>
+      <el-form-item>
+        <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
+          <el-button
+            v-loading.fullscreen.lock="fullscreenLoading"
+            :loading="loading"
+            :disabled="disabledButton"
+            @click.native="submit"
+          >
+            {{ $t('otp.submit') }}
+          </el-button>
+        </div>
+      </el-form-item>
+      <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
+              <span>
+                {{ $t('register.already_account') }}
+              </span>
+        <router-link to="/login" class="align-items-center color-orange cursor-pointer underline lowercase">
+          {{ $t('account.login') }}
+        </router-link>
+      </div>
     </el-form>
   </div>
 </template>
