@@ -122,10 +122,11 @@ export default {
       return false
     },
     hideEmail() {
-      let email = this.email
-      if (this.email == null) {
-        email = 'abcd@gmail.com'
-      }
+      // let email = this.email
+      // if (this.email == null) {
+      //   email = 'abcd@gmail.com'
+      // }
+      const email = '034abcasdfasdfd@234'
       let count = 0
       return email.replace(/(.{2})(.*)(?=@)/,
         function(gp1, gp2, gp3) {

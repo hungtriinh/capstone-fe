@@ -4,7 +4,6 @@
       <div class="login login-width login-mobile">
         <h3 class="title text-center">{{ $t('account.login_title') }}</h3>
         <el-form
-          v-if="step===1"
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
@@ -86,9 +85,6 @@
             </div>
           </div>
         </el-form>
-        <div v-if="step===2" class="otp">
-          <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
-        </div>
       </div>
     </div>
   </div>
@@ -96,11 +92,9 @@
 <script>
 import { INDEX_SET_ERROR, INDEX_SET_LOADING } from '@/store/store.const'
 import { validPhoneNoPrefix } from '@/utils/validate'
-import OtpPage from '@/components/auth/otp'
 
 export default {
   name: 'LoginPage',
-  components: { OtpPage },
   data() {
     const validPhoneNumber = (rule, value, callback) => {
       if (value == null || value === '') {
@@ -120,7 +114,6 @@ export default {
     //   }
     // }
     return {
-      step: 1,
       token: '',
       user: {},
       accountForm: {
@@ -188,7 +181,8 @@ export default {
       }
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        this.step = 2
+        await this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'có lỗi xảy ra' })
+
         await this.$store.commit(INDEX_SET_LOADING, false)
 
         // await this.$store.commit(INDEX_SET_LOADING, false)
