@@ -95,6 +95,7 @@ import { validPhoneNoPrefix } from '@/utils/validate'
 
 export default {
   name: 'LoginPage',
+  layout: 'none',
   data() {
     const validPhoneNumber = (rule, value, callback) => {
       if (value == null || value === '') {
@@ -179,47 +180,29 @@ export default {
       if (!this.isValid) {
         return
       }
+
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        await this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'có lỗi xảy ra' })
+        const result = await this.$auth.loginWith('local', {
+          data: {
+            phoneNumber: this.accountForm.phone,
+            password: this.accountForm.password
+          }
+        })
 
-        await this.$store.commit(INDEX_SET_LOADING, false)
-
-        // await this.$store.commit(INDEX_SET_LOADING, false)
-
-        // this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'tha' })
-
-        // const token = await this.$recaptcha.getResponse()
-        // if (this.captcha == null || this.captcha !== token.toString()) {
-        //   this.captcha = token.toString()
-        // }
-        // const dto = {
-        //   email: this.accountForm.email,
-        //   password: this.accountForm.password,
-        //   'g-recaptcha-response': this.captcha
-        // }
-        // let { result } = {}
-        // result = await this.$auth.loginWith('local', {
-        //   data: { ...dto }
-        // })
-        //
-        // const data = result.data
-        // switch (data.status_code) {
-        //   case 200:
-        //     await this.$router.push('/')
-        //     break
-        //   default:
-        //     this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
-        //     break
-        // }
+        const data = result.data
+        switch (data.statusCode) {
+          case 202:
+            await this.$router.push('/event')
+            break
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
+            break
+        }
       } catch (err) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: this.$t('message.message_error') })
       }
-      // if (this.isCaptchaExpireOrError) {
-      //   this.captcha = ''
-      // }
-      // await this.$recaptcha.reset()
-      // this.$store.commit(INDEX_SET_LOADING, false)
+      await this.$store.commit(INDEX_SET_LOADING, false)
     },
     validateForm() {
       this.$refs.accountForm.validate(valid => {

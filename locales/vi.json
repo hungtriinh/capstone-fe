@@ -125,5 +125,19 @@
   },
   "term": {
     "title": "Điều khoản và chính sách"
+  },
+  "home": {
+    "pay": "Trả nợ",
+    "add_receipt": "Thêm hóa đơn",
+    "add_event": "Tạo sự kiện"
+  },
+  "event": {
+    "EventName": "Tiêu đề",
+    "EventDescript": "Mô tả",
+    "add_member": "Thêm thành viên",
+    "submit": "Tạo",
+    "confirm": "Xác nhận",
+    "check_all": "Tất cả"
   }
+
 }

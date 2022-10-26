@@ -1,6 +1,6 @@
 .main-login {
   width: 450px;
-  margin: 84px auto;
+  margin: 54px auto;
   @media only screen and (max-width: 500px) {
     width: 100%;
     padding: 0 20px !important;
@@ -75,6 +75,9 @@
   .login-page__forgot-password {
     width: fit-content;
     margin-left: auto;
+  }
+  .add-member {
+    margin-bottom: 150px;
   }
 }
 
