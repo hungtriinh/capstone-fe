@@ -38,5 +38,15 @@ export const actions = {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/upload-image', data), context)
     })
+  },
+  getEventList(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/${data}`), context)
+    })
+  },
+  getFriendList(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`friend/${data}`), context)
+    })
   }
 }

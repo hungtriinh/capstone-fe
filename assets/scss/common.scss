@@ -3,10 +3,10 @@
 body {
   font-family: $font-mont;
   font-size: 16px;
-  background-color: $color-blue-primary;
-  color: $color-white;
-  background-image: url('../images/banner/bg.png');
-  background-repeat: repeat;
+  background-color: $color-white;
+  //color: $color-white;
+  //background-image: url('../images/banner/bg.png');
+  //background-repeat: repeat;
   z-index: 2;
 }
 
@@ -76,10 +76,10 @@ h4 {
   font-size: 1.5rem;
 }
 
-img {
-  width: 100%;
-  height: 100%;
-}
+//img {
+//  width: 100%;
+//  height: 100%;
+//}
 
 .items-center {
   align-items: center;
@@ -153,7 +153,7 @@ img {
   display: inline
 }
 
-.flex {
+.d-flex {
   display: flex
 }
 
@@ -698,6 +698,7 @@ button {
 .el-input__inner {
   height: 48px;
   padding: 0 1rem;
+  border-radius: 10px;
 }
 
 .el-input {
@@ -1161,4 +1162,87 @@ button {
 
 .pb-20 {
   padding-bottom: 20px;
+}
+
+.text-bold {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.text-bold-sm {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.text-normal {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.text-normal-sm {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.navigation-bar {
+  bottom: 0;
+  width: 100%;
+  position: relative;
+  margin-top: 100px;
+  .navigation {
+    display: grid;
+    grid-template-columns: auto auto auto auto 15%;
+    width: 100%;
+  }
+}
+
+// Confirm modal
+
+.modal-backdrop {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .confirm-modal {
+    padding: 32px;
+    width: 570px;
+    background: $color-white;
+
+    .title {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 500;
+      margin: 8px 0 24px;
+    }
+    .btn-group {
+      gap: 14px;
+      .button {
+        width: 128px;
+      }
+    }
+    .checkbox-group {
+      margin: 10px 0;
+      .checkbox-item {
+        display: grid;
+        grid-template-columns: 10% 10% auto;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .avatar {
+        vertical-align: middle;
+      }
+    }
+
+  }
 }

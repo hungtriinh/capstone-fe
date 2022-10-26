@@ -39,6 +39,36 @@
   .ScrollDown_box {
     display: none;
   }
+  .el-form-item__content {
+    .otp-block-register {
+      column-gap: 12px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .text-bold, .text-normal {
+    font-size: 14px;
+  }
+  .text-normal-sm, .text-bold-sm {
+    font-size: 12px;
+  }
+  .el-input__inner {
+   height: 40px;
+   padding: 0 1rem;
+   border-radius: 10px;
+  }
+  // confirm-modal
+  .modal-backdrop {
+    .confirm-modal {
+      padding: 24px;
+      width: 75%;
+
+      .title {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 500px) and (max-width: 768px) {

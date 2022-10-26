@@ -3,8 +3,9 @@
     <div>
       <div class="login login-width login-mobile">
         <h3 class="title text-center">{{ $t('account.reset_password') }}</h3>
-        <h4 class="sub_title text-center">{{ $t('account.forgot_title') }}</h4>
+        <h4 v-if="step===1" class="sub_title text-center">{{ $t('account.forgot_title') }}</h4>
         <el-form
+          v-if="step===1"
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
@@ -52,6 +53,12 @@
             </router-link>
           </div>
         </el-form>
+        <div v-if="step===2" class="otp">
+          <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
+        </div>
+        <div v-if="step===3" class="otp">
+          <reset-pass :type="typeVerify" :token="token" :user_register="user"></reset-pass>
+        </div>
       </div>
     </div>
   </div>
@@ -60,10 +67,17 @@
 import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '@/store/store.const'
 import { validEmail } from '@/utils/validate'
 import { AUTH_SEND_EMAIL_FORGOT } from '@/store/store.const'
+import OtpPage from '@/components/auth/otp'
+import ResetPass from '~/components/auth/ResetPass'
 
 export default {
   name: 'ForgotPage',
+  layout: 'none',
   // middleware: 'auth-guard',
+  components: {
+    OtpPage,
+    ResetPass
+  },
   data() {
     const validdateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
@@ -74,7 +88,7 @@ export default {
     }
 
     return {
-      step: 1,
+      step: 3,
       token: '',
       user: {},
       accountForm: {

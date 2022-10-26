@@ -49,7 +49,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // '@nuxtjs/auth-next',
+    '@nuxtjs/auth-next',
     'cookie-universal-nuxt',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
@@ -66,20 +66,20 @@ export default {
     credentials: false
   },
 
-  // auth: {
-  //   strategies: {
-  //     local: {
-  //       token: {
-  //         maxAge: 31536000
-  //       },
-  //       endpoints: {
-  //         login: { url: '/auth/login', method: 'post', propertyName: 'data.access_token' },
-  //         logout: { url: '/auth/logout', method: 'post' },
-  //         user: { url: '/auth/me', method: 'get', propertyName: 'data' }
-  //       }
-  //     }
-  //   }
-  // },
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          maxAge: 31536000
+        },
+        endpoints: {
+          login: { url: '/login', method: 'post', propertyName: 'data.accessToken' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/me', method: 'get', propertyName: 'data' }
+        }
+      }
+    }
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
