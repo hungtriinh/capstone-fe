@@ -54,7 +54,7 @@
         </div>
         <div class="btn-group text-center">
           <el-button>{{ $t('home.pay') }}</el-button>
-          <el-button>{{ $t('home.add_receipt') }}</el-button>
+          <el-button @click="handleRouter('create')">{{ $t('home.add_receipt') }}</el-button>
         </div>
         <navigation/>
       </div>

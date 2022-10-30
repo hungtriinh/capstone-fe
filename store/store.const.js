@@ -27,4 +27,5 @@ export const TYPE_REGISTER_OTP = 2
 
 export const GET_EVENT_LIST = 'getEventList'
 export const GET_FRIEND_LIST = 'getFriendList'
+export const CREATE_EVENT = 'createEvent'
 
