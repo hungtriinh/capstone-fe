@@ -1235,12 +1235,15 @@ button {
       margin: 10px 0;
       .checkbox-item {
         display: grid;
-        grid-template-columns: 10% 10% auto;
+        grid-template-columns: 10% 20% auto;
         align-items: center;
         margin-bottom: 10px;
       }
       .avatar {
         vertical-align: middle;
+      }
+      .el-checkbox__label {
+        display: none;
       }
     }
 
