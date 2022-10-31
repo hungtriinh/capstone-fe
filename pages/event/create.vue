@@ -11,33 +11,33 @@
           label-position="left"
           @keyup.enter.native="login"
         >
-          <el-form-item class="email-login" prop="EventName" :error="(error.key === 'EventName') ? error.value : ''">
-            <label for="email">{{ $t('event.EventName') }}</label>
+          <el-form-item class="email-login" prop="eventName" :error="(error.key === 'eventName') ? error.value : ''">
+            <label for="email">{{ $t('event.eventName') }}</label>
             <el-input
-              id="EventName"
-              ref="EventName"
-              v-model.trim="accountForm.EventName"
-              :placeholder="$t('event.EventName')"
+              id="eventName"
+              ref="eventName"
+              v-model.trim="accountForm.eventName"
+              :placeholder="$t('event.eventName')"
               autocomplete="off"
-              name="EventName"
+              name="eventName"
               type="text"
               tabindex="2"
-              @focus="resetValidate('EventName')"
+              @focus="resetValidate('eventName')"
             />
           </el-form-item>
-          <el-form-item class="email-login" prop="EventDescript" :error="(error.key === 'password') ? error.value : ''">
-            <label for="password">{{ $t('event.EventDescript') }}</label>
+          <el-form-item class="email-login" prop="eventDescript" :error="(error.key === 'password') ? error.value : ''">
+            <label for="password">{{ $t('event.eventDescript') }}</label>
             <el-input
-              id="EventDescript"
-              ref="EventDescript"
-              v-model="accountForm.EventDescript"
+              id="eventDescript"
+              ref="eventDescript"
+              v-model="accountForm.eventDescript"
               :autosize="{ minRows: 5, maxRows: 10}"
-              :placeholder="$t('event.EventDescript')"
+              :placeholder="$t('event.eventDescript')"
               type="textarea"
-              name="EventDescript"
+              name="eventDescript"
               tabindex="3"
               autocomplete="off"
-              @focus="resetValidate('EventDescript')"
+              @focus="resetValidate('eventDescript')"
             >
             </el-input>
           </el-form-item>
@@ -53,7 +53,7 @@
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
                 :disabled="disabledButton"
-                @click.native="login"
+                @click.native="create"
               >
                 {{ $t('event.submit') }}
               </el-button>
@@ -65,13 +65,20 @@
     <AddMemberModal
       v-show="addMember"
       :list-friend="listFriend"
+      :list-id="listId"
       @close="closeAddMemberModal"
     >
     </AddMemberModal>
   </div>
 </template>
 <script>
-import { GET_FRIEND_LIST, INDEX_SET_ERROR, INDEX_SET_LOADING } from '@/store/store.const'
+import { mapState } from 'vuex'
+import {
+  CREATE_EVENT,
+  GET_FRIEND_LIST,
+  INDEX_SET_ERROR,
+  INDEX_SET_LOADING, INDEX_SET_SUCCESS
+} from '@/store/store.const'
 
 export default {
   name: 'LoginPage',
@@ -80,8 +87,8 @@ export default {
       token: '',
       user: {},
       accountForm: {
-        EventName: '',
-        password: '',
+        eventName: '',
+        eventDescript: '',
         errors: {}
       },
       error: {
@@ -89,17 +96,17 @@ export default {
         value: ''
       },
       accountRules: {
-        EventName: [
+        eventName: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.EventName') }),
+            message: this.$t('validation.required', { _field_: this.$t('event.eventName') }),
             trigger: 'blur'
           }
         ],
-        EventDescript: [
+        eventDescript: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.EventDescript') }),
+            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
             trigger: 'blur'
           }
         ]
@@ -109,12 +116,14 @@ export default {
       fullscreenLoading: false,
       isValid: false,
       addMember: false,
+      listId: [],
       listFriend: []
     }
   },
   computed: {
+    ...mapState(['listFriends']),
     disabledButton() {
-      return this.accountForm.phone === '' || this.accountForm.password === ''
+      return this.accountForm.eventName === '' || this.accountForm.eventDescript === ''
     }
   },
   created() {
@@ -128,26 +137,19 @@ export default {
       this.$refs.accountForm.fields.find((f) => f.prop === ref).clearValidate()
       this.accountForm.errors[ref] = ''
     },
-    async login() {
-      this.error = { key: null, value: '' }
-      this.validateForm()
-      if (!this.isValid) {
-        return
-      }
-
+    async create() {
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        const result = await this.$auth.loginWith('local', {
-          data: {
-            phoneNumber: this.accountForm.phone,
-            password: this.accountForm.password
-          }
-        })
-
-        const data = result.data
+        const dto = this.accountForm
+        dto.eventLogo = ''
+        dto.MemberIds = this.listFriends
+        const data = await this.$store.dispatch(CREATE_EVENT, dto)
         switch (data.statusCode) {
           case 202:
-            await this.$router.push('/event')
+            this.$store.commit(INDEX_SET_SUCCESS, {
+              show: true,
+              text: data.message
+            })
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
@@ -176,6 +178,9 @@ export default {
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listFriend = data
+          this.listFriend.forEach((element) => {
+            this.listId.push(element.userId)
+          })
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

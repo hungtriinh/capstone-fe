@@ -1,17 +1,16 @@
 <template>
   <div class="modal-backdrop">
     <div class="confirm-modal text-center">
-      <div class="title"> {{ $t('event.add_member') }} </div>
+      <div class="title text-bold"> {{ $t('event.add_member') }} </div>
       <el-input
         v-model="search"
         placeholder="Search"
         prefix-icon="el-icon-search">
       </el-input>
       <div class="">
-<!--        {{listFriend}}-->
         <el-checkbox-group v-model="checkedFriends" class="checkbox-group" @change="handleCheckedCitiesChange">
           <div v-for="(item, key) in listFriend" :key="key" class="checkbox-item">
-            <el-checkbox  :key="item.userId" :label="item.userName"></el-checkbox>
+            <el-checkbox :label="item.userId" :value="item.userId"></el-checkbox>
             <img class="avatar" src="@/assets/images/event.png" alt="">
             <div>
               <span class="text-bold">{{ item.userName }}</span><br>
@@ -30,13 +29,16 @@
 </template>
 
 <script>
-
-import { CREATE_EVENT, INDEX_SET_ERROR, INDEX_SET_LOADING } from '~/store/store.const'
+import { INDEX_SET_LIST_FRIEND } from '~/store/store.const'
 
 export default {
   name: 'AddMemberModal',
   props: {
     listFriend: {
+      type: [],
+      default: () => []
+    },
+    listId: {
       type: [],
       default: () => []
     }
@@ -48,7 +50,11 @@ export default {
       checkAll: false,
       friends: '',
       isIndeterminate: true
-
+    }
+  },
+  watch: {
+    listId() {
+      this.checkedFriends = this.listId
     }
   },
   methods: {
@@ -64,27 +70,12 @@ export default {
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listFriend.length
     },
     handleCheckAllChange(val) {
-      this.checkedFriends = val ? this.listFriend : []
+      this.checkedFriends = val ? this.listId : []
       this.isIndeterminate = false
     },
     async create() {
-      // try {
-      //   await this.$store.commit(INDEX_SET_LOADING, true)
-      //
-      //   const response = await this.$store.dispatch(CREATE_EVENT, 4)
-      //   const data = response.data
-      //   switch (data.statusCode) {
-      //     case 202:
-      //       await this.$router.push('/event')
-      //       break
-      //     default:
-      //       this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
-      //       break
-      //   }
-      // } catch (err) {
-      //   this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: this.$t('message.message_error') })
-      // }
-      // await this.$store.commit(INDEX_SET_LOADING, false)
+      await this.$store.commit(INDEX_SET_LIST_FRIEND, this.checkedFriends)
+      this.close()
     }
   }
 }

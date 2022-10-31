@@ -132,8 +132,8 @@
     "add_event": "Tạo sự kiện"
   },
   "event": {
-    "EventName": "Tiêu đề",
-    "EventDescript": "Mô tả",
+    "eventName": "Tiêu đề",
+    "eventDescript": "Mô tả",
     "add_member": "Thêm thành viên",
     "submit": "Tạo",
     "confirm": "Xác nhận",
