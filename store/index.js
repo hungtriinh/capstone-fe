@@ -7,6 +7,7 @@ export const state = () => ({
   notifyWarning: { show: false, text: '', message: '' },
   loading: false,
   email: '',
+  listFriends: [],
   isOtpPage: false
 })
 
@@ -30,6 +31,9 @@ export const mutations = {
   },
   setEmail(state, email) {
     state.email = email
+  },
+  setListFriends(state, listFriends) {
+    state.listFriends = listFriends
   }
 }
 
@@ -47,6 +51,11 @@ export const actions = {
   getFriendList(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`friend/${data}`), context)
+    })
+  },
+  createEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('event', data), context)
     })
   }
 }
