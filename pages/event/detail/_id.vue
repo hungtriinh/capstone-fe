@@ -60,14 +60,6 @@ export default {
   },
   methods: {
     async getListEvent() {
-      // this.listEvent =
-      //   {
-      //     id: this.$route.params.id,
-      //     icon: require('~/assets/images/event.png'),
-      //     title: 'Design vui nhon',
-      //     des: 'mua cafe',
-      //     time: '13-10-2022'
-      //   }
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const response = await this.$store.dispatch(GET_RECEIPT_LIST, this.$route.params.id)
