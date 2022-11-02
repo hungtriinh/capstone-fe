@@ -57,5 +57,15 @@ export const actions = {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('event', data), context)
     })
+  },
+  getReceiptList(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt?eventID=${data}`), context)
+    })
+  },
+  getMemberList(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt/create?eventID=${data}`), context)
+    })
   }
 }

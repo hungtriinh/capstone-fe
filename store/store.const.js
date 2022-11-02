@@ -30,3 +30,7 @@ export const GET_EVENT_LIST = 'getEventList'
 export const GET_FRIEND_LIST = 'getFriendList'
 export const CREATE_EVENT = 'createEvent'
 
+// receipt
+export const GET_RECEIPT_LIST = 'getReceiptList'
+export const GET_MEMBER_LIST = 'getMemberList'
+
