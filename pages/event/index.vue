@@ -55,7 +55,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_EVENT_LIST, 7)
+        const response = await this.$store.dispatch(GET_EVENT_LIST, 3)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data

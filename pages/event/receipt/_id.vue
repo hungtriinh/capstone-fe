@@ -11,32 +11,32 @@
           label-position="left"
           @keyup.enter.native="login"
         >
-          <el-form-item class="email-login" prop="eventName" :error="(error.key === 'eventName') ? error.value : ''">
+          <el-form-item class="email-login" prop="receiptName" :error="(error.key === 'receiptName') ? error.value : ''">
             <label for="email">{{ $t('receipt.name') }}</label>
             <el-input
-              id="eventName"
-              ref="eventName"
-              v-model.trim="accountForm.eventName"
-              :placeholder="$t('event.eventName')"
+              id="receiptName"
+              ref="receiptName"
+              v-model.trim="accountForm.receiptName"
+              :placeholder="$t('receipt.name')"
               autocomplete="off"
-              name="eventName"
+              name="receiptName"
               type="text"
               tabindex="2"
-              @focus="resetValidate('eventName')"
+              @focus="resetValidate('receiptName')"
             />
           </el-form-item>
-          <el-form-item class="email-login" prop="eventDescript" :error="(error.key === 'password') ? error.value : ''">
+          <el-form-item class="email-login" prop="receiptAmount" :error="(error.key === 'password') ? error.value : ''">
             <label for="password">{{ $t('receipt.amount') }}</label>
             <el-input
-              id="eventDescript"
-              ref="eventDescript"
-              v-model="accountForm.eventDescript"
-              :placeholder="$t('event.eventDescript')"
+              id="receiptAmount"
+              ref="receiptAmount"
+              v-model="accountForm.receiptAmount"
+              :placeholder="$t('receipt.amount')"
               type="text"
-              name="eventDescript"
+              name="receiptAmount"
               tabindex="3"
               autocomplete="off"
-              @focus="resetValidate('eventDescript')"
+              @focus="resetValidate('receiptAmount')"
             >
             </el-input>
           </el-form-item>
@@ -57,6 +57,7 @@
                 <span class="text-bold">{{ item.userName }}</span><br>
               </div>
               <el-input
+                v-if="type === '1'"
                 id="debit"
                 ref="debit"
                 v-model.trim="item.debit"
@@ -66,6 +67,17 @@
                 tabindex="2"
                 :placeholder="$t('receipt.amount_placeholder')"
                 ></el-input>
+              <el-input
+                v-else
+                id="debit"
+                ref="debit"
+                :value="accountForm.receiptAmount ? accountForm.receiptAmount / chooseMember.length : ''"
+                autocomplete="off"
+                name="debit"
+                type="text"
+                tabindex="2"
+                :placeholder="$t('receipt.amount_placeholder')"
+              ></el-input>
             </div>
           </div>
           <el-form-item>
@@ -106,12 +118,12 @@ export default {
     return {
       token: '',
       user: {},
-      type: '',
+      type: '1',
       amount: '',
       chooseMember: [],
       accountForm: {
-        eventName: '',
-        eventDescript: '',
+        receiptName: '',
+        receiptAmount: '',
         errors: {}
       },
       error: {
@@ -119,17 +131,17 @@ export default {
         value: ''
       },
       accountRules: {
-        eventName: [
+        receiptName: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.eventName') }),
+            message: this.$t('validation.required', { _field_: this.$t('event.receiptName') }),
             trigger: 'blur'
           }
         ],
-        eventDescript: [
+        receiptAmount: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
+            message: this.$t('validation.required', { _field_: this.$t('event.receiptAmount') }),
             trigger: 'blur'
           }
         ]
@@ -146,7 +158,7 @@ export default {
   computed: {
     ...mapState(['listFriends']),
     disabledButton() {
-      return this.accountForm.eventName === '' || this.accountForm.eventDescript === ''
+      return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
     }
   },
   created() {
@@ -161,6 +173,11 @@ export default {
       })
       console.log(this.chooseMember)
     }
+    // type() {
+    //   if (this.type === 1) {
+    //
+    //   }
+    // }
   },
   methods: {
     resetValidate(ref) {
