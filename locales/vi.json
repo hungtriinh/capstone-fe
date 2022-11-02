@@ -129,7 +129,8 @@
   "home": {
     "pay": "Trả nợ",
     "add_receipt": "Thêm hóa đơn",
-    "add_event": "Tạo sự kiện"
+    "add_event": "Tạo sự kiện",
+    "add_receipt": "Thêm hóa đơn"
   },
   "event": {
     "eventName": "Tiêu đề",
@@ -137,7 +138,15 @@
     "add_member": "Thêm thành viên",
     "submit": "Tạo",
     "confirm": "Xác nhận",
-    "check_all": "Tất cả"
+    "check_all": "Tất cả",
+    "hideTotal": "*******"
+  },
+  "receipt": {
+    "name": "Tên",
+    "amount": "Số tiền",
+    "add_member": "Thêm người tham gia",
+    "balance": "Chia đều",
+    "not_balance": "Chia không đều",
+    "amount_placeholder": "Tiền nộp"
   }
-
 }
