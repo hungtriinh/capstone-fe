@@ -150,6 +150,8 @@ export default {
               show: true,
               text: data.message
             })
+            this.$cookies.set('eventUrl', data.data)
+            this.$router.push('/qr')
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })

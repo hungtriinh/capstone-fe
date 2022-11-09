@@ -121,16 +121,17 @@
     "value_0": "Số tiền rút phải lớn hơn 0",
     "withdraw_success": "Đặt lệnh rút tiền thành công.",
     "register_success": "Đăng ký thành công",
-    "buy_success": "Mua gói thành công"
+    "buy_success": "Mua gói thành công",
+    "copy_success": "Copy thành công"
   },
   "term": {
     "title": "Điều khoản và chính sách"
   },
   "home": {
     "pay": "Trả nợ",
-    "add_receipt": "Thêm hóa đơn",
+    "add_receipt": "Thêm chứng từ",
     "add_event": "Tạo sự kiện",
-    "add_receipt": "Thêm hóa đơn"
+    "qr": "Chia sẻ mã QR"
   },
   "event": {
     "eventName": "Tiêu đề",
@@ -148,5 +149,13 @@
     "balance": "Chia đều",
     "not_balance": "Chia không đều",
     "amount_placeholder": "Tiền nộp"
+  },
+  "debt" : {
+    "pay" : "Thanh toán"
+  },
+  "qr" : {
+    "share" : "Chia sẻ mã QR để người khác",
+    "share2" : "tham gia sự kiện",
+    "url" : "Đường dẫn"
   }
 }

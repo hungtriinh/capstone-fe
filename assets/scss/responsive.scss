@@ -49,6 +49,7 @@
 @media screen and (max-width: 540px) {
   .text-bold, .text-normal {
     font-size: 14px;
+    line-height: 20px;
   }
   .text-normal-sm, .text-bold-sm {
     font-size: 12px;
@@ -66,6 +67,14 @@
 
       .title {
         font-size: 16px;
+      }
+    }
+  }
+  .main-login {
+    .checkbox-item {
+      img {
+        width: 40px;
+        height: 40px;
       }
     }
   }

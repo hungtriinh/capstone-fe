@@ -11,7 +11,7 @@
           label-position="left"
           @keyup.enter.native="login"
         >
-          <el-form-item class="email-login" prop="receiptName" :error="(error.key === 'receiptName') ? error.value : ''">
+          <el-form-item class="email-login"   prop="receiptName" :error="(error.key === 'receiptName') ? error.value : ''">
             <label for="email">{{ $t('receipt.name') }}</label>
             <el-input
               id="receiptName"
@@ -57,7 +57,7 @@
                 <span class="text-bold">{{ item.userName }}</span><br>
               </div>
               <el-input
-                v-if="type === '1'"
+                v-if="type === '2'"
                 id="debit"
                 ref="debit"
                 v-model.trim="item.debit"
@@ -106,7 +106,7 @@
 <script>
 import { mapState } from 'vuex'
 import {
-  CREATE_EVENT,
+  CREATE_RECEIPT,
   GET_MEMBER_LIST,
   INDEX_SET_ERROR,
   INDEX_SET_LOADING, INDEX_SET_SUCCESS
@@ -124,6 +124,7 @@ export default {
       accountForm: {
         receiptName: '',
         receiptAmount: '',
+        debit: '',
         errors: {}
       },
       error: {
@@ -134,14 +135,14 @@ export default {
         receiptName: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.receiptName') }),
+            message: this.$t('validation.required', { _field_: this.$t('receipt.name') }),
             trigger: 'blur'
           }
         ],
         receiptAmount: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.receiptAmount') }),
+            message: this.$t('validation.required', { _field_: this.$t('receipt.amount') }),
             trigger: 'blur'
           }
         ]
@@ -161,9 +162,6 @@ export default {
       return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
     }
   },
-  created() {
-    this.getListFriend()
-  },
   watch: {
     listFriends() {
       this.listFriend.forEach((element) => {
@@ -171,13 +169,15 @@ export default {
           this.chooseMember.push(element)
         }
       })
-      console.log(this.chooseMember)
     }
     // type() {
     //   if (this.type === 1) {
     //
     //   }
     // }
+  },
+  created() {
+    this.getListFriend()
   },
   methods: {
     resetValidate(ref) {
@@ -189,12 +189,25 @@ export default {
     },
     async create() {
       console.log(this.chooseMember)
+      // this.error = { key: null, value: '' }
+      // this.validateForm()
+      // if (!this.isValid) {
+      //   return
+      // }
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
         const dto = this.accountForm
         dto.eventLogo = ''
         dto.MemberIds = this.listFriends
-        const data = await this.$store.dispatch(CREATE_EVENT, dto)
+        dto.userId = 7
+        dto.eventId = this.$route.params.id
+        dto.userDepts = JSON.parse(JSON.stringify(this.chooseMember))
+        if (this.type === '1') {
+          dto.userDepts.forEach((element) => {
+            element.debit = this.accountForm.receiptAmount ? this.accountForm.receiptAmount / this.chooseMember.length : ''
+          })
+        }
+        const data = await this.$store.dispatch(CREATE_RECEIPT, dto)
         switch (data.statusCode) {
           case 202:
             this.$store.commit(INDEX_SET_SUCCESS, {
@@ -227,7 +240,7 @@ export default {
       try {
         const response = await this.$store.dispatch(GET_MEMBER_LIST, this.$route.params.id)
         const { data, statusCode } = response
-        if (statusCode === 200) {
+        if (statusCode === 202) {
           this.listFriend = data
           this.listFriend.forEach((element) => {
             this.listId.push(element.userId)
