@@ -33,4 +33,7 @@ export const CREATE_EVENT = 'createEvent'
 // receipt
 export const GET_RECEIPT_LIST = 'getReceiptList'
 export const GET_MEMBER_LIST = 'getMemberList'
+export const CREATE_RECEIPT = 'createReceipt'
 
+// debt
+export const GET_DEBT_LIST = 'getDebtList'

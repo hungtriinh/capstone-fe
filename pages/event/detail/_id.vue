@@ -6,19 +6,19 @@
           <img @click="handleRouter('/event')" class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back">
           <img src="~/assets/images/icons/event-small.svg" alt="">
 <!--          <span class="text-bold">{{ listEvent.id }}</span>-->
-          <span class="text-bold">đi câu cá</span>
+          <span class="text-bold">{{ listReceipt.eventName }}</span>
           <img src="~/assets/images/icons/noti-small.svg" alt="">
 
         </div>
         <div class="total text-bold d-flex justify-between">
           <span class="">Tổng nợ:</span>
-          <span v-if="!hideTotal">250.000VND</span>
+          <span v-if="!hideTotal">{{ listReceipt.totalReceiptsAmount }}VND</span>
           <span style="margin-top: 6px; font-size: 20px" v-else>{{ $t('event.hideTotal') }}</span>
           <span v-if="!hideTotal"><img @click="hideTotal = !hideTotal" class="cursor-pointer" src="~/assets/images/icons/eye-black.svg" alt=""></span>
           <span v-else><img @click="hideTotal = !hideTotal" class="cursor-pointer" src="~/assets/images/icons/hide-eye.svg" alt=""></span>
         </div>
         <div class="detail text-bold">
-          <div v-for="(receipt, key) in listReceipt" :key="key" class="item-detail d-flex justify-around">
+          <div v-for="(receipt, key) in listReceipt.listReceipt" :key="key" class="item-detail d-flex justify-around">
             <div>
               <span>{{ receipt.receiptName }}</span><br>
               <span class="text-normal">23:05 - 5/10/2022</span>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="btn-group text-center">
-          <el-button>{{ $t('home.pay') }}</el-button>
+          <el-button @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
           <el-button @click="handleRouter('/event/receipt/' + $route.params.id )">{{ $t('home.add_receipt') }}</el-button>
         </div>
 <!--        <navigation/>-->
@@ -64,7 +64,7 @@ export default {
       try {
         const response = await this.$store.dispatch(GET_RECEIPT_LIST, this.$route.params.id)
         const { data, statusCode } = response
-        if (statusCode === 200) {
+        if (statusCode === 202) {
           this.listReceipt = data
         }
       } catch (e) {

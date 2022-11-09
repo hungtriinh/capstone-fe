@@ -58,6 +58,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.post('event', data), context)
     })
   },
+  createReceipt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('receipt/create', data), context)
+    })
+  },
   getReceiptList(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt?eventID=${data}`), context)
@@ -66,6 +71,11 @@ export const actions = {
   getMemberList(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/create?eventID=${data}`), context)
+    })
+  },
+  getDebtList(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('PaidDebt/listDebt', data), context)
     })
   }
 }

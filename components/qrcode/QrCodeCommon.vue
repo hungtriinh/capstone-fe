@@ -12,9 +12,14 @@ export default {
   components: {
     QrcodeVue
   },
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
-      value: 'https://www.facebook.com/profile.php?id=100004980377064',
       size: 200
     }
   }
