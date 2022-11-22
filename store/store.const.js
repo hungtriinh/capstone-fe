@@ -37,3 +37,4 @@ export const CREATE_RECEIPT = 'createReceipt'
 
 // debt
 export const GET_DEBT_LIST = 'getDebtList'
+export const PAY_DEBT = 'payDebt'

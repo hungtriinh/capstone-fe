@@ -89,7 +89,7 @@ export default {
       captcha: '',
       isCaptchaExpireOrError: false,
       user: {},
-      step: 3,
+      step: 1,
       accountForm: {
         phone: '',
         errors: {}
@@ -161,32 +161,23 @@ export default {
       this.step = 2
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        if (this.captcha == null || !this.captcha) {
-          const token = await this.$recaptcha.getResponse()
-          this.captcha = token.toString()
-        }
-        let dto = {
+        const dto = {
           email: this.accountForm.email,
           password: this.accountForm.password,
           password_confirmation: this.accountForm.password_confirmation,
           name: this.accountForm.name
         }
-        if (this.accountForm.invite_code != null && this.accountForm.invite_code !== '') {
-          dto = { ...dto, invite_code: this.accountForm.invite_code }
-        }
         const data = await this.$store.dispatch(AUTH_REGISTER, {
-          ...dto,
-          'g-recaptcha-response': this.captcha
+          ...dto
         })
         switch (data.status_code) {
-          case 200:
+          case 202:
             this.$store.commit(INDEX_SET_SUCCESS, {
               show: true,
               text: data.message
             })
             this.$store.commit(SET_EMAIL, this.accountForm.email)
             this.token = data.data.token
-            this.user = { ...dto, 'g-recaptcha-response': this.captcha }
             this.step = 2
             break
           case 422:
@@ -201,9 +192,6 @@ export default {
         }
       } catch (err) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
-      }
-      if (this.isCaptchaExpireOrError) {
-        this.captcha = ''
       }
       this.$store.commit(INDEX_SET_LOADING, false)
     },

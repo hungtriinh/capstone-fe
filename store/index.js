@@ -75,7 +75,12 @@ export const actions = {
   },
   getDebtList(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.post('PaidDebt/listDebt', data), context)
+      handleApi(resolve, reject, this.$axios.post('paidDebt/listDebt', data), context)
+    })
+  },
+  payDebt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('paidDebt/paidDebt', data), context)
     })
   }
 }

@@ -6,11 +6,14 @@
           <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/event')">
         </div>
         <div class="total text-bold">
+          <div class="btn-group d-flex justify-center">
+            <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
+          </div>
           <div class="">
             <el-checkbox-group v-model="checkedDebt" class="checkbox-group" @change="handleCheckedCitiesChange">
                 <div v-for="(item, key) in listDebt" :key="key">
                   <div class="checkbox-item-debt">
-                    <el-checkbox @change="changeCheck" :label="item.userDeptId" :value="item.userDeptId"></el-checkbox>
+                    <el-checkbox @change="changeCheck(item)" :label="item.userDeptId" :value="item.userDeptId"></el-checkbox>
                     <div>
                       <span class="text-bold">{{ item.receiptName }}</span><br>
                       <span class="text-bold">{{ item.date }}</span><br>
@@ -19,20 +22,19 @@
                     <div class="text-bold">{{ item.debtLeft }}</div>
                   </div>
                   <div class="block">
-                    <el-slider v-model="item.debtLeft" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                    <el-slider :step="1000" @change="helo(item)" v-model="item.debtLeft" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
                   </div>
                 </div>
             </el-checkbox-group>
           </div>
-          {{listId}}
-          {{checkedDebt}}
-
-          <div class="btn-group d-flex justify-center">
-            <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
-          </div>
+        </div>
+        <div class="total text-bold">
+          <span class="">{{ $t('debt.total') }}: </span><span>{{ totalMoney }} </span><span>{{$t('currency.currency')}}</span>
+          <br>
+          <span class="">{{ $t('debt.remainder') }}: </span><span>{{ totalDebt - totalMoney }} </span><span>{{$t('currency.currency')}}</span>
         </div>
         <div class="btn-group text-center">
-          <el-button @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('debt.pay') }}</el-button>
+          <el-button @click="handlePay">{{ $t('debt.pay') }}</el-button>
         </div>
       </div>
     </div>
@@ -43,7 +45,7 @@
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
 
-import { GET_DEBT_LIST, INDEX_SET_LIST_FRIEND, INDEX_SET_LOADING } from '~/store/store.const'
+import { PAY_DEBT, GET_DEBT_LIST, INDEX_SET_LIST_FRIEND, INDEX_SET_LOADING } from '~/store/store.const'
 
 export default {
   name: 'MainPage',
@@ -57,14 +59,22 @@ export default {
       isIndeterminate: true,
       listDebt: [],
       listId: [],
-      checkAll: false
+      checkAll: false,
+      totalMoney: 0
     }
   },
   watch: {
-    listDebt(newValue, oldValue) {
-      this.listDebt.forEach((element) => {
-        element.maxSlider = element.debtLeft
-      })
+    listDebt: {
+      handler() {
+        let total = 0
+        this.listDebt.forEach((element) => {
+          if (element.check) {
+            total += element.debtLeft
+          }
+        })
+        this.totalMoney = total
+      },
+      deep: true
     },
     checkedDebt() {
       this.checkedDebt.forEach((element) => {
@@ -83,18 +93,15 @@ export default {
   },
   mounted() {
   },
-  // computed: {
-  //   disabledSlider() {
-  //     if (this.checkedDebt) {
-  //       this.checkedDebt.forEach((element) => {
-  //         console.log(element)
-  //         if (this.listId.includes(element)) {
-  //           return false
-  //         }
-  //       })
-  //     }
-  //   }
-  // },
+  computed: {
+    totalDebt() {
+      let total = 0
+      this.listDebt.forEach((element) => {
+        total += element.maxSlider
+      })
+      return total
+    }
+  },
   methods: {
     async getlistDebt() {
       this.$store.commit(INDEX_SET_LOADING, true)
@@ -106,8 +113,11 @@ export default {
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listDebt = data
+          this.listDebt.forEach((element) => {
+            element.maxSlider = element.debtLeft
+            element.check = false
+          })
         }
-        console.log(data)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
@@ -123,9 +133,6 @@ export default {
     handleRouter(router) {
       this.$router.push(router)
     },
-    close() {
-      this.$emit('close')
-    },
     handleCheckedCitiesChange(value) {
       const checkedCount = value.length
       this.checkAll = checkedCount === this.listDebt.length
@@ -133,24 +140,47 @@ export default {
     },
     handleCheckAllChange(val) {
       this.checkedDebt = val ? this.listId : []
+      this.listDebt.forEach((element) => {
+        element.check = val
+      })
       this.isIndeterminate = false
     },
     async create() {
       await this.$store.commit(INDEX_SET_LIST_FRIEND, this.checkedDebt)
-      this.close()
     },
     changeCheck(value) {
-      if (value) {
-        this.checkedDebt.forEach((element) => {
-          if (this.listId.includes(element)) {
-            this.listDebt.forEach((debt) => {
-              if (debt.userDeptId === element) {
-                debt.check = value
-              }
-            })
-          }
-        })
+      value.check = !value.check
+      // this.listDebt.forEach((element) => {
+      //   if (element.userDeptId === value.userDeptId) {
+      //     element.check = value.check
+      //     element.debtleft = value.debtleft
+      //   }
+      // })
+      if (value.check) {
+        this.totalMoney += value.debtLeft
+      } else {
+        this.totalMoney -= value.debtLeft
       }
+      console.log(value)
+    },
+    async handlePay() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(PAY_DEBT, {
+          'eventId': this.$route.params.id,
+          'userId': 11,
+          'paidImage': 'paidimage.img',
+          'totalMoney': this.totalMoney,
+          'listEachPaidDebt': this.listDebt
+        })
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          console.log(data)
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }
