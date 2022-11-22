@@ -161,6 +161,8 @@
   "qr" : {
     "share" : "Chia sẻ mã QR để người khác",
     "share2" : "tham gia sự kiện",
-    "url" : "Đường dẫn"
+    "url" : "Đường dẫn",
+    "scan" : "Quét mã QR",
+    "scan_note" : "Đặt mã QR nằm trong hình vuông"
   }
 }

@@ -71,12 +71,16 @@ export default {
     strategies: {
       local: {
         token: {
-          maxAge: 31536000
+          maxAge: 31536000,
+          property: 'data.Jwt'
+        },
+        user: {
+          property: 'data'
+          // autoFetch: true
         },
         endpoints: {
-          login: { url: '/login', method: 'post', propertyName: 'data.accessToken' },
-          logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/auth/me', method: 'get', propertyName: 'data' }
+          login: { url: '/login', method: 'post' },
+          user: { url: '/event', method: 'get', propertyName: 'data' }
         }
       }
     }

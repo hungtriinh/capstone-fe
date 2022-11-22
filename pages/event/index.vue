@@ -12,7 +12,7 @@
         <div v-for="(item,key) in listEvent" :key="key" class="event">
           <div class="event-item">
             <img class="event-img" :src="item.icon_fake" alt="icon">
-            <div class="event-content" @click="handleRouter('event/detail/' + item.id)">
+            <div class="event-content" @click="handleRouter('event/detail/' + item.eventId)">
               <div class="title text-bold">{{ item.eventName }}</div>
               <span class="title text-bold-sm">{{ item.eventDescript }}</span> <br>
               <span class="title text-normal-sm">{{ item.updatedAt }}</span>
@@ -55,7 +55,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_EVENT_LIST, 3)
+        const response = await this.$store.dispatch(GET_EVENT_LIST)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data

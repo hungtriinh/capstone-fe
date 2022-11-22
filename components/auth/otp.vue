@@ -235,7 +235,6 @@ export default {
     },
     handlePaste(e, index) {
       const data = e.clipboardData.getData('text')
-      console.log(data)
       let count = 0
       for (let i = index, j = 0; i <= this.lengthCode && j < data.length; i++, j++) {
         if (isNaN(data.charAt(j))) {
