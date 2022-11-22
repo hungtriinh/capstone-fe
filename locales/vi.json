@@ -151,7 +151,12 @@
     "amount_placeholder": "Tiền nộp"
   },
   "debt" : {
-    "pay" : "Thanh toán"
+    "pay" : "Thanh toán",
+    "total" : "Tổng trả",
+    "remainder" : "Còn lại"
+  },
+  "currency" : {
+    "currency" : "VND"
   },
   "qr" : {
     "share" : "Chia sẻ mã QR để người khác",

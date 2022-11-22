@@ -118,8 +118,8 @@ export default {
       token: '',
       user: {},
       accountForm: {
-        phone: '',
-        password: '',
+        phone: '0955419015',
+        password: 'quangduy12',
         remember: '',
         errors: {}
       },
