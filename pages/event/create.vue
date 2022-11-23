@@ -176,7 +176,7 @@ export default {
     async getListFriend() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_FRIEND_LIST, 4)
+        const response = await this.$store.dispatch(GET_FRIEND_LIST)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listFriend = data

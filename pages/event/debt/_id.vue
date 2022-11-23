@@ -13,7 +13,7 @@
             <el-checkbox-group v-model="checkedDebt" class="checkbox-group" @change="handleCheckedCitiesChange">
                 <div v-for="(item, key) in listDebt" :key="key">
                   <div class="checkbox-item-debt">
-                    <el-checkbox @change="changeCheck(item)" :label="item.userDeptId" :value="item.userDeptId"></el-checkbox>
+                    <el-checkbox :label="item.userDeptId" :value="item.userDeptId" @change="changeCheck(item)"></el-checkbox>
                     <div>
                       <span class="text-bold">{{ item.receiptName }}</span><br>
                       <span class="text-bold">{{ item.date }}</span><br>
@@ -22,7 +22,7 @@
                     <div class="text-bold">{{ item.debtLeft }}</div>
                   </div>
                   <div class="block">
-                    <el-slider :step="1000" @change="helo(item)" v-model="item.debtLeft" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                    <el-slider v-model="item.debtLeft" :step="1000" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
                   </div>
                 </div>
             </el-checkbox-group>
@@ -45,7 +45,14 @@
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
 
-import { PAY_DEBT, GET_DEBT_LIST, INDEX_SET_LIST_FRIEND, INDEX_SET_LOADING } from '~/store/store.const'
+import {
+  PAY_DEBT,
+  GET_DEBT_LIST,
+  INDEX_SET_LIST_FRIEND,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS,
+  INDEX_SET_ERROR
+} from '~/store/store.const'
 
 export default {
   name: 'MainPage',
@@ -61,6 +68,15 @@ export default {
       listId: [],
       checkAll: false,
       totalMoney: 0
+    }
+  },
+  computed: {
+    totalDebt() {
+      let total = 0
+      this.listDebt.forEach((element) => {
+        total += element.maxSlider
+      })
+      return total
     }
   },
   watch: {
@@ -93,22 +109,12 @@ export default {
   },
   mounted() {
   },
-  computed: {
-    totalDebt() {
-      let total = 0
-      this.listDebt.forEach((element) => {
-        total += element.maxSlider
-      })
-      return total
-    }
-  },
   methods: {
     async getlistDebt() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const response = await this.$store.dispatch(GET_DEBT_LIST, {
-          'EventId': this.$route.params.id,
-          'UserId': 11
+          'EventId': this.$route.params.id
         })
         const { data, statusCode } = response
         if (statusCode === 202) {
@@ -161,21 +167,28 @@ export default {
       } else {
         this.totalMoney -= value.debtLeft
       }
-      console.log(value)
     },
     async handlePay() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(PAY_DEBT, {
+        const data = await this.$store.dispatch(PAY_DEBT, {
           'eventId': this.$route.params.id,
           'userId': 11,
           'paidImage': 'paidimage.img',
           'totalMoney': this.totalMoney,
           'listEachPaidDebt': this.listDebt
         })
-        const { data, statusCode } = response
-        if (statusCode === 202) {
-          console.log(data)
+        switch (data.statusCode) {
+          case 202:
+            this.$store.commit(INDEX_SET_SUCCESS, {
+              show: true,
+              text: data.message
+            })
+            this.getlistDebt()
+            break
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+            break
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

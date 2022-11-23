@@ -188,7 +188,6 @@ export default {
       this.accountForm.errors[ref] = ''
     },
     async create() {
-      console.log(this.chooseMember)
       // this.error = { key: null, value: '' }
       // this.validateForm()
       // if (!this.isValid) {
@@ -199,7 +198,6 @@ export default {
         const dto = this.accountForm
         dto.eventLogo = ''
         dto.MemberIds = this.listFriends
-        dto.userId = 7
         dto.eventId = this.$route.params.id
         dto.userDepts = JSON.parse(JSON.stringify(this.chooseMember))
         if (this.type === '1') {

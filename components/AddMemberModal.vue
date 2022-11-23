@@ -68,7 +68,6 @@ export default {
       const checkedCount = value.length
       this.checkAll = checkedCount === this.listFriend.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listFriend.length
-      console.log(value)
     },
     handleCheckAllChange(val) {
       this.checkedFriends = val ? this.listId : []
