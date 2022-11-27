@@ -11,7 +11,8 @@
         </div>
         <div v-for="(item,key) in listEvent" :key="key" class="event">
           <div class="event-item">
-            <img class="event-img" :src="item.icon_fake" alt="icon">
+            <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
+<!--            <img class="event-img" :src="item.icon_fake" alt="icon">-->
             <div class="event-content" @click="handleRouter('event/detail/' + item.eventId)">
               <div class="title text-bold">{{ item.eventName }}</div>
               <span class="title text-bold-sm">{{ item.eventDescript }}</span> <br>
@@ -32,13 +33,12 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-// import Navigation from '~/components/Navigation'
 import { GET_EVENT_LIST, INDEX_SET_LOADING } from '~/store/store.const'
 
 export default {
   name: 'MainPage',
   components: {
-    // Navigation
+    // ShowAvatarElement
   },
   data() {
     return {
