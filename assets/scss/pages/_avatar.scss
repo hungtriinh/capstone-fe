@@ -1,0 +1,82 @@
+.show-avatar-element {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 22px;
+  color: $color-white;
+  height: 100%;
+  .show-avatar {
+    height: 100%;
+    border-radius: 50%;
+    width: 46px;
+    span {
+      margin: auto;
+    }
+  }
+}
+
+.image-avatar {
+  img {
+    margin-right: 14px;
+  }
+  .el-form-item__content {
+    line-height: 13px;
+  }
+  .show-avatar {
+    .show-detail {
+      position: relative;
+      display: flex;
+      .image-close {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+.content-input {
+  margin-left: 20px;
+  padding: 20px 0;
+  .show-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .button-upload {
+    padding: 0;
+    border: none;
+    background: $color-white;
+    margin-left: 14px;
+    position: relative;
+    width: 100%;
+    min-height: 30px;
+    button {
+      padding: 0;
+      border: none;
+      background: $color-white;
+      position: absolute;
+      bottom: 4px;
+      display: inline-block;
+      label {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        padding: 4px 16px;
+        background: $color-white;
+        cursor: pointer;
+        border: 1px solid $border-focus;
+        border-radius: 4px;
+      }
+    }
+  }
+  .first-name {
+    padding-right: 10px;
+  }
+  .last-name {
+    padding-left: 10px;
+  }
+}
+

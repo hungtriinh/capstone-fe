@@ -80,6 +80,20 @@
               ></el-input>
             </div>
           </div>
+          <div class="content-input image-avatar" ref="imageAvatar">
+            <el-form-item label="" prop="imageAvatar" :error="(error.key === 'imageAvatar') ? error.value : ''">
+              <div class="d-flex show-avatar">
+                <div class="show-detail">
+                  <img id="img-avatar" class="show-image" :src="imageAvatarShow ? imageAvatarShow : '/assets/icon/icon_user_default.svg'" alt="">
+                  <img v-if="imageAvatarShow" class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeAvatar">
+                </div>
+                <input id="upload-avatar" ref="fileUploadAvatar" class="d-none" type="file" @change="onFileChange" accept=".jpeg, .jpg, .png, .svg">
+                <div class="button-upload">
+                  <button type="button"><label for="upload-avatar">{{ $t('event.upload_image') }}</label></button>
+                </div>
+              </div>
+            </el-form-item>
+          </div>
           <el-form-item>
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
@@ -116,12 +130,14 @@ export default {
   name: 'CreateReceiptPage',
   data() {
     return {
+      imageAvatarShow: '',
       token: '',
       user: {},
       type: '1',
       amount: '',
       chooseMember: [],
       accountForm: {
+        avatar: '',
         receiptName: '',
         receiptAmount: '',
         debit: '',
@@ -180,6 +196,58 @@ export default {
     this.getListFriend()
   },
   methods: {
+    removeAvatar() {
+      this.imageAvatarShow = ''
+      this.accountForm.avatar = ''
+    },
+    checkFile(file) {
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.svg)$/i
+      if (file.size >= 20000000) {
+        return this.$t('validation.err003')
+      }
+      if (!['image/jpeg', 'image/png', 'image/jpg', 'image/svg'].includes(file.type) && !allowedExtensions.exec(file.name)) {
+        return this.$t('validation.err005')
+      }
+      return ''
+    },
+    async onFileChange(e) {
+      const file = e.target.files[0]
+      const valid = this.checkFile(file)
+      if (valid) {
+        await this.$store.commit(INDEX_SET_ERROR, { show: true, text: valid })
+      } else {
+        this.imageAvatarShow = URL.createObjectURL(file)
+        this.file = file
+        await this.upLoadFile('avatar_banner')
+      }
+      this.$refs.fileUploadAvatar.value = null
+    },
+    async upLoadFile(type) {
+      // const formData = new FormData()
+      // formData.append('image', this.file)
+      // formData.append('type', type)
+      //
+      // const data = await this.$store.dispatch(USER_UPLOAD_AVATAR, formData)
+      // switch (data.status_code) {
+      //   case 200:
+      //     this.accountForm.avatar = data.data.url
+      //     break
+      //   case 422:
+      //     for (const [key] of Object.entries(data.data)) {
+      //       this.error = { key: key === 'image' ? 'imageAvatar' : key, value: data.data[key][0] }
+      //     }
+      //     break
+      //   case 500:
+      //     await this.$store.commit(INDEX_SET_ERROR, {
+      //       show: true,
+      //       text: this.$t('content.EXC_001')
+      //     })
+      //     break
+      //   default:
+      //     await this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.messages })
+      //     break
+      // }
+    },
     resetValidate(ref) {
       if (ref === this.error.key) {
         this.error = { key: null, value: '' }

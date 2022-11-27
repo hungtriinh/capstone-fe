@@ -72,7 +72,7 @@ export default {
       local: {
         token: {
           maxAge: 31536000,
-          property: 'data.Jwt'
+          property: 'data.access_token'
         },
         user: {
           property: 'data'
