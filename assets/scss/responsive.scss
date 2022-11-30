@@ -52,7 +52,7 @@
     line-height: 20px;
   }
   .text-normal-sm, .text-bold-sm {
-    font-size: 12px;
+    font-size: 13px;
   }
   .el-input__inner {
    height: 40px;
@@ -76,6 +76,11 @@
         width: 40px;
         height: 40px;
       }
+    }
+  }
+  .el-page-header {
+    .el-page-header__content {
+      font-size: 14px;
     }
   }
 }

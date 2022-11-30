@@ -3,19 +3,19 @@
     <div>
       <div class="login login-width login-mobile">
         <div class="title-box d-flex">
-          <img @click="handleRouter('/event')" class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back">
+          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/')">
+          <div class="d-flex cursor-pointer items-center gap-5"  @click="handleRouter('/event/setting/' + id)">
           <img src="~/assets/images/icons/event-small.svg" alt="">
 <!--          <span class="text-bold">{{ listEvent.id }}</span>-->
-          <span class="text-bold">{{ listReceipt.eventName }}</span>
-          <img src="~/assets/images/icons/noti-small.svg" alt="">
-
+          <span class="text-bold">{{ listReceipt.eventName }}<i class="el-icon event-navi el-icon-arrow-right"></i></span>
+          </div>
         </div>
         <div class="total text-bold d-flex justify-between">
           <span class="">Tổng nợ:</span>
           <span v-if="!hideTotal">{{ listReceipt.totalReceiptsAmount }}VND</span>
-          <span style="margin-top: 6px; font-size: 20px" v-else>{{ $t('event.hideTotal') }}</span>
-          <span v-if="!hideTotal"><img @click="hideTotal = !hideTotal" class="cursor-pointer" src="~/assets/images/icons/eye-black.svg" alt=""></span>
-          <span v-else><img @click="hideTotal = !hideTotal" class="cursor-pointer" src="~/assets/images/icons/hide-eye.svg" alt=""></span>
+          <span v-else style="margin-top: 6px; font-size: 20px">{{ $t('event.hideTotal') }}</span>
+          <span v-if="!hideTotal"><img class="cursor-pointer" src="~/assets/images/icons/eye-black.svg" alt="" @click="hideTotal = !hideTotal"></span>
+          <span v-else><img class="cursor-pointer" src="~/assets/images/icons/hide-eye.svg" alt="" @click="hideTotal = !hideTotal"></span>
         </div>
         <div class="detail text-bold">
           <div v-for="(receipt, key) in listReceipt.listReceipt" :key="key" class="item-detail d-flex justify-around">
@@ -50,7 +50,8 @@ export default {
     return {
       search: '',
       listReceipt: [],
-      hideTotal: false
+      hideTotal: false,
+      id: this.$route.params.id
     }
   },
   created() {
@@ -71,10 +72,6 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
-
-      this.listReceipt.forEach(element => {
-        element.icon_fake = require('@/assets/images/event.png')
-      })
     },
     handleRouter(router) {
       this.$router.push(router)

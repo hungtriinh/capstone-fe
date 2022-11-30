@@ -4,6 +4,7 @@ body {
   font-family: $font-mont;
   font-size: 16px;
   background-color: $color-white;
+  //background-color: #E5E5E5;
   //color: $color-white;
   //background-image: url('../images/banner/bg.png');
   //background-repeat: repeat;
@@ -71,9 +72,16 @@ h2 {
   font-size: 2rem;
 }
 
-h3,
-h4 {
+h3 {
   font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5 {
+  font-size: 0.85rem;
 }
 
 //img {
@@ -946,38 +954,38 @@ button {
   color: $color-white !important;
 }
 
-.el-table {
-  box-shadow: -9px -9px 20px -4px #042F47;
-
-  .cell {
-    word-break: break-word !important;
-  }
-
-  .el-table__header-wrapper {
-    thead {
-      border-radius: 8px 8px 0 0;
-
-      th {
-        padding: 18px 0 18px 14px;
-        background: $color-blue-primary;
-        color: $color-white;
-      }
-    }
-  }
-
-  .el-table__body-wrapper {
-    .el-table__row {
-      td {
-        font-family: $font-mont;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 20px;
-        padding: 18px 0 18px 14px;
-      }
-    }
-  }
-}
+//.el-table {
+//  box-shadow: -9px -9px 20px -4px #042F47;
+//
+//  .cell {
+//    word-break: break-word !important;
+//  }
+//
+//  .el-table__header-wrapper {
+//    thead {
+//      border-radius: 8px 8px 0 0;
+//
+//      th {
+//        padding: 18px 0 18px 14px;
+//        background: $color-blue-primary;
+//        color: $color-white;
+//      }
+//    }
+//  }
+//
+//  .el-table__body-wrapper {
+//    .el-table__row {
+//      td {
+//        font-family: $font-mont;
+//        font-style: normal;
+//        font-weight: 400;
+//        font-size: 16px;
+//        line-height: 20px;
+//        padding: 18px 0 18px 14px;
+//      }
+//    }
+//  }
+//}
 
 .el-dialog__wrapper {
   .el-dialog__header {
@@ -1083,13 +1091,13 @@ button {
   color: $color-red-2;
 }
 
-.el-table th.el-table__cell > .cell {
-  font-family: $font-mont;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-}
+//.el-table th.el-table__cell > .cell {
+//  font-family: $font-mont;
+//  font-style: normal;
+//  font-weight: 600;
+//  font-size: 16px;
+//  line-height: 24px;
+//}
 
 .el-table__empty-block {
   display: none;
@@ -4182,6 +4190,81 @@ button {
   padding: 15px 10px 0;
 }
 
+// gap
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+// size
+.font-lg {
+  font-size: 20px;
+}
+
+// margin
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+// element-ui
 .el-checkbox__label {
   display: none;
 }
+
+//.el-timeline-item {
+//  .el-timeline-item__tail {
+//    margin-top: 50px;
+//  }
+//  .el-timeline-item__node {
+//    margin-top: 50px;
+//  }
+//}
+
+.el-badge__content.is-fixed {
+  right: 14px;
+  font-size: 10px;
+}
+
+.el-card.is-always-shadow {
+  border-radius: 10px;
+}
+
+.el-timeline-item {
+  padding-bottom: 0;
+  margin-left: 38px;
+}
+
+.el-timeline-item__content {
+  margin-left: -10px;
+}
+
+.el-card__body, .el-main {
+  padding: 10px 15px
+}
+
+.el-icon {
+  cursor: pointer;
+}
+.el-icon:hover {
+  color: $color-hover;
+}
+
+.el-textarea__inner {
+  font-size: 14px;
+  color: $color-black;
+}
+
+.el-page-header {
+  .el-page-header__content {
+    font-size: 16px;
+    color: $color-dark;
+  }
+}
+

@@ -82,5 +82,20 @@ export const actions = {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('paidDebt/paidDebt', data), context)
     })
+  },
+  getEventDetail(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/eventDetail/eventID=${data}`), context)
+    })
+  },
+  getRequestWaiting(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/joinRequest-waiting/eventID=${data}`), context)
+    })
+  },
+  approveRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/event/event-approve', data), context)
+    })
   }
 }

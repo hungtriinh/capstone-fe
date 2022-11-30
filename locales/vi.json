@@ -141,7 +141,8 @@
     "submit": "Tạo",
     "confirm": "Xác nhận",
     "check_all": "Tất cả",
-    "hideTotal": "*******"
+    "hideTotal": "*******",
+    "owe_you": "nợ bạn"
   },
   "receipt": {
     "name": "Tên",

@@ -1,6 +1,6 @@
 <template>
   <div class="show-avatar-element">
-    <div class="d-flex show-avatar" :style="{ backgroundColor: backgroundColor }">
+    <div class="d-flex show-avatar" :style="{ backgroundColor: color }">
       <span>
         {{name}}
       </span>
