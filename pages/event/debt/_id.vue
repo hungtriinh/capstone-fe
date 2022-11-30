@@ -3,7 +3,7 @@
     <div>
       <div class="login login-width login-mobile">
         <div class="title-box d-flex">
-          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/event')">
+          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/')">
         </div>
         <div class="total text-bold">
           <div class="btn-group d-flex justify-center">

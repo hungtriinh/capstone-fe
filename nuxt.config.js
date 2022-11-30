@@ -83,6 +83,12 @@ export default {
           user: { url: '/event', method: 'get', propertyName: 'data' }
         }
       }
+    },
+    redirect: {
+      login: '/login',
+      logout: false,
+      callback: false,
+      home: false
     }
   },
 
