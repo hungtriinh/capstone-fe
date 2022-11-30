@@ -1,14 +1,15 @@
 $color-white: #fff;
 $color-dark: #000;
+$color-black: #303133;
 $color-orange: #FFC85E;
 $color-dark-orange: #FFC85E;
 $color-orange-1: #FAAD14;
 $color-orange-2: #FF9900;
 $color-orange-3: #FFDE9C;
-$color-red-1: #FF4D4F;
+$color-red-1: #F56C6C;
 $color-red-2: #E4282A;
 $color-red-3: #FFB4B4;
-$color-green-1: #00C508;
+$color-green-1: #67C23A;
 $color-green-2: #05CA19;
 $color-green-3: #05CA19;
 $color-blue-primary: #002337;
@@ -28,8 +29,20 @@ $color-text-common: #2E3192;
 $border-focus: #FED6D7;
 
 //fonts
-$font-root: 'Noto Serif';
-$font-mont: 'Montserrat', sans-serif;
+$font-root: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+$font-mont: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 
 //btn
 $background-primary: #B6B6B6;
+
+//background
+$background-color: #EFF5FE;
+
+// border
+$border-1: #F2F6FC;
+$border-2: #EBEEF5;
+$border-3: #E4E7ED;
+$border-4: #DCDFE6;
+
+// hover
+$color-hover: #5cb6ff;

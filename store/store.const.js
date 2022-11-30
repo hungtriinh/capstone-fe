@@ -27,6 +27,7 @@ export const TYPE_LOGIN_OTP = 1
 export const TYPE_REGISTER_OTP = 2
 
 export const GET_EVENT_LIST = 'getEventList'
+export const GET_EVENT_DETAIL = 'getEventDetail'
 export const GET_FRIEND_LIST = 'getFriendList'
 export const CREATE_EVENT = 'createEvent'
 
@@ -38,3 +39,8 @@ export const CREATE_RECEIPT = 'createReceipt'
 // debt
 export const GET_DEBT_LIST = 'getDebtList'
 export const PAY_DEBT = 'payDebt'
+
+// join request
+export const GET_REQUEST_WAITING = 'getRequestWaiting'
+export const REQUEST_APPROVE = 'approveRequest'
+

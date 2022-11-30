@@ -1,0 +1,197 @@
+<template>
+  <div class="main-login setting-page">
+    <div>
+      <div class="login login-width login-mobile">
+        <div class="text-center">
+          <el-avatar class="avatar" :size="100" :src="circleUrl"></el-avatar>
+          <el-form
+            ref="accountForm"
+            :model="accountForm"
+            :rules="accountRules"
+            autocomplete="off"
+            label-position="left"
+            @keyup.enter.native="login"
+          >
+            <div v-if="!editName" class="title">
+              <span class="text-bold">{{ listEvent.EventName }} </span>
+              <i class="el-icon el-icon-edit font-lg" @click="changeName"></i>
+            </div>
+            <div v-else class="">
+              <div class="d-flex items-center justify-center gap-5">
+                <el-form-item class="event-edit" prop="EventName" :error="(error.key === 'EventName') ? error.value : ''">
+                  <el-input
+                    id="EventName"
+                    ref="EventName"
+                    v-model="accountForm.EventName"
+                    class="event-name-edit"
+                    :placeholder="$t('event.EventName')"
+                    autocomplete="off"
+                    name="EventName"
+                    type="text"
+                    tabindex="2"
+                    @focus="resetValidate('EventName')"
+                  >
+                    <i slot="suffix" class="el-icon el-icon-edit el-input__icon font-lg" @click="changeName"></i>
+                  </el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="title">
+              <div class="d-flex items-center  gap-5">
+                <el-form-item class="event-des-edit event-des" prop="EventDescript" :error="(error.key === 'EventDescript') ? error.value : ''">
+                  <el-input
+                    id="EventDescript"
+                    ref="EventDescript"
+                    v-model="accountForm.EventDescript"
+                    class="event-edit"
+                    :readonly="!editDes"
+                    :placeholder="$t('event.eventDescript')"
+                    type="textarea"
+                    autocomplete="off"
+                    name="EventDescript"
+                    :autosize="{ minRows: 3, maxRows: 12}"
+                    tabindex="2"
+                    @focus="resetValidate('EventDescript')"
+                  />
+                  <i class="el-icon el-icon-edit el-icon-edit-des font-lg" @click="editDes = !editDes"></i>
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
+
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('')">
+            <span class="text-normal">Xem thành viên nhóm ({{listEvent.TotalMembers}}) người</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div @click="handleRouter('/event/join-request/' + id)" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span class="text-normal">Yêu cầu tham gia</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span class="text-normal">Danh sách chứng từ</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span class="text-normal">Danh sách Yêu cầu trả tiền</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span class="text-normal">Quản lý báo cáo</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span style="color: #E83434" class="text-normal">Đóng event</span>
+            <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+// import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
+// import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
+// import { validPhoneNoPrefix } from '@/utils/validate'
+import { GET_EVENT_DETAIL, INDEX_SET_LOADING } from '~/store/store.const'
+
+export default {
+  name: 'SettingPage',
+  // middleware: 'auth',
+  components: {
+    // ShowAvatarElement
+  },
+  data() {
+    return {
+      id: this.$route.params.id,
+      search: '',
+      listEvent: {},
+      circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      editName: false,
+      editDes: false,
+      accountForm: {
+        EventLogo: '',
+        EventName: '',
+        EventDescript: '',
+        TotalMembers: '',
+        ReceiptsWaiting: '',
+        errors: {}
+      },
+      error: {
+        key: null,
+        value: ''
+      },
+      accountRules: {
+        EventName: [
+          {
+            required: true,
+            message: this.$t('validation.required', { _field_: this.$t('event.eventName') }),
+            trigger: 'blur'
+          }
+        ],
+        EventDescript: [
+          {
+            required: true,
+            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  watch: {
+    listEvent(newValue, oldValue) {
+      console.log(this.listEvent)
+      for (const item in this.listEvent) {
+        this.accountForm[item] = this.listEvent[item]
+        // console.log(this.listEvent[item])
+        // console.log(this.accountForm[item])
+      }
+    },
+    editDes() {
+      if (this.editDes) {
+        this.$refs.EventDescript.focus()
+      }
+    }
+  },
+  created() {
+    this.getListEvent()
+  },
+  mounted() {
+  },
+  methods: {
+    resetValidate(ref) {
+      if (ref === this.error.key) {
+        this.error = { key: null, value: '' }
+      }
+      this.$refs.accountForm.fields.find((f) => f.prop === ref).clearValidate()
+      this.accountForm.errors[ref] = ''
+    },
+    async getListEvent() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(GET_EVENT_DETAIL, this.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.listEvent = data
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    handleRouter(router) {
+      this.$router.push(router)
+    },
+    changeName() {
+      this.editName = !this.editName
+    }
+  }
+}
+</script>

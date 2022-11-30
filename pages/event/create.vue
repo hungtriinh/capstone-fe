@@ -141,7 +141,7 @@ export default {
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
         const dto = this.accountForm
-        dto.eventLogo = ''
+        dto.source = ''
         dto.MemberIds = this.listFriends
         const data = await this.$store.dispatch(CREATE_EVENT, dto)
         switch (data.statusCode) {
