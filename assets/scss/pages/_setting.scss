@@ -1,0 +1,18 @@
+.setting-page {
+  .card-item {
+    margin-bottom: 10px;
+    .card-box {
+      display: grid;
+      grid-template-columns: 6% auto 25%;
+      align-items: center;
+    }
+    .cb-hide-label {
+      .el-checkbox__label {
+        display: none;
+      }
+    }
+  }
+  .check-all {
+    margin: 5px 0 0 15px;
+  }
+}

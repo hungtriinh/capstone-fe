@@ -70,7 +70,7 @@
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
-          <div class="item-setting d-flex cursor-pointer items-center justify-between">
+          <div @click="handleRouter('/event/list-receipt/' + id)" class="item-setting d-flex cursor-pointer items-center justify-between">
             <span class="text-normal">Danh sách chứng từ</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>

@@ -370,7 +370,6 @@ h5 {
 button {
   font-size: 0.875rem;
   padding: 0.5rem 0.625rem;
-  min-width: 100px;
   border-radius: 4px;
   background-color: transparent;
   cursor: pointer;
@@ -1063,15 +1062,15 @@ button {
 }
 
 .el-button, .el-button:focus {
-  background: $color-btn-active;
-  border: 1px solid $color-btn-active;
-  color: $color-white;
+  //background: $color-btn-active;
+  //border: 1px solid $color-btn-active;
+  //color: $color-white;
 }
 
 .el-button:hover {
-  color: $color-white;
-  background: $color-btn-hover;
-  border: 1px solid $color-btn-hover;
+  //color: $color-white;
+  //background: $color-btn-hover;
+  //border: 1px solid $color-btn-hover;
 }
 
 .el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
@@ -1250,6 +1249,7 @@ button {
       .avatar {
         vertical-align: middle;
       }
+
       .el-checkbox__label {
         display: none;
       }
@@ -4199,6 +4199,12 @@ button {
   gap: 10px;
 }
 // size
+
+.time {
+  font-size: 13px;
+  color: $color-gray;
+}
+
 .font-lg {
   font-size: 20px;
 }
@@ -4215,7 +4221,7 @@ button {
 
 // element-ui
 .el-checkbox__label {
-  display: none;
+  //display: none;
 }
 
 //.el-timeline-item {
@@ -4251,6 +4257,8 @@ button {
 
 .el-icon {
   cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
 }
 .el-icon:hover {
   color: $color-hover;
@@ -4268,3 +4276,6 @@ button {
   }
 }
 
+.el-button.is-circle {
+  padding: 8px;
+}
