@@ -27,7 +27,13 @@
               pattern="[0-9]*"
               inputmode="numeric"
               @focus="resetValidate('phone')"
-            />
+            >
+              <template #prefix>
+                <div class="d-flex align-center" style="height: 100%">
+                  <img src="@/assets/images/register/vietnam.svg" alt="" style="width: 21px; height: 14px;"/>
+                </div>
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item style="margin-top: 50px">
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
