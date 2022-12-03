@@ -70,8 +70,8 @@ import ForgotPass from '~/components/auth/ForgotPass'
 
 export default {
   name: 'RegisterPage',
-  layout: 'none',
   components: { OtpPage, ForgotPass },
+  layout: 'none',
   // middleware: 'auth-guard',
   data() {
     const validPhoneNumber = (rule, value, callback) => {
