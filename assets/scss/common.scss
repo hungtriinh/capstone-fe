@@ -165,6 +165,12 @@ h5 {
   display: flex
 }
 
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .inline-flex {
   display: inline-flex
 }

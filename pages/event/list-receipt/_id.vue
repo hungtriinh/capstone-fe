@@ -3,7 +3,6 @@
     <div>
       <div class="login login-width login-mobile">
         <el-page-header content="Danh sách chứng từ" @back="goBack">
-          {{id}}
         </el-page-header>
         <el-empty v-if="!listEvent.length" description="Không có chứng từ nào"></el-empty>
         <div v-else>
@@ -11,24 +10,26 @@
             <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '10px' }" class="card-item">
               <div class="d-flex justify-between">
                 <div class="list-image d-flex gap-10">
-                  <img v-for="(img, key) in item.image" :key="key" :src="img" class="image">
+                  <img v-show="!item.imageLinks.length" class="image" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+                  <img v-for="(img, key) in item.imageLinks" :key="key" :src="img" class="image">
                 </div>
-                <span class="text-bold money">{{ item.money }}</span>
+                <span class="text-bold money">{{ item.receiptAmount }}</span>
               </div>
-              <div style="padding-bottom: 12px;">
-                <div class="d-flex items-center mt-10 gap-10">
-                  <ShowAvatarElement :event="{ name: item.name, color: item.color }"></ShowAvatarElement>
-                  <span>
-                {{ item.name }}
-              </span>
+              <div class="">
+                <div class="avatar-name d-flex items-center mt-10 gap-5">
+                  <ShowAvatarElement :event="{ name: item.user.name, color: item.color }"></ShowAvatarElement>
+                  <span>{{ item.user.name }}</span>
                 </div>
                 <div class="bottom">
                   <div>
                     <time class="time">{{ item.date }}</time>
                     <br>
-                    <span class="text-bold">{{ item.event }}</span>
+                    <span class="text-bold">{{ item.receiptName }}</span>
                   </div>
-                  <el-tag :type="item.status === 'dong y' ? 'success' : 'danger' ">{{ item.status }}</el-tag>
+                  <el-tag v-if="item.receiptStatus === 2" type="success">Đồng ý</el-tag>
+                  <el-tag v-else-if="item.receiptStatus === 3" type="danger">Từ chối</el-tag>
+                  <el-tag v-else-if="item.receiptStatus === 1" type="warning">Đang chờ</el-tag>
+                  <el-tag v-else type="">Trả hết</el-tag>
                 </div>
               </div>
             </el-card>
@@ -39,10 +40,7 @@
   </div>
 </template>
 <script>
-// import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
-// import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
-// import { validPhoneNoPrefix } from '@/utils/validate'
-import { REQUEST_APPROVE, GET_REQUEST_WAITING, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
+import { REQUEST_APPROVE, GET_LIST_DOCUMENT, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
 
 export default {
   name: 'ListReceiptPage',
@@ -54,15 +52,7 @@ export default {
     return {
       id: this.$route.params.id,
       search: '',
-      listEvent: [
-        { money: '100000 VND', date: '6/10/2022', name: 'tha van tha', total: 450, event: 'Chi tiết coffee', image: ['https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'
-        ], status: 'từ choi' },
-        { date: '6/10/2022', name: 'tha van t', total: 450, event: 'uong dieu', image: ['https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png', 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'], status: 'dong y' },
-        { date: '6/10/2022', name: 'tha vang tha', total: 450, event: 'ok', image: '', status: 'dong y' }
-      ],
+      listEvent: [],
       ListId: []
     }
   },
@@ -83,7 +73,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_REQUEST_WAITING, this.id)
+        const response = await this.$store.dispatch(GET_LIST_DOCUMENT, this.id)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data

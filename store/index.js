@@ -93,9 +93,19 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`event/joinRequest-waiting/eventID=${data}`), context)
     })
   },
+  getRequestHistory(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/joinRequest-history/eventID=${data}`), context)
+    })
+  },
   approveRequest(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/event/event-approve', data), context)
+    })
+  },
+  getListDocument(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt/receipt-sent/EventId=${data}`), context)
     })
   }
 }

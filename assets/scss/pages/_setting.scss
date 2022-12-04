@@ -11,8 +11,21 @@
         display: none;
       }
     }
+
   }
   .check-all {
     margin: 5px 0 0 15px;
+  }
+}
+
+.list-receipt-page {
+  .card-item {
+    .avatar-name {
+      padding-bottom: 12px;
+      span {
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
   }
 }
