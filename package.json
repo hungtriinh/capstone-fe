@@ -15,6 +15,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
+    "*.**": "prettier --check --ignore-unknown",
     "*.{js,vue}": "eslint --cache",
     "*.{css,scss,sass,html,vue}": "stylelint"
   },

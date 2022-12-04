@@ -42,5 +42,8 @@ export const PAY_DEBT = 'payDebt'
 
 // join request
 export const GET_REQUEST_WAITING = 'getRequestWaiting'
+export const GET_REQUEST_HISTORY = 'getRequestHistory'
 export const REQUEST_APPROVE = 'approveRequest'
 
+// list-document
+export const GET_LIST_DOCUMENT = 'getListDocument'

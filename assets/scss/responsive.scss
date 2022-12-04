@@ -47,6 +47,9 @@
 }
 
 @media screen and (max-width: 540px) {
+  .time {
+    font-size: 12px;
+  }
   .text-bold, .text-normal {
     font-size: 14px;
     line-height: 20px;
@@ -82,6 +85,9 @@
     .el-page-header__content {
       font-size: 14px;
     }
+  }
+  .el-button {
+    padding: 10px 15px;
   }
 }
 

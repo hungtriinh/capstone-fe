@@ -1,0 +1,31 @@
+.setting-page {
+  .card-item {
+    margin-bottom: 10px;
+    .card-box {
+      display: grid;
+      grid-template-columns: 6% auto 25%;
+      align-items: center;
+    }
+    .cb-hide-label {
+      .el-checkbox__label {
+        display: none;
+      }
+    }
+
+  }
+  .check-all {
+    margin: 5px 0 0 15px;
+  }
+}
+
+.list-receipt-page {
+  .card-item {
+    .avatar-name {
+      padding-bottom: 12px;
+      span {
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+}
