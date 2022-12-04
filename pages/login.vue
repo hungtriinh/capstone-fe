@@ -2,7 +2,10 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center">{{ $t('account.login_title') }}</h3>
+        <div class="d-flex justify-center mb-8">
+          <img src="@/assets/images/login/login-icon.svg" alt="">
+        </div>
+        <h3 class="title text-center text-[#011A51] font-semibold">{{ $t('account.login_title') }}</h3>
         <el-form
           ref="accountForm"
           :model="accountForm"
@@ -62,7 +65,7 @@
 <!--          </el-form-item>-->
           <div class="d-flex align-items-center forgot-pass">
             <div
-              class="content cursor-pointer login-page__forgot-password align-items-center" @click="$router.push('/forgot-pass')">
+              class="content cursor-pointer login-page__forgot-password align-items-center text-sm" @click="$router.push('/forgot-pass')">
               {{ $t('account.forgot_password') }}
             </div>
           </div>
@@ -71,6 +74,7 @@
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
+                type="custom-primary"
                 :disabled="disabledButton"
                 @click.native="login"
               >
@@ -81,7 +85,7 @@
           <div class="d-flex align-items-center no_account">
             <div
               class="content text-center cursor-pointer login-page__forgot-password align-items-center" @click="step=3">
-              {{ $t('account.no_account') }} <span class="here" @click="handeRegister">{{ $t('account.here')  }}</span>
+              {{ $t('account.no_account') }} <span class="cursor-pointer underline text-[#344874]" @click="handeRegister">{{ $t('account.here')  }}</span>
             </div>
           </div>
         </el-form>

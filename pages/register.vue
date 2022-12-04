@@ -2,67 +2,76 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center">{{ $t('register.title') }}</h3>
+        <h3 class="title text-center text-[#011A51]">{{ $t('register.title') }}</h3>
+        <p class="text-[#727E96] text-center font-light">{{getRegisterMessage}}</p>
+        <p v-if="step === 2">{{accountForm.phone}}</p>
+        <div class="d-flex justify-center pt-8">
+          <img :src="getBackgroundImage" alt="">
+        </div>
         <el-form
           v-if="step===1"
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
           label-position="left"
+          class="pt-8"
           @keyup.enter.native="register"
         >
           <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
-            <label for="email">{{ $t('account.phone') }}</label>
-            <el-input
-              id="phone"
-              ref="phone"
-              v-model.trim="accountForm.phone"
-              :placeholder="$t('account.phone')"
-              autocomplete="off"
-              name="phone"
-              type="text"
-              tabindex="2"
-              maxlength="12"
-              oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-              pattern="[0-9]*"
-              inputmode="numeric"
-              @focus="resetValidate('phone')"
-            >
-              <template #prefix>
-                <div class="d-flex align-center px-[10px]" style="height: 100%">
-                  <img src="@/assets/images/register/vietnam.svg" alt="" class="rounded-sm" style="width: 21px; height: 14px;"/>
-                  <span class="pl-[8px] text-[#606266]">+84</span>
-                </div>
-              </template>
-            </el-input>
+            <!-- <label for="email">{{ $t('account.phone') }}</label> -->
+            <div class="custom-register-input">
+              <el-input
+                id="phone"
+                ref="phone"
+                v-model.trim="accountForm.phone"
+                :placeholder="$t('account.phone')"
+                autocomplete="off"
+                name="phone"
+                type="text"
+                tabindex="2"
+                maxlength="12"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                @focus="resetValidate('phone')"
+              >
+                <template #prefix>
+                  <div class="d-flex items-center px-[10px]" style="height: 100%">
+                    <img src="@/assets/images/register/vietnam.svg" alt="" class="rounded-sm" style="width: 21px; height: 14px;"/>
+                    <span class="pl-[8px] text-[#606266]">+84</span>
+                  </div>
+                </template>
+              </el-input>
+            </div>
           </el-form-item>
           <el-form-item style="margin-top: 50px">
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
+                type="custom-primary"
                 :disabled="disabledButton"
                 @click.native="register"
               >
                 {{ $t('register.send_sms') }}
               </el-button>
             </div>
-            <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
-              <span>
-                {{ $t('register.already_account') }}
-              </span>
-              <router-link to="/login" class="align-items-center color-orange cursor-pointer underline lowercase">
-                {{ $t('account.login') }}
-              </router-link>
-            </div>
           </el-form-item>
         </el-form>
-        <div v-if="step===2" class="otp">
+        <div v-if="step===2" class="otp pt-8">
           <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
         </div>
         <div v-if="step===3" class="otp">
           <forgot-pass :type="typeVerify" :token="token" :user_register="user"></forgot-pass>
         </div>
+        <div class="d-flex align-items-center text-center font-normal" style="margin-top: 1.5rem">
+              <span class="pr-[4px]">
+                {{ $t('register.already_account') }}
+              </span>
+              <router-link to="/login" class="align-items-center cursor-pointer underline lowercase text-[#344874]">
+                {{ $t('account.login') }}
+              </router-link>
+            </div>
       </div>
     </div>
   </div>
@@ -136,6 +145,18 @@ export default {
         return
       }
       return this.accountForm.phone === ''
+    },
+    getRegisterMessage() {
+      if (this.step === 1) {
+        return this.$t('register.invite_message')
+      } else if (this.step === 2) {
+        return this.$t('register.code_message')
+      } else {
+        return this.$t('register.welcome_message')
+      }
+    },
+    getBackgroundImage() {
+      return require(`~/assets/images/register/register-icon-${this.step}.svg`)
     }
   },
   created() {
@@ -232,7 +253,7 @@ export default {
 </script>
 <style>
 /* stylelint-disable */
-.el-input--prefix .el-input__inner {
+.custom-register-input .el-input--prefix .el-input__inner {
   padding-left: 80px;
 }
 /* stylelint-enable */

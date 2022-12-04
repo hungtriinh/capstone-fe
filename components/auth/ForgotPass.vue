@@ -75,19 +75,18 @@
                 {{ $t('register.title') }}
               </el-button>
             </div>
-            <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
+            <!-- <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
             <span>
               {{ $t('register.already_account') }}
             </span>
               <router-link to="/login" class="align-items-center color-orange cursor-pointer underline lowercase">
                 {{ $t('account.login') }}
               </router-link>
-            </div>
+            </div> -->
           </el-form-item>
         </el-form>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import { mapState } from 'vuex'

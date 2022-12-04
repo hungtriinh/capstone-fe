@@ -50,7 +50,8 @@
     "send": "Gửi",
     "back": "Quay về",
     "home": "trang chủ.",
-    "reset": "Đặt lại"
+    "reset": "Đặt lại",
+    "complete" : "Hoàn Thành"
   },
   "validation": {
     "required": "{_field_} không được để trống.",
@@ -101,7 +102,7 @@
     "welcome" : "Xin Chào",
     "welcome_message" : "Đặt tên cho hồ sơ của bạn, dưới đây là Mật khẩu",
     "invite_message" : "Nhập số điện thoại di động của bạn, chúng tôi sẽ gửi bạn OTP để xác minh .",
-    "code_message" : "Nhập xác minh 4 chữ số được gửi đến",
+    "code_message" : "Nhập xác minh 6 chữ số được gửi đến",
     "register_success_title" : "Xin chúc mừng, bạn đã đăng ký thành công !",
     "register_success_message" : "Bắt đầu sử dụng ứng dụng, hãy chú ý đối với các quy tắc trong ứng dụng",
     "send_sms" : "GỬI MÃ QUA SMS"

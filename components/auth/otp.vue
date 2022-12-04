@@ -9,9 +9,9 @@
       label-position="left"
       @keyup.enter.native="submit"
     >
-      <div class="otp-title-register">{{ $t('otp.otpTitle') }}</div>
-      <div class="otp-content-register">{{ $t('otp.otpContent') }}</div>
-      <el-form-item class="" :label="$t('otp.code')">
+      <!-- <div class="otp-title-register">{{ $t('otp.otpTitle') }}</div> -->
+      <!-- <div class="otp-content-register">{{ $t('otp.otpContent') }}</div> -->
+      <el-form-item class="">
         <br>
         <div class="otp-block-register" style="display: grid;text-align: center;grid-template-columns: repeat(6, minmax(0, 100%));column-gap: 20px;">
           <el-input
@@ -22,16 +22,17 @@
             @keyup.native="handleCode(index, $event)"
           />
         </div>
-        <div style="text-align: center" class="code-sent-email">
+        <!-- <div style="text-align: center" class="code-sent-email">
           <span class="notify-sent">{{ $t('otp.notifySent', { email: hideEmail }) }}</span>
-        </div>
-        <span class="resend">
+        </div> -->
+        <span class="resend text-[#727E96]">
           <span>{{ $t('otp.notReceived') }}</span>
-          <span v-if="!isExpire">{{ $t('otp.reqCode1') }}</span><span v-if="!isExpire" class="color-field">{{
+          <span v-if="!isExpire">{{ $t('otp.reqCode1') }}</span>
+          <span v-if="!isExpire" class="color-field text-red-500">{{
             $t('otp.reqCode2', { time: countTime })
           }}</span>
           <span
-            v-else-if="!isResendOtp" :class="{'noselect':isResendOtp}" class="color-field cursor-pointer"
+            v-else-if="!isResendOtp" :class="{'noselect':isResendOtp}" class="color-field cursor-pointer text-[#344874] "
             @click="resendOtp">{{
               $t('otp.resendCode')
             }}</span>
@@ -49,14 +50,14 @@
           </el-button>
         </div>
       </el-form-item>
-      <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
+      <!-- <div class="d-flex align-items-center text-center font-normal" style="margin-top: 1.5rem">
               <span>
                 {{ $t('register.already_account') }}
               </span>
-        <router-link to="/login" class="align-items-center color-orange cursor-pointer underline lowercase">
+        <router-link to="/login" class="align-items-center color-orange cursor-pointer underline lowercase text-[#011A51]">
           {{ $t('account.login') }}
         </router-link>
-      </div>
+      </div> -->
     </el-form>
   </div>
 </template>

@@ -4268,8 +4268,17 @@ button {
   }
 }
 
-//ALIGNMENT//
-.align-center {
-  align-items: center;
+//OVERWRITE//
+
+.el-button{
+  &--custom-primary{
+    background-color: #117DBE;
+    border: unset;
+  }
+  &--custom-primary:hover{
+    background-color: #0e6aa1;
+    border: unset;
+  }
 }
-//END ALIGNMENT//
+
+//END OVERWRITE//
