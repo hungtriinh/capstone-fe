@@ -3,11 +3,8 @@
     <div>
       <div class="login login-width login-mobile">
         <div class="d-flex justify-between">
-          <el-page-header content="Yêu cầu tham gia" @back="goBack">
+          <el-page-header content="Lịch sử Yêu cầu tham gia" @back="goBack">
           </el-page-header>
-          <el-tooltip class="item" effect="dark" content="History" placement="bottom">
-            <i @click="handleRouter('history/' + id)" class="el-icon el-icon-time" ></i>
-          </el-tooltip>
         </div>
 
         <el-empty v-if="!listEvent.length" description="Không có yêu cầu tham gia nào"></el-empty>
@@ -16,9 +13,8 @@
             <el-checkbox-group v-model="listChecked" class="checkbox-group" @change="handleCheckedCitiesChange">
 
               <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '2px 10px' }" class="card-item">
-                <div class="card-box">
-                  <el-checkbox class="cb-hide-label" :label="item.requestId" :value="item.requestId"></el-checkbox>
-                  <div style="padding-bottom: 12px;">
+                <div class="">
+                  <div style="padding-bottom: 12px;" class="flex-between">
                     <div class="d-flex items-center mt-10 gap-10">
                       <ShowAvatarElement :event="{ name: item.userName, color: item.color }"></ShowAvatarElement>
                       <div>
@@ -26,19 +22,12 @@
                         <br><span class="time">{{ item.phone }}</span>
                       </div>
                     </div>
-                  </div>
-                  <div class="bottom d-flex items-center">
-                    <el-button type="success" icon="el-icon-check" circle @click="openConfirmDialog(4, item.requestId)"></el-button>
-                    <el-button type="danger" icon="el-icon-delete" circle @click="openConfirmDialog(5, item.requestId)"></el-button>
+                    <el-tag v-if="item.status === 4" type="success">Đồng ý</el-tag>
+                    <el-tag v-else type="danger">Từ chối</el-tag>
                   </div>
                 </div>
               </el-card>
             </el-checkbox-group>
-            <el-checkbox class="check-all" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
-            <div class="btn-group justify-center bottom d-flex items-center">
-              <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(5)">Từ chối</el-button>
-              <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(4)">Đồng ý</el-button>
-            </div>
           </div>
         </div>
       </div>
@@ -49,7 +38,7 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-import { REQUEST_APPROVE, GET_REQUEST_WAITING, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
+import { REQUEST_APPROVE, GET_REQUEST_HISTORY, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
 
 export default {
   name: 'RequestPage',
@@ -82,7 +71,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_REQUEST_WAITING, this.id)
+        const response = await this.$store.dispatch(GET_REQUEST_HISTORY, this.id)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data
