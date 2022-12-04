@@ -78,7 +78,6 @@ export default {
         if (statusCode === 202) {
           this.listEvent = data
         }
-        console.log(this.listEvent)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }

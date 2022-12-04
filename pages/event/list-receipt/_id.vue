@@ -13,18 +13,22 @@
                   <img v-show="!item.imageLinks.length" class="image" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
                   <img v-for="(img, key) in item.imageLinks" :key="key" :src="img" class="image">
                 </div>
-                <span class="text-bold money">{{ item.receiptAmount }}</span>
+<!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
+                  <span @click="handleRouter('/receipt/' + item.receiptId + '?eventId=' + id)" class="text-bold d-flex money">Chi tiết<i class="el-icon el-icon-arrow-right"></i></span>
               </div>
               <div class="">
-                <div class="avatar-name d-flex items-center mt-10 gap-5">
-                  <ShowAvatarElement :event="{ name: item.user.name, color: item.color }"></ShowAvatarElement>
-                  <span>{{ item.user.name }}</span>
+                <div class="flex-between">
+                  <div class="avatar-name d-flex items-center mt-10 gap-5">
+                    <ShowAvatarElement :event="{ name: item.user.name, color: item.color }"></ShowAvatarElement>
+                    <span>{{ item.user.name }}</span>
+                  </div>
                 </div>
                 <div class="bottom">
                   <div>
                     <time class="time">{{ item.date }}</time>
                     <br>
-                    <span class="text-bold">{{ item.receiptName }}</span>
+                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>
+
                   </div>
                   <el-tag v-if="item.receiptStatus === 2" type="success">Đồng ý</el-tag>
                   <el-tag v-else-if="item.receiptStatus === 3" type="danger">Từ chối</el-tag>
@@ -58,7 +62,6 @@ export default {
   },
   watch: {
     listEvent(newValue, oldValue) {
-      console.log(this.listEvent)
     }
   },
   created() {

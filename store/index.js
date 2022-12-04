@@ -103,9 +103,19 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.post('/event/event-approve', data), context)
     })
   },
+  closeEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/event-close/EventId=${data}`), context)
+    })
+  },
   getListDocument(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-sent/EventId=${data}`), context)
+    })
+  },
+  getReceiptDetail(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt/receipt-detail/ReceiptId=${data}`), context)
     })
   }
 }

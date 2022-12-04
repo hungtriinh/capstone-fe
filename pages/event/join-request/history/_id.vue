@@ -10,24 +10,22 @@
         <el-empty v-if="!listEvent.length" description="Không có yêu cầu tham gia nào"></el-empty>
         <div v-else>
           <div class="main-content">
-            <el-checkbox-group v-model="listChecked" class="checkbox-group" @change="handleCheckedCitiesChange">
-
-              <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '2px 10px' }" class="card-item">
-                <div class="">
-                  <div style="padding-bottom: 12px;" class="flex-between">
-                    <div class="d-flex items-center mt-10 gap-10">
-                      <ShowAvatarElement :event="{ name: item.userName, color: item.color }"></ShowAvatarElement>
-                      <div>
-                        <span class="text-bold">{{ item.userName }}</span>
-                        <br><span class="time">{{ item.phone }}</span>
-                      </div>
+            <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '2px 10px' }" class="card-item">
+              <div class="">
+                <span class="time">{{item.date}}</span>
+                <div style="padding-bottom: 12px;" class="flex-between">
+                  <div class="d-flex items-center mt-10 gap-10">
+                    <ShowAvatarElement :event="{ name: item.userName, color: item.color }"></ShowAvatarElement>
+                    <div>
+                      <span class="text-bold">{{ item.userName }}</span>
+                      <br><span class="time">{{ item.phone }}</span>
                     </div>
-                    <el-tag v-if="item.status === 4" type="success">Đồng ý</el-tag>
-                    <el-tag v-else type="danger">Từ chối</el-tag>
                   </div>
+                  <el-tag v-if="item.status === 4" type="success">Đồng ý</el-tag>
+                  <el-tag v-else type="danger">Từ chối</el-tag>
                 </div>
-              </el-card>
-            </el-checkbox-group>
+              </div>
+            </el-card>
           </div>
         </div>
       </div>
