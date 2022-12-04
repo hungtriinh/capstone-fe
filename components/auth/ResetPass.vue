@@ -53,6 +53,7 @@
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
+                type="custom-primary"
                 :disabled="disabledButton"
                 @click.native="reset"
               >
@@ -60,14 +61,14 @@
               </el-button>
             </div>
           </el-form-item>
-          <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
+          <!-- <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
               <span>
                 {{ $t('account.back') }}
               </span>
-            <router-link to="/" class="align-items-center color-orange cursor-pointer underline lowercase">
+            <router-link to="/" class="align-items-center cursor-pointer underline lowercase">
               {{ $t('account.home') }}
             </router-link>
-          </div>
+          </div> -->
         </el-form>
       </div>
     </div>

@@ -2,34 +2,47 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center">{{ $t('account.reset_password') }}</h3>
-        <h4 v-if="step===1" class="sub_title text-center">{{ $t('account.forgot_title') }}</h4>
+        <h3 class="title text-center text-[#011A51]">{{ $t('account.reset_password') }}</h3>
+        <h4 v-if="step===1" class="sub_title text-center text-[#727E96]">{{ getTitle }}</h4>
+        <div class="d-flex justify-center pt-8">
+          <img :src="getBackgroundImage" alt="">
+        </div>
         <el-form
           v-if="step===1"
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
+          class="pt-8"
           autocomplete="off"
           label-position="left"
           @keydown.enter.native.prevent="submit"
         >
           <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
-            <label for="email">{{ $t('account.phone') }}</label>
-            <el-input
-              id="phone"
-              ref="phone"
-              v-model.trim="accountForm.phone"
-              :placeholder="$t('account.phone')"
-              autocomplete="off"
-              name="phone"
-              type="text"
-              tabindex="2"
-              maxlength="12"
-              oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-              pattern="[0-9]*"
-              inputmode="numeric"
-              @focus="resetValidate('phone')"
-            />
+            <!-- <label for="email">{{ $t('account.phone') }}</label> -->
+            <div class="custom-register-input">
+              <el-input
+                id="phone"
+                ref="phone"
+                v-model.trim="accountForm.phone"
+                :placeholder="$t('account.phone')"
+                autocomplete="off"
+                name="phone"
+                type="text"
+                tabindex="2"
+                maxlength="12"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                @focus="resetValidate('phone')"
+              >
+                <template #prefix>
+                    <div class="d-flex items-center px-[10px]" style="height: 100%">
+                      <img src="@/assets/images/register/vietnam.svg" alt="" class="rounded-sm" style="width: 21px; height: 14px;"/>
+                      <span class="pl-[8px] text-[#606266]">+84</span>
+                    </div>
+                  </template>
+              </el-input>
+            </div>
           </el-form-item>
 
           <el-form-item style="margin-top: 50px">
@@ -37,6 +50,7 @@
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
+                type="custom-primary"
                 :disabled="disabledButton"
                 @click.native="submit"
               >
@@ -44,14 +58,6 @@
               </el-button>
             </div>
           </el-form-item>
-          <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
-              <span>
-                {{ $t('account.back') }}
-              </span>
-            <router-link to="/" class="align-items-center color-orange cursor-pointer underline lowercase">
-              {{ $t('account.home') }}
-            </router-link>
-          </div>
         </el-form>
         <div v-if="step===2" class="otp">
           <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
@@ -59,25 +65,32 @@
         <div v-if="step===3" class="otp">
           <reset-pass :type="typeVerify" :token="token" :user_register="user"></reset-pass>
         </div>
+        <div class="d-flex align-items-center text-center font-normal" style="margin-top: 1.5rem">
+              <span class="pr-[4px]">
+                {{ $t('account.back') }}
+              </span>
+            <router-link to="/" class="align-items-center cursor-pointer underline lowercase text-[#344874]">
+              {{ $t('account.home') }}
+            </router-link>
+          </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '@/store/store.const'
+import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, AUTH_SEND_EMAIL_FORGOT } from '@/store/store.const'
 import { validEmail } from '@/utils/validate'
-import { AUTH_SEND_EMAIL_FORGOT } from '@/store/store.const'
 import OtpPage from '@/components/auth/otp'
 import ResetPass from '~/components/auth/ResetPass'
 
 export default {
   name: 'ForgotPage',
-  layout: 'none',
   // middleware: 'auth-guard',
   components: {
     OtpPage,
     ResetPass
   },
+  layout: 'none',
   data() {
     const validdateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
@@ -88,7 +101,7 @@ export default {
     }
 
     return {
-      step: 3,
+      step: 1,
       token: '',
       user: {},
       accountForm: {
@@ -123,6 +136,18 @@ export default {
   computed: {
     disabledButton() {
       return this.accountForm.email === ''
+    },
+    getTitle() {
+      if (this.step === 1) {
+        return this.$t('account.forgot_password')
+      } else if (this.step === 2) {
+        return this.$t('register.write_code')
+      } else {
+        return this.$t('register.reset_pass')
+      }
+    },
+    getBackgroundImage() {
+      return require(`~/assets/images/forgot-pass/forgot-pass-icon-${this.step}.svg`)
     }
   },
   methods: {
@@ -177,5 +202,10 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
+/* stylelint-disable */
+.custom-register-input .el-input--prefix .el-input__inner {
+  padding-left: 80px;
+}
+/* stylelint-enable */
 </style>

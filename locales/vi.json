@@ -1,7 +1,9 @@
 {
   "lang": "Ngôn ngữ",
   "common": {
-    "license": " © 2022 Bản quyền bởi EZ Solution"
+    "license": " © 2022 Bản quyền bởi EZ Solution",
+    "continue" : "tiếp tục",
+    "start" : "bắt đầu"
   },
   "footer": {
     "hotline": "Hotline",
@@ -48,7 +50,8 @@
     "send": "Gửi",
     "back": "Quay về",
     "home": "trang chủ.",
-    "reset": "Đặt lại"
+    "reset": "Đặt lại",
+    "complete" : "Hoàn Thành"
   },
   "validation": {
     "required": "{_field_} không được để trống.",
@@ -94,7 +97,15 @@
     "agree": "Tôi đồng ý với các ",
     "privacy_policy": "Điều khoản & Điều kiện và Chính sách Bảo mật.",
     "button": "Đăng ký",
-    "already_account": "Đã có tài khoản về"
+    "already_account": "Đã có tài khoản về",
+    "write_code" : "Nhập mã",
+    "welcome" : "Xin Chào",
+    "welcome_message" : "Đặt tên cho hồ sơ của bạn, dưới đây là Mật khẩu",
+    "invite_message" : "Nhập số điện thoại di động của bạn, chúng tôi sẽ gửi bạn OTP để xác minh .",
+    "code_message" : "Nhập xác minh 6 chữ số được gửi đến",
+    "register_success_title" : "Xin chúc mừng, bạn đã đăng ký thành công !",
+    "register_success_message" : "Bắt đầu sử dụng ứng dụng, hãy chú ý đối với các quy tắc trong ứng dụng",
+    "send_sms" : "GỬI MÃ QUA SMS"
   },
   "otp": {
     "otpTitle": "Mã Xác Minh",
@@ -137,12 +148,10 @@
     "eventName": "Tiêu đề",
     "eventDescript": "Mô tả",
     "add_member": "Thêm thành viên",
-    "upload_image": "Up ảnh",
     "submit": "Tạo",
     "confirm": "Xác nhận",
     "check_all": "Tất cả",
-    "hideTotal": "*******",
-    "owe_you": "nợ bạn"
+    "hideTotal": "*******"
   },
   "receipt": {
     "name": "Tên",
@@ -163,8 +172,6 @@
   "qr" : {
     "share" : "Chia sẻ mã QR để người khác",
     "share2" : "tham gia sự kiện",
-    "url" : "Đường dẫn",
-    "scan" : "Quét mã QR",
-    "scan_note" : "Đặt mã QR nằm trong hình vuông"
+    "url" : "Đường dẫn"
   }
 }
