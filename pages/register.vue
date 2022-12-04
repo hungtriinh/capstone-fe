@@ -29,8 +29,9 @@
               @focus="resetValidate('phone')"
             >
               <template #prefix>
-                <div class="d-flex align-center" style="height: 100%">
-                  <img src="@/assets/images/register/vietnam.svg" alt="" style="width: 21px; height: 14px;"/>
+                <div class="d-flex align-center px-[10px]" style="height: 100%">
+                  <img src="@/assets/images/register/vietnam.svg" alt="" class="rounded-sm" style="width: 21px; height: 14px;"/>
+                  <span class="pl-[8px] text-[#606266]">+84</span>
                 </div>
               </template>
             </el-input>
@@ -43,7 +44,7 @@
                 :disabled="disabledButton"
                 @click.native="register"
               >
-                {{ $t('register.title') }}
+                {{ $t('register.send_sms') }}
               </el-button>
             </div>
             <div class="d-flex align-items-center text-center" style="margin-top: 1.5rem">
@@ -229,3 +230,10 @@ export default {
   }
 }
 </script>
+<style>
+/* stylelint-disable */
+.el-input--prefix .el-input__inner {
+  padding-left: 80px;
+}
+/* stylelint-enable */
+</style>
