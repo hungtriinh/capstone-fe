@@ -35,6 +35,7 @@ export const CREATE_EVENT = 'createEvent'
 export const GET_RECEIPT_LIST = 'getReceiptList'
 export const GET_MEMBER_LIST = 'getMemberList'
 export const CREATE_RECEIPT = 'createReceipt'
+export const RECEIPT_DETAIL = 'getReceiptDetail'
 
 // debt
 export const GET_DEBT_LIST = 'getDebtList'
@@ -47,3 +48,6 @@ export const REQUEST_APPROVE = 'approveRequest'
 
 // list-document
 export const GET_LIST_DOCUMENT = 'getListDocument'
+
+// close event
+export const EVENT_CLOSE = 'closeEvent'

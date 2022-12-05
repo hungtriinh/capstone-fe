@@ -65,12 +65,12 @@
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
-          <div @click="handleRouter('/event/join-request/' + id)" class="item-setting d-flex cursor-pointer items-center justify-between">
+          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/join-request/' + id)">
             <span class="text-normal">Yêu cầu tham gia</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
-          <div @click="handleRouter('/event/list-receipt/' + id)" class="item-setting d-flex cursor-pointer items-center justify-between">
+          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-receipt/' + id)">
             <span class="text-normal">Danh sách chứng từ</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
@@ -85,8 +85,8 @@
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
-          <div class="item-setting d-flex cursor-pointer items-center justify-between">
-            <span style="color: #E83434" class="text-normal">Đóng event</span>
+          <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <span style="color: #e73434" class="text-normal">Đóng event</span>
             <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
           </div>
           <el-divider class="divider-setting"></el-divider>
@@ -99,7 +99,7 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-import { GET_EVENT_DETAIL, INDEX_SET_LOADING } from '~/store/store.const'
+import { EVENT_CLOSE, GET_EVENT_DETAIL, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
 
 export default {
   name: 'SettingPage',
@@ -191,6 +191,21 @@ export default {
     },
     changeName() {
       this.editName = !this.editName
+    },
+    async closeEvent() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(EVENT_CLOSE, this.id)
+        if (response.statusCode === 202) {
+          this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }

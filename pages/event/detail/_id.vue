@@ -28,7 +28,7 @@
         </div>
         <div class="btn-group text-center">
           <el-button @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
-          <el-button @click="handleRouter('/event/receipt/' + $route.params.id )">{{ $t('home.add_receipt') }}</el-button>
+          <el-button @click="handleRouter('/event/create-receipt/' + $route.params.id )">{{ $t('home.add_receipt') }}</el-button>
         </div>
 <!--        <navigation/>-->
       </div>

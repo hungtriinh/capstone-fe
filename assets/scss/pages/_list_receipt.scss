@@ -8,10 +8,11 @@
   }
 
   .bottom {
-    margin-top: 10px;
+    //margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: end;
+    flex-wrap: wrap;
   }
 
   .button {
@@ -42,6 +43,11 @@
     clear: both
   }
   .money {
-    margin-top: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    color: $btn-primary;
+  }
+  .money:hover {
+    color: $color-hover;
   }
 }
