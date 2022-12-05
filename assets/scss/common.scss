@@ -4307,3 +4307,27 @@ button {
 .el-image-viewer__img {
   width: 300px;
 }
+
+// LAYOUT // 
+.menu-icon {
+  cursor: pointer;
+  width: fit-content;
+}
+.menu-icon path {
+  stroke: #6B6969;
+  stroke-width: 1.5;
+  transition: 0.2s all;
+}
+
+.menu-icon:hover path{
+  stroke: #6B6969;
+  stroke-width: 3 !important;
+}
+
+.menu-icon.is-selected path{
+  stroke: #292D32 !important;
+  stroke-width: 4 !important;
+}
+
+
+//END LAYOUT//
