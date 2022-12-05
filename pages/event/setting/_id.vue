@@ -2,8 +2,14 @@
   <div class="main-login setting-page">
     <div>
       <div class="login login-width login-mobile">
-        <div class="text-center">
-          <el-avatar class="avatar" :size="100" :src="circleUrl"></el-avatar>
+        <el-page-header class="header-receipt" content="Cài đặt sự kiện" @back="handleRouter('/event/detail/' + id)">
+        </el-page-header>
+        <div class="main-content">
+<!--          <el-avatar class="avatar" :size="100" :src="circleUrl"></el-avatar>-->
+          <div class="main-setting-avatar d-flex justify-center">
+            <ShowAvatarElement :event="{ name: listEvent.EventName, color: listEvent.color }"></ShowAvatarElement>
+          </div>
+
           <el-form
             ref="accountForm"
             :model="accountForm"
@@ -12,7 +18,7 @@
             label-position="left"
             @keyup.enter.native="login"
           >
-            <div v-if="!editName" class="title">
+            <div v-if="!editName" class="title text-center">
               <span class="text-bold">{{ listEvent.EventName }} </span>
               <i class="el-icon el-icon-edit font-lg" @click="changeName"></i>
             </div>
@@ -24,11 +30,12 @@
                     ref="EventName"
                     v-model="accountForm.EventName"
                     class="event-name-edit"
-                    :placeholder="$t('event.EventName')"
+                    :placeholder="$t('event.eventName')"
                     autocomplete="off"
                     name="EventName"
                     type="text"
                     tabindex="2"
+                    @blur="editEvent"
                     @focus="resetValidate('EventName')"
                   >
                     <i slot="suffix" class="el-icon el-icon-edit el-input__icon font-lg" @click="changeName"></i>
@@ -51,42 +58,43 @@
                     name="EventDescript"
                     :autosize="{ minRows: 3, maxRows: 12}"
                     tabindex="2"
+                    @blur="changeDes"
                     @focus="resetValidate('EventDescript')"
                   />
-                  <i class="el-icon el-icon-edit el-icon-edit-des font-lg" @click="editDes = !editDes"></i>
+                  <i :class="editDes ? 'edit-des' : ''" class="el-icon el-icon-edit el-icon-edit-des font-lg" @click="editDes = !editDes"></i>
                 </el-form-item>
               </div>
             </div>
           </el-form>
 
           <el-divider class="divider-setting"></el-divider>
-          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('')">
-            <span class="text-normal">Xem thành viên nhóm ({{listEvent.TotalMembers}}) người</span>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
+            <span class="text-bold">Xem thành viên nhóm ({{listEvent.TotalMembers}} người) </span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
           <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/join-request/' + id)">
-            <span class="text-normal">Yêu cầu tham gia</span>
+            <span class="text-bold">Yêu cầu tham gia</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
           <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-receipt/' + id)">
-            <span class="text-normal">Danh sách chứng từ</span>
+            <span class="text-bold">Danh sách chứng từ</span>
+            <i class="el-icon el-icon-arrow-right "></i>
+          </div>
+          <el-divider class="divider-setting"></el-divider>
+          <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
+            <span class="text-bold">Danh sách Yêu cầu trả tiền</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
           <div class="item-setting d-flex cursor-pointer items-center justify-between">
-            <span class="text-normal">Danh sách Yêu cầu trả tiền</span>
-            <i class="el-icon el-icon-arrow-right "></i>
-          </div>
-          <el-divider class="divider-setting"></el-divider>
-          <div class="item-setting d-flex cursor-pointer items-center justify-between">
-            <span class="text-normal">Quản lý báo cáo</span>
+            <span class="text-bold">Quản lý báo cáo</span>
             <i class="el-icon el-icon-arrow-right "></i>
           </div>
           <el-divider class="divider-setting"></el-divider>
           <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
-            <span style="color: #e73434" class="text-normal">Đóng event</span>
+            <span style="color: #e73434" class="text-bold   ">Đóng event</span>
             <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
           </div>
           <el-divider class="divider-setting"></el-divider>
@@ -99,7 +107,13 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-import { EVENT_CLOSE, GET_EVENT_DETAIL, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
+import {
+  EVENT_EDIT,
+  EVENT_CLOSE,
+  GET_EVENT_DETAIL,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS
+} from '~/store/store.const'
 
 export default {
   name: 'SettingPage',
@@ -206,6 +220,43 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    changeDes() {
+      if (this.accountForm.EventDescript) {
+        this.editDes = false
+        this.editEvent()
+      }
+    },
+    async editEvent() {
+      this.validateForm()
+      if (!this.isValid) {
+        return
+      }
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const dto = this.accountForm
+        dto.EventId = this.id
+        const response = await this.$store.dispatch(EVENT_EDIT, {
+          ...dto
+        })
+        if (response.statusCode === 202) {
+          // await this.$store.commit(INDEX_SET_SUCCESS, {
+          //   show: true,
+          //   text: response.message
+          // })
+          await this.getListEvent()
+          this.editName = false
+          this.editDes = false
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    validateForm() {
+      this.$refs.accountForm.validate(valid => {
+        this.isValid = valid
+      })
     }
   }
 }

@@ -40,6 +40,7 @@ export const RECEIPT_DETAIL = 'getReceiptDetail'
 // debt
 export const GET_DEBT_LIST = 'getDebtList'
 export const PAY_DEBT = 'payDebt'
+export const DEBT_SENT_LIST = 'getDebtSent'
 
 // join request
 export const GET_REQUEST_WAITING = 'getRequestWaiting'
@@ -49,5 +50,11 @@ export const REQUEST_APPROVE = 'approveRequest'
 // list-document
 export const GET_LIST_DOCUMENT = 'getListDocument'
 
-// close event
+// event
 export const EVENT_CLOSE = 'closeEvent'
+export const EVENT_EDIT = 'editEvent'
+
+// member
+export const MEMBER_GET_ALL = 'getAllMember'
+export const MEMBER_REMOVE = 'removeMember'
+

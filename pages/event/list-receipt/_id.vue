@@ -10,11 +10,11 @@
             <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '10px' }" class="card-item">
               <div class="d-flex justify-between">
                 <div class="list-image d-flex gap-10">
-                  <img v-show="!item.imageLinks.length" class="image" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-                  <img v-for="(img, key) in item.imageLinks" :key="key" :src="img" class="image">
+                  <el-image v-show="!item.imageLinks.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
+                  <el-image v-for="(img, key) in item.imageLinks" :key="key" :src="img" :preview-src-list="item.imageLinks" class="image"/>
                 </div>
 <!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
-                  <span @click="handleRouter('/receipt/' + item.receiptId + '?eventId=' + id)" class="text-bold d-flex money">Chi tiết<i class="el-icon el-icon-arrow-right"></i></span>
+                  <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>
               </div>
               <div class="">
                 <div class="flex-between">
@@ -27,13 +27,14 @@
                   <div>
                     <time class="time">{{ item.date }}</time>
                     <br>
-                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>
+<!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
+                    <div><span class="text-bold">{{ item.receiptName }}</span></div>
 
                   </div>
-                  <el-tag v-if="item.receiptStatus === 2" type="success">Đồng ý</el-tag>
-                  <el-tag v-else-if="item.receiptStatus === 3" type="danger">Từ chối</el-tag>
-                  <el-tag v-else-if="item.receiptStatus === 1" type="warning">Đang chờ</el-tag>
-                  <el-tag v-else type="">Trả hết</el-tag>
+                  <el-tag effect="dark" v-if="item.receiptStatus === 2" type="success">Đồng ý</el-tag>
+                  <el-tag effect="dark" v-else-if="item.receiptStatus === 3" type="danger">Từ chối</el-tag>
+                  <el-tag effect="dark" v-else-if="item.receiptStatus === 1" type="warning">Đang chờ</el-tag>
+                  <el-tag effect="dark" v-else type="">Trả hết</el-tag>
                 </div>
               </div>
             </el-card>
@@ -41,10 +42,48 @@
         </div>
       </div>
     </div>
+    <el-dialog class="receipt-detail-dialog" :title="receiptDetail.receiptName" :visible.sync="dialogVisible">
+      <span class="time">{{ receiptDetail.date }}</span>
+      <div class="event-item">
+        <el-timeline class="receipt-detail-card">
+          <div class="event-title d-flex justify-between items-center cursor-pointer">
+            <div class="d-flex gap-5 items-center event-name">
+              <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
+              <div class="event-content">
+                <h4 class="title text-bold">{{ user.name }}</h4>
+              </div>
+            </div>
+            <div class="d-flex items-center ">
+              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
+            </div>
+          </div>
+          <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
+            <el-card>
+              <div class="d-flex justify-between">
+                <span class="text-normal-sm">{{ user.name }}</span>
+                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
+              </div>
+            </el-card>
+          </el-timeline-item>
+          <el-divider class="divider"></el-divider>
+        </el-timeline>
+        <div>
+          <!--              <img class="status-img" src="~/assets/images/icons/circle-red.svg" alt="status">-->
+          <!--              <img src="~/assets/images/icons/dots.svg" alt="status">-->
+        </div>
+      </div>
+
+    </el-dialog>
   </div>
 </template>
 <script>
-import { REQUEST_APPROVE, GET_LIST_DOCUMENT, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
+import {
+  REQUEST_APPROVE,
+  GET_LIST_DOCUMENT,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS,
+  RECEIPT_DETAIL
+} from '~/store/store.const'
 
 export default {
   name: 'ListReceiptPage',
@@ -57,7 +96,10 @@ export default {
       id: this.$route.params.id,
       search: '',
       listEvent: [],
-      ListId: []
+      ListId: [],
+      receiptDetail: {},
+      user: {},
+      dialogVisible: false
     }
   },
   watch: {
@@ -81,7 +123,6 @@ export default {
         if (statusCode === 202) {
           this.listEvent = data
         }
-        console.log(this.listEvent)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
@@ -121,6 +162,25 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async getReceiptDetail(id) {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(RECEIPT_DETAIL, id)
+        if (response.statusCode === 202) {
+          this.receiptDetail = response.data
+          this.user = response.data.user
+        }
+        console.log(this.receiptDetail)
+        console.log(this.user)
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async openDetailDialog(id) {
+      await this.getReceiptDetail(id)
+      this.dialogVisible = true
     }
   }
 }

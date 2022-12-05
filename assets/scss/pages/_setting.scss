@@ -1,4 +1,14 @@
 .setting-page {
+  .main-setting-avatar {
+    margin-bottom: 10px;
+    .show-avatar-element .show-avatar {
+      width: 100px;
+      height: 100px;
+      span {
+        font-size: 30px;
+      }
+    }
+  }
   .card-item {
     margin-bottom: 10px;
     .card-box {
@@ -16,15 +26,31 @@
   .check-all {
     margin: 5px 0 0 15px;
   }
+  .edit-des {
+    color: #c0cce0;
+  }
 }
 
 .list-receipt-page {
   .card-item {
     .avatar-name {
-      padding-bottom: 12px;
+      padding-bottom: 6px;
       span {
         font-size: 14px;
         font-weight: 600;
+      }
+    }
+  }
+}
+
+.list-member-page {
+  .member-role-avatar {
+    margin-bottom: 20px;
+    .show-avatar-element .show-avatar {
+      width: 60px;
+      height: 60px;
+      span {
+        font-size: 30px;
       }
     }
   }

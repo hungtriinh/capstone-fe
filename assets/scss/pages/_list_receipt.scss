@@ -50,4 +50,25 @@
   .money:hover {
     color: $color-hover;
   }
+
+  .receipt-detail-dialog {
+    .text-green {
+      color: $color-green-1;
+    }
+    .text-red {
+      color: $color-red-1;
+    }
+    .el-dialog {
+      width: 75%;
+      border-radius: 10px;
+    }
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: $color-black;
+    }
+    .receipt-detail-card {
+      margin-top: 30px;
+    }
+  }
 }
