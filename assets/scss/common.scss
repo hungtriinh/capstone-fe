@@ -1203,12 +1203,13 @@ button {
 
 .navigation-bar {
   bottom: 0;
-  width: 100%;
-  position: relative;
+  width: 450px;
+  position: fixed;
   margin-top: 100px;
   .navigation {
     display: grid;
     grid-template-columns: auto auto auto auto 15%;
+    justify-items: center;
     width: 100%;
   }
 }
@@ -4312,21 +4313,31 @@ button {
 .menu-icon {
   cursor: pointer;
   width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.menu-icon path {
-  stroke: #6B6969;
-  stroke-width: 1.5;
-  transition: 0.2s all;
+.menu-icon {
+  path, p {
+    stroke: #6B6969;
+    color: #6B6969;
+    stroke-width: 1.5;
+    transition: 0.2s all;
+  }
 }
 
-.menu-icon:hover path{
-  stroke: #6B6969;
-  stroke-width: 3 !important;
+.menu-icon:hover {
+  path, p {
+    color: #28A8D7;
+    stroke: rgba(40, 168, 215, 0.7);
+  }
 }
 
-.menu-icon.is-selected path{
-  stroke: #292D32 !important;
-  stroke-width: 4 !important;
+.menu-icon.is-selected {
+  path, p {
+    color: #28A8D7;
+    stroke: #28A8D7 !important;
+  }
 }
 
 

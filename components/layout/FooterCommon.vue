@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation-bar">
+  <div class="navigation-bar pb-[10px]">
     <div class="navigation">
       <!-- <img  src="@/assets/images/icons/event.svg" alt=""> -->
       <div class="menu-icon">
@@ -32,6 +32,7 @@
             stroke-linejoin="round"
           />
         </svg>
+        <p class="text-xs">{{$t('navigation.event')}}</p>
       </div>
       <div class="menu-icon" :class="{'is-selected' : isSelectedRoute('/friends')}" @click="handleRouter('/friends')">
         <svg
@@ -84,6 +85,7 @@
             stroke-linejoin="round"
           />
         </svg>
+        <p class="text-xs">{{$t('navigation.friends')}}</p>
       </div>
       <div class="menu-icon">
         <svg
@@ -117,6 +119,7 @@
             stroke-linejoin="round"
           />
         </svg>
+        <p class="text-xs">{{$t('navigation.create_event')}}</p>
       </div>
       <div class="menu-icon" :class="{'is-selected' : isSelectedRoute('/activities')}" @click="handleRouter('/activities')">
         <svg
@@ -141,6 +144,7 @@
             stroke-linejoin="round"
           />
         </svg>
+        <p class="text-xs">{{$t('navigation.activities')}}</p>
       </div>
       <div class="menu-icon" :class="{'is-selected' : isSelectedRoute('/profile')}" @click="handleRouter('/profile')">
         <el-badge :value="12" class="item">
@@ -174,6 +178,7 @@
             />
           </svg>
         </el-badge>
+        <p class="text-xs">{{$t('navigation.personal')}}</p>
       </div>
     </div>
   </div>

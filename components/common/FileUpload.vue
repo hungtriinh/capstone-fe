@@ -1,7 +1,7 @@
 <template>
   <div
     class="upload-box text-center pa-8 d-flex justify-center items-center"
-    :class="{ 'rounded-full': circle, 'rounded-lg': !circle }"
+    :class="{ 'rounded-full': circle, 'rounded-lg': !circle, 'pointer-events-none' : disable }"
     :style="{ width: `${width}px`, height: `${height}px` }"
     @dragover.prevent="dragOver"
     @dragleave.prevent="dragLeave"
@@ -62,6 +62,10 @@ export default {
     defaultImage: {
       type: String,
       default: () => ('')
+    },
+    disable: {
+      type: Boolean,
+      default: () => (false)
     }
   },
   data() {
@@ -148,6 +152,6 @@ export default {
   }
 }
 .select-image {
-//   width: 60%;
+  //   width: 60%;
 }
 </style>
