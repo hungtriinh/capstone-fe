@@ -994,12 +994,12 @@ button {
 
 .el-dialog__wrapper {
   .el-dialog__header {
-    text-align: left;
-    font-family: $font-root;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 33px;
+    //text-align: left;
+    //font-family: $font-root;
+    //font-style: normal;
+    //font-weight: 600;
+    //font-size: 24px;
+    //line-height: 33px;
 
     .el-dialog__headerbtn {
       min-width: unset;
@@ -1007,7 +1007,7 @@ button {
 
       .el-icon-close {
         color: black;
-        font-size: 24px;
+        font-size: 22px;
       }
     }
   }
@@ -1050,19 +1050,19 @@ button {
   }
 
   .el-button--default {
-    height: 48px;
-    border-radius: 2px;
-    border: 1px solid $color-orange;
-    color: $color-white;
+    //height: 48px;
+    //border-radius: 2px;
+    //border: 1px solid $color-orange;
+    //color: $color-white;
 
     &.el-button--primary {
-      background: $color-orange;
-      color: white;
+      //background: $color-orange;
+      //color: white;
     }
 
     &.el-button--primary:hover {
-      background: $color-btn-hover;
-      color: white;
+      //background: $color-btn-hover;
+      //color: white;
     }
   }
 }
@@ -4225,6 +4225,9 @@ button {
   margin-top: 10px;
 }
 
+.italic {
+  font-style: italic;
+}
 // element-ui
 .el-checkbox__label {
   //display: none;
@@ -4299,4 +4302,8 @@ button {
 
 .el-button.is-circle {
   padding: 8px;
+}
+
+.el-image-viewer__img {
+  width: 300px;
 }

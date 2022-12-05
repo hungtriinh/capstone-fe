@@ -29,11 +29,14 @@ export default {
   },
   computed: {
     name() {
-      const shortCutName = this.event.name ? this.event.name.slice(0, 1) : ''
+      const split = this.event.name ? this.event.name.split(/(\s+)/) : ''
+      // const shortCutName = split[split.length - 1]
+      // console.log(split[split.length - 1])
+      const shortCutName = split ? split[split.length - 1].slice(0, 1) : ''
       return getShortcutName(removeVietnameseTones(shortCutName))
     },
     color() {
-      return getColorShortcutName(name)
+      return getColorShortcutName(this.name)
     }
   }
 }

@@ -108,6 +108,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`event/event-close/EventId=${data}`), context)
     })
   },
+  editEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/event/edit-event', data), context)
+    })
+  },
   getListDocument(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-sent/EventId=${data}`), context)
@@ -116,6 +121,23 @@ export const actions = {
   getReceiptDetail(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-detail/ReceiptId=${data}`), context)
+    })
+  },
+  // yeu cau tra tien
+  getDebtSent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-sent/eventId=${data}`), context)
+    })
+  },
+  // danh sach thanh vien
+  getAllMember(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`member/eventId=${data}`), context)
+    })
+  },
+  removeMember(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/member/remove-member', data), context)
     })
   }
 }
