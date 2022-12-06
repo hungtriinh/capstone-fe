@@ -44,14 +44,32 @@
 }
 
 .list-member-page {
-  .member-role-avatar {
-    margin-bottom: 20px;
+  .member-cashier-avatar {
     .show-avatar-element .show-avatar {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
       span {
-        font-size: 30px;
+        font-size: 25px;
       }
+    }
+  }
+  .member-role-avatar {
+    margin-bottom: 10px;
+    .show-avatar-element .show-avatar {
+      width: 55px;
+      height: 55px;
+      span {
+        font-size: 25px;
+      }
+    }
+  }
+  .remove-btn {
+    position: relative;
+    .el-icon {
+      //color: $btn-primary;
+      position: absolute;
+      top: 0;
+      right: -10px;
     }
   }
 }

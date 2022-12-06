@@ -10,7 +10,7 @@
         <el-empty v-if="!listEvent.length" description="Không có yêu cầu tham gia nào"></el-empty>
         <div v-else>
           <div class="main-content">
-            <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '2px 10px' }" class="card-item">
+            <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '2px 10px' }" class="card-item">
               <div class="">
                 <span class="time">{{item.date}}</span>
                 <div style="padding-bottom: 12px;" class="flex-between">

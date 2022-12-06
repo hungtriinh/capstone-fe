@@ -8,6 +8,7 @@ export const state = () => ({
   loading: false,
   email: '',
   listFriends: [],
+  roleMember: [],
   isOtpPage: false
 })
 
@@ -34,6 +35,9 @@ export const mutations = {
   },
   setListFriends(state, listFriends) {
     state.listFriends = listFriends
+  },
+  setRoleMember(state, roleMember) {
+    state.roleMember = roleMember
   }
 }
 
@@ -113,6 +117,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.post('/event/edit-event', data), context)
     })
   },
+  getShareLink(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/shareablelink/EventID=${data}`), context)
+    })
+  },
   getListDocument(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-sent/EventId=${data}`), context)
@@ -121,6 +130,16 @@ export const actions = {
   getReceiptDetail(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-detail/ReceiptId=${data}`), context)
+    })
+  },
+  getListReceiptWaiting(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt/receiptSent-waiting/EventId=${data}`), context)
+    })
+  },
+  acceptReceipt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('receipt/receipt-approve', data), context)
     })
   },
   // yeu cau tra tien
@@ -138,6 +157,21 @@ export const actions = {
   removeMember(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/member/remove-member', data), context)
+    })
+  },
+  promoteMember(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/member/promote', data), context)
+    })
+  },
+  removeRoleMember(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/member/delete-promote', data), context)
+    })
+  },
+  uploadReceipt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/image/receipt', data), context)
     })
   }
 }

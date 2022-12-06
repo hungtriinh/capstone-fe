@@ -4,6 +4,7 @@ export const INDEX_SET_ERROR = 'setNotifyError'
 export const INDEX_SET_WARNING = 'setNotifyWarning'
 export const INDEX_SET_LOADING = 'setLoading'
 export const INDEX_SET_LIST_FRIEND = 'setListFriends'
+export const INDEX_SET_ROLE_MEMBER = 'setRoleMember'
 export const MASTER_GET_DATA = 'getMasterData'
 export const UPLOAD_FILE = 'uploadFile'
 export const SET_EMAIL = 'setEmail'
@@ -36,6 +37,8 @@ export const GET_RECEIPT_LIST = 'getReceiptList'
 export const GET_MEMBER_LIST = 'getMemberList'
 export const CREATE_RECEIPT = 'createReceipt'
 export const RECEIPT_DETAIL = 'getReceiptDetail'
+export const RECEIPT_ACCEPT = 'acceptReceipt'
+export const RECEIPT_WAITING = 'getListReceiptWaiting'
 
 // debt
 export const GET_DEBT_LIST = 'getDebtList'
@@ -51,10 +54,15 @@ export const REQUEST_APPROVE = 'approveRequest'
 export const GET_LIST_DOCUMENT = 'getListDocument'
 
 // event
+export const GET_SHARE_LINK = 'getShareLink'
 export const EVENT_CLOSE = 'closeEvent'
 export const EVENT_EDIT = 'editEvent'
 
 // member
 export const MEMBER_GET_ALL = 'getAllMember'
 export const MEMBER_REMOVE = 'removeMember'
+export const MEMBER_PROMOTE = 'promoteMember'
+export const MEMBER_ROLE_REMOVE = 'removeRoleMember'
 
+// up anh
+export const IMAGE_UPLOAD_RECEIPT = 'uploadReceipt'

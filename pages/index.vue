@@ -9,12 +9,13 @@
             prefix-icon="el-icon-search">
           </el-input>
         </div>
-        <div v-for="(item,key) in listEvent" :key="key" class="event">
+
+        <el-card v-for="(item,key) in listEvent" :key="key"  :body-style="{ padding: '10px' }" class="card-item mb-10 event" >
           <div class="event-item">
             <el-timeline>
               <div class="event-title d-flex justify-between items-center cursor-pointer"  @click="handleRouter('event/detail/' + item.eventId)">
                 <div class="d-flex items-center event-name">
-                  <el-badge :value="12" class="item" type="primary">
+                  <el-badge is-dot class="event-status item" :type="item.evenStatus === 0 ?  '' : 'success'">
                     <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
                   </el-badge>
                   <div class="event-content">
@@ -22,26 +23,27 @@
                   </div>
                 </div>
                 <div class="d-flex items-center ">
-                  <span class="text-bold" :class="item.totalMoney >= 0 ? 'text-green' : 'text-red'">{{item.totalMoney}}</span>
+                  <span class="text-bold" :class="item.totalMoney.amount >= 0 ? 'text-green' : 'text-red'">{{item.totalMoney.amountFormat}}</span>
                   <i class="el-icon event-navi el-icon-arrow-right"></i>
                 </div>
               </div>
-              <el-timeline-item v-for="(user, key) in item.listUser" :key="key" placement="top">
+              <el-timeline-item placement="top" v-if="item.debt.totalPeople !== 0">
                 <el-card>
-                  <span class="text-normal-sm">{{ user.userName }}</span>
-                  <span class="text-normal-sm">{{ $t('event.owe_you')}} </span><span :class="user.money >= 0 ? 'text-green' : 'text-red'">{{user.money}}</span>
-                  <span class="text-normal-sm">{{ $t('currency.currency')}} </span>
+                  <span class="text-normal-sm">Bạn nợ {{ item.debt.totalPeople }} người khác</span>
+                  <span class="text-red"> {{ item.debt.money.amountFormat }}</span>
                 </el-card>
               </el-timeline-item>
-              <el-divider class="divider"></el-divider>
+              <el-timeline-item placement="top" v-if="item.receive.totalPeople !== 0">
+                <el-card>
+                  <span class="text-normal-sm">{{ item.receive.totalPeople }} người khác nợ bạn </span>
+                  <span class="text-green"> {{ item.receive.money.amountFormat }}</span>
+                </el-card>
+              </el-timeline-item>
             </el-timeline>
             <div>
-<!--              <img class="status-img" src="~/assets/images/icons/circle-red.svg" alt="status">-->
-<!--              <img src="~/assets/images/icons/dots.svg" alt="status">-->
             </div>
           </div>
-        </div>
-        <!--        <navigation/>-->
+        </el-card>
       </div>
     </div>
   </div>

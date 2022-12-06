@@ -2,7 +2,7 @@
   <div class="main-login">
     <div class="login login-width login-mobile">
       <h3 class="title text-center">{{ $t('home.qr') }}</h3>
-      <QrCodeCommon class="text-center" :value="value"/>
+      <QrCodeCommon class="d-flex justify-center" :value="value"/>
       <div class="text-center qr-share">
         <span class="text-bold">{{ $t('qr.share') }}</span>
         <br>

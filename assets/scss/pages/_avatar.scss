@@ -22,9 +22,10 @@
     line-height: 13px;
   }
   .show-avatar {
+    max-width: max-content;
+
     .show-detail {
       position: relative;
-      display: flex;
       .image-close {
         position: absolute;
         top: 6px;
