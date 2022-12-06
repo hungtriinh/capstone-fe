@@ -377,7 +377,7 @@ button {
   font-size: 0.875rem;
   padding: 0.5rem 0.625rem;
   border-radius: 4px;
-  background-color: transparent;
+  // background-color: transparent;
   cursor: pointer;
   font-weight: 500;
   outline: none;
@@ -1119,10 +1119,10 @@ button {
   width: unset;
 }
 
-.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
-  background-color: #275589;
-  color: #66b1ff;
-}
+// .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+//   background-color: #275589;
+//   color: #66b1ff;
+// }
 
 // .button {
 //   background: $color-dark-orange !important;
