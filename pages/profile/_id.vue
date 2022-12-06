@@ -16,7 +16,7 @@
     <div class="d-flex justify-center mt-[40px]">
       <div>
         <div class="my-[8px]">
-          <Card :title="$t('profile.change_infor')">
+          <Card :text-color="'white'" :title="$t('profile.change_infor')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/lock.svg" alt="" />
@@ -30,7 +30,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :title="$t('profile.faqs')">
+          <Card :text-color="'white'" :title="$t('profile.faqs')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/bell.svg" alt="" />
@@ -44,7 +44,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :title="$t('profile.change_password')">
+          <Card :text-color="'white'" :title="$t('profile.change_password')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/lock.svg" alt="" />
@@ -58,7 +58,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :title="$t('profile.request_join_group')">
+          <Card :text-color="'white'" :title="$t('profile.request_join_group')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/credit-card.svg" alt="" />
@@ -72,7 +72,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :title="$t('profile.invitation_join_group')">
+          <Card :text-color="'white'" :title="$t('profile.invitation_join_group')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/credit-card.svg" alt="" />

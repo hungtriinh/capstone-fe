@@ -187,5 +187,20 @@
     "change_password" : "Đổi mật khẩu",
     "request_join_group" : "Yêu cầu gia nhập nhóm",
     "invitation_join_group" : "Lời mời tham gia nhóm"
+  },
+  "friends" : {
+    "remove_friend": "Xóa Bạn Bè",
+    "friends_list" : "Danh sách bạn bè",
+    "friends_request" : "Lời mời kết bạn",
+    "add" : "Kết Bạn"
+  },
+  "activities" : {
+    "activities_history" : "Lịch sử Hoạt động",
+    "group" : "Nhóm"
+  },
+  "group" : {
+    "approved" : "Đồng Ý",
+    "pending" : "Đang Chờ",
+    "rejected" : "Từ Chối"
   }
 }

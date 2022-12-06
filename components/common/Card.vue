@@ -2,7 +2,7 @@
   <div class="d-flex cursor-pointer custom-card text-base p-[15px] bg-[#B6B6B6] text-[#1A051D] rounded-lg items-center justify-between" @click="$emit('click')">
     <div class="d-flex items-center">
       <slot name="prefix"></slot>
-      <span class="ml-[10px] font-semibold text-white">{{ title }}</span>
+      <span class="ml-[10px] font-semibold " :class="{'text-[#1A051D]' : textColor === 'black', 'text-white' : textColor === 'via-white'}">{{ title }}</span>
     </div>
     <div>
       <slot name="postfix"></slot>
@@ -18,6 +18,10 @@ export default {
     title: {
       type: String,
       default: () => ('')
+    },
+    textColor: {
+      type: String,
+      default: () => ('black')
     }
   }
 }
