@@ -71,4 +71,15 @@
       margin-top: 30px;
     }
   }
+
+  .cb-group-hide-label {
+    .cb-hide-label {
+      .el-checkbox__label {
+        display: none;
+      }
+    }
+    .card-item {
+      width: 100%;
+    }
+  }
 }

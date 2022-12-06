@@ -1,4 +1,7 @@
 .main-login {
+  .chart-title {
+    gap: 20px
+  }
   .main-content {
     margin-top: 40px;
   }
@@ -9,7 +12,7 @@
     .event-item {
       //display: grid;
       //grid-template-columns: 20% auto 10%;
-      margin-bottom: 30px;
+      margin-bottom: 5px;
       .event-name {
         gap: 10px;
       }
@@ -26,16 +29,26 @@
       }
       .status-img {
       }
-      .text-green {
-        color: $color-green-1;
-      }
-      .text-red {
-        color: $color-red-1;
-      }
+
       .divider {
         background-color: $border-2;
       }
     }
+  }
+  .text-green {
+    color: $color-green-1;
+  }
+  .text-red {
+    color: $color-red-1;
+  }
+  .text-blue {
+    color: $color-btn-active;
+  }
+  .text-yellow {
+    color: $color-yellow;
+  }
+  .text-orange {
+    color: $color-orange;
   }
   .navigation-bar {
     bottom: 0;
@@ -60,13 +73,26 @@
     border-radius: 10px;
     margin-bottom: 20px;
   }
+  .card-item {
+    border-radius: 20px;
+  }
   .detail {
-    background: $background-primary;
+    width: 110%;
+    margin-left: -5%;
+    background: #F1F1F1;
     border-radius: 10px;
-    padding: 26px 30px;
+    padding: 16px 18px;
     margin-bottom: 20px;
     max-height: 500px;
     overflow: scroll;
+    .card-item {
+      border-radius: 20px;
+    }
+    .el-icon-document {
+      font-size: 25px;
+      color: #3B3A3A;
+    }
+
 
     .item-detail {
       background: $color-white;
@@ -75,10 +101,17 @@
       padding: 10px;
     }
   }
+  .detail::-webkit-scrollbar {
+    display: none;
+  }
 .btn-group {
   margin-top: 30px;
 }
-
+.event-status {
+  .el-badge__content.is-fixed {
+    top: 25px;
+  }
+}
 }
 
 .setting-page {

@@ -2,19 +2,23 @@
   <div class="main-login list-receipt-page">
     <div>
       <div class="login login-width login-mobile">
-        <el-page-header content="Danh sách chứng từ" @back="goBack">
+        <el-page-header content="Chứng từ chờ tuyệt" @back="goBack">
         </el-page-header>
         <el-empty v-if="!listEvent.length" description="Không có chứng từ nào"></el-empty>
         <div v-else>
           <div class="main-content">
-            <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '10px' }" class="card-item">
-              <div class="d-flex justify-between">
+            <el-checkbox-group v-model="listChecked" class="checkbox-group cb-group-hide-label" @change="handleCheckedCitiesChange">
+
+              <div v-for="(item, key) in listEvent" :key="key" class="d-flex items-center gap-5">
+                <el-checkbox class="cb-hide-label" :label="item.receiptId" :value="item.receiptId"></el-checkbox>
+                <el-card :body-style="{ padding: '10px' }" class="card-item">
+                <div class="d-flex justify-between">
                 <div class="list-image d-flex gap-10">
                   <el-image v-show="!item.imageLinks.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
                   <el-image v-for="(img, key) in item.imageLinks" :key="key" :src="img" :preview-src-list="item.imageLinks" class="image"/>
                 </div>
-<!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
-                  <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>
+                <!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
+                <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>
               </div>
               <div class="">
                 <div class="flex-between">
@@ -27,7 +31,7 @@
                   <div>
                     <time class="time">{{ item.date }}</time>
                     <br>
-<!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
+                    <!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
                     <div><span class="text-bold">{{ item.receiptName }}</span></div>
 
                   </div>
@@ -38,6 +42,13 @@
                 </div>
               </div>
             </el-card>
+              </div>
+            </el-checkbox-group>
+            <el-checkbox class="check-all" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
+            <div class="btn-group justify-center d-flex items-center">
+              <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(3)">Từ chối</el-button>
+              <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(2)">Đồng ý</el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -78,8 +89,8 @@
 </template>
 <script>
 import {
-  REQUEST_APPROVE,
-  GET_LIST_DOCUMENT,
+  RECEIPT_ACCEPT,
+  RECEIPT_WAITING,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   RECEIPT_DETAIL
@@ -96,7 +107,11 @@ export default {
       id: this.$route.params.id,
       search: '',
       listEvent: [],
+      listRequestId: [],
       ListId: [],
+      listChecked: [],
+      checkAll: false,
+      isIndeterminate: true,
       receiptDetail: {},
       user: {},
       dialogVisible: false
@@ -118,10 +133,13 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_LIST_DOCUMENT, this.id)
+        const response = await this.$store.dispatch(RECEIPT_WAITING, this.id)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data
+          this.listEvent.forEach((element) => {
+            this.listRequestId.push(element.receiptId)
+          })
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
@@ -133,30 +151,29 @@ export default {
     },
     handleCheckedCitiesChange(value) {
       const checkedCount = value.length
-      this.checkAll = checkedCount === this.listFriend.length
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listFriend.length
+      this.checkAll = checkedCount === this.listEvent.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listEvent.length
     },
     handleCheckAllChange(val) {
-      this.checkedFriends = val ? this.listId : []
+      this.listChecked = val ? this.listRequestId : []
       this.isIndeterminate = false
     },
     goBack() {
       this.handleRouter('/event/setting/' + this.id)
     },
-    async eventAppove(id, status) {
+    async eventAppoveSelect(status) {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        this.ListId.push(id)
-        const response = await this.$store.dispatch(REQUEST_APPROVE, {
-          ListId: this.ListId,
+        const response = await this.$store.dispatch(RECEIPT_ACCEPT, {
+          ListId: this.listChecked,
           status
         })
-        const { data, statusCode } = response
-        if (statusCode === 202) {
+        if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,
-            text: data.message
+            text: response.message
           })
+          this.getListEvent()
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
@@ -171,8 +188,6 @@ export default {
           this.receiptDetail = response.data
           this.user = response.data.user
         }
-        console.log(this.receiptDetail)
-        console.log(this.user)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
@@ -181,6 +196,20 @@ export default {
     async openDetailDialog(id) {
       await this.getReceiptDetail(id)
       this.dialogVisible = true
+    },
+    openConfirmDialog(status, id) {
+      this.$confirm('Bạn có chắc chắn thực hiện thao tác này?', 'Xác nhận', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.eventAppoveSelect(status)
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: 'Delete canceled'
+        // })
+      })
     }
   }
 }

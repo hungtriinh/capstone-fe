@@ -2,8 +2,11 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center">{{ $t('home.add_receipt') }}</h3>
-        <el-form
+        <el-page-header :content="$t('home.add_receipt')" @back="handleRouter('/event/detail/' + id)">
+        </el-page-header>
+        <div class="main-content">
+
+          <el-form
           ref="accountForm"
           :model="accountForm"
           :rules="accountRules"
@@ -43,7 +46,7 @@
           <div class="d-flex align-items-center forgot-pass">
             <div
               class="content cursor-pointer login-page__forgot-password align-items-center">
-              <el-button class="" @click="showAddMemberModal">{{ $t('receipt.add_member') }}</el-button>
+              <el-button type="primary" class="" @click="showAddMemberModal">{{ $t('receipt.add_member') }}</el-button>
             </div>
           </div>
           <div class="radio-check">
@@ -52,7 +55,8 @@
           </div>
           <div >
             <div v-for="(item, key) in chooseMember" :key="key" class="checkbox-item">
-              <img class="avatar" src="@/assets/images/event.png" alt="">
+              <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+
               <div>
                 <span class="text-bold">{{ item.userName }}</span><br>
               </div>
@@ -60,7 +64,7 @@
                 v-if="type === '2'"
                 id="debit"
                 ref="debit"
-                v-model.trim="item.debit"
+                v-model.trim="item.debt"
                 autocomplete="off"
                 name="debit"
                 type="text"
@@ -80,17 +84,18 @@
               ></el-input>
             </div>
           </div>
-          <div class="content-input image-avatar" ref="imageAvatar">
-            <el-form-item label="" prop="imageAvatar" :error="(error.key === 'imageAvatar') ? error.value : ''">
-              <div class="d-flex show-avatar">
-                <div class="show-detail">
-                  <img id="img-avatar" class="show-image" :src="imageAvatarShow ? imageAvatarShow : '/assets/icon/icon_user_default.svg'" alt="">
-                  <img v-if="imageAvatarShow" class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeAvatar">
+          <div ref="imageAvatar" class="content-input image-avatar">
+            <el-form-item ref="imageDetail" label="" prop="imageDetail" :error="(error.key === 'image') ? error.value : ''">
+              <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" multiple accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
+              <img v-if="!imageDetailShow.length" src="/assets/icon/icon_user_default.svg" alt="">
+              <div v-if="imageDetailShow.length" class="d-flex show-avatar">
+                <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
+                  <img id="img-intro" class="show-image" :src="detail ? detail : '/assets/icon/icon_user_default.svg'" alt="">
+                  <img class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeImage(index)">
                 </div>
-                <input id="upload-avatar" ref="fileUploadAvatar" class="d-none" type="file" @change="onFileChange" accept=".jpeg, .jpg, .png, .svg">
-                <div class="button-upload">
-                  <button type="button"><label for="upload-avatar">{{ $t('event.upload_image') }}</label></button>
-                </div>
+              </div>
+              <div class="button-upload">
+                <button type="button"><label for="upload-detail">Up ảnh</label></button>
               </div>
             </el-form-item>
           </div>
@@ -98,6 +103,7 @@
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
+                type="primary"
                 :loading="loading"
                 @click.native="create"
               >
@@ -106,6 +112,7 @@
             </div>
           </el-form-item>
         </el-form>
+        </div>
       </div>
     </div>
     <AddMemberModal
@@ -123,20 +130,33 @@ import {
   CREATE_RECEIPT,
   GET_MEMBER_LIST,
   INDEX_SET_ERROR,
-  INDEX_SET_LOADING, INDEX_SET_SUCCESS
+  INDEX_SET_LOADING, INDEX_SET_SUCCESS,
+  IMAGE_UPLOAD_RECEIPT
 } from '~/store/store.const'
 
 export default {
   name: 'CreateReceiptPage',
   data() {
+    const validArray = (rule, value, callback) => {
+      if (!value) {
+        console.log('ádf')
+        callback(new Error('Người tham gia không được để trống'))
+      } else {
+        console.log('ádf')
+
+        callback()
+      }
+    }
     return {
-      imageAvatarShow: '',
+      id: this.$route.params.id,
+      imageDetailShow: [],
       token: '',
       user: {},
       type: '1',
       amount: '',
       chooseMember: [],
       accountForm: {
+        imageDetail: [],
         avatar: '',
         receiptName: '',
         receiptAmount: '',
@@ -161,6 +181,9 @@ export default {
             message: this.$t('validation.required', { _field_: this.$t('receipt.amount') }),
             trigger: 'blur'
           }
+        ],
+        imageDetail: [
+          { validator: validArray, trigger: 'blur' }
         ]
       },
       valid: false,
@@ -196,17 +219,25 @@ export default {
     this.getListFriend()
   },
   methods: {
+    handleRouter(router) {
+      this.$router.push(router)
+    },
     removeAvatar() {
       this.imageAvatarShow = ''
       this.accountForm.avatar = ''
     },
+    removeImage(index) {
+      this.imageDetailShow = this.imageDetailShow.filter(function(item, key) {
+        return key !== index
+      })
+    },
     checkFile(file) {
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.svg)$/i
-      if (file.size >= 20000000) {
-        return this.$t('validation.err003')
+      const allowedExtensions = /(\.heic|\.jpg|\.jpeg|\.png|\.svg)$/i
+      if (file.size >= 5000000) {
+        return 'Kích cỡ ảnh quá nặng'
       }
       if (!['image/jpeg', 'image/png', 'image/jpg', 'image/svg'].includes(file.type) && !allowedExtensions.exec(file.name)) {
-        return this.$t('validation.err005')
+        return 'Ảnh sai định dạng'
       }
       return ''
     },
@@ -222,6 +253,53 @@ export default {
       }
       this.$refs.fileUploadAvatar.value = null
     },
+    async onFileChangeDetail(e) {
+      for (let x = 0; x < e.target.files.length; x++) {
+        const valid = this.checkFile(e.target.files[x])
+        if (valid) {
+          await this.$store.commit(INDEX_SET_ERROR, { show: true, text: valid })
+          return
+        }
+      }
+      await this.$store.commit(INDEX_SET_LOADING, true)
+      for (let x = 0; x < e.target.files.length; x++) {
+        const formData = new FormData()
+        formData.append('imgfile', e.target.files[x])
+        try {
+          const data = await this.$store.dispatch(IMAGE_UPLOAD_RECEIPT, formData)
+          switch (data.statusCode) {
+            case 202:
+              if (this.imageDetailShow.length < 3) {
+                this.imageDetailShow.push(data.data)
+              }
+              if (this.imageDetailShow.length >= 3) {
+                this.$refs.fileUploadDetail.value = null
+                return
+              }
+              break
+            case 500:
+              await this.$store.commit(INDEX_SET_ERROR, {
+                show: true,
+                text: data.error
+              })
+              break
+            default:
+              await this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.messages })
+              break
+          }
+        } catch (err) {
+          this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: this.$t('message.message_error') })
+        }
+        await this.$store.commit(INDEX_SET_LOADING, false)
+
+        if (this.imageDetailShow.length > 3) {
+          this.imageDetailShow.splice(3, this.imageDetailShow.length - 3)
+        }
+      }
+      this.$refs.fileUploadDetail.value = null
+      await this.$store.commit(INDEX_SET_LOADING, false)
+    },
+
     async upLoadFile(type) {
       // const formData = new FormData()
       // formData.append('image', this.file)
@@ -257,20 +335,33 @@ export default {
     },
     async create() {
       // this.error = { key: null, value: '' }
-      // this.validateForm()
-      // if (!this.isValid) {
-      //   return
-      // }
+      this.validateForm()
+      if (!this.isValid) {
+        return
+      }
+      if (!this.chooseMember.length) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa chọn người tham gia' })
+        // this.$message({
+        //   type: 'warning',
+        //   message: 'Bạn chưa chọn người tham gia'
+        // })
+        return
+      }
+      if (!this.imageDetailShow.length) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa up ảnh chứng từ' })
+        return
+      }
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
         const dto = this.accountForm
         dto.eventLogo = ''
         dto.MemberIds = this.listFriends
-        dto.eventId = this.$route.params.id
+        dto.eventId = this.id
         dto.userDepts = JSON.parse(JSON.stringify(this.chooseMember))
+        dto.imglinks = this.imageDetailShow
         if (this.type === '1') {
           dto.userDepts.forEach((element) => {
-            element.debit = this.accountForm.receiptAmount ? this.accountForm.receiptAmount / this.chooseMember.length : ''
+            element.debt = this.accountForm.receiptAmount ? this.accountForm.receiptAmount / this.chooseMember.length : ''
           })
         }
         const data = await this.$store.dispatch(CREATE_RECEIPT, dto)

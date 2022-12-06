@@ -377,7 +377,7 @@ button {
   font-size: 0.875rem;
   padding: 0.5rem 0.625rem;
   border-radius: 4px;
-  // background-color: transparent;
+  //background-color: transparent;
   cursor: pointer;
   font-weight: 500;
   outline: none;
@@ -1056,7 +1056,7 @@ button {
     //color: $color-white;
 
     &.el-button--primary {
-      //background: $color-orange;
+      //background: $color-btn-active;
       //color: white;
     }
 
@@ -1066,7 +1066,28 @@ button {
     }
   }
 }
+.el-button--primary {
+  font-weight: 600;
+  background: $color-btn-active;
+  border-radius: 20px;
+}
 
+.el-button--primary:hover {
+  background-color: $color-hover;
+}
+
+.el-button--default {
+  font-weight: 600;
+  border-radius: 20px;
+  border: 1px solid $color-btn-active;
+}
+.el-button--danger {
+  background-color: $color-red-1;
+}
+
+.el-button--success {
+  background-color: $color-green-1;
+}
 .el-button, .el-button:focus {
   //background: $color-btn-active;
   //border: 1px solid $color-btn-active;
@@ -1119,10 +1140,10 @@ button {
   width: unset;
 }
 
-// .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
-//   background-color: #275589;
-//   color: #66b1ff;
-// }
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #275589;
+  color: #66b1ff;
+}
 
 // .button {
 //   background: $color-dark-orange !important;
@@ -1203,67 +1224,66 @@ button {
 
 .navigation-bar {
   bottom: 0;
-  width: 450px;
-  position: fixed;
+  width: 100%;
+  position: relative;
   margin-top: 100px;
   .navigation {
     display: grid;
     grid-template-columns: auto auto auto auto 15%;
-    justify-items: center;
     width: 100%;
   }
 }
 
 // Confirm modal
 
-.modal-backdrop {
-  z-index: 999;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .confirm-modal {
-    padding: 32px;
-    width: 570px;
-    background: $color-white;
-
-    .title {
-      font-size: 20px;
-      line-height: 28px;
-      font-weight: 700;
-      margin: 8px 0 24px;
-    }
-    .btn-group {
-      gap: 14px;
-      .button {
-        width: 128px;
-      }
-    }
-    .checkbox-group {
-      margin: 10px 0;
-      .checkbox-item {
-        display: grid;
-        grid-template-columns: 10% 20% auto;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      .avatar {
-        vertical-align: middle;
-      }
-
-      .el-checkbox__label {
-        display: none;
-      }
-    }
-
-  }
-}
+//.modal-backdrop {
+//  z-index: 999;
+//  position: fixed;
+//  top: 0;
+//  bottom: 0;
+//  left: 0;
+//  right: 0;
+//  background-color: rgba(0, 0, 0, 0.3);
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//
+//  .confirm-modal {
+//    padding: 32px;
+//    width: 570px;
+//    background: $color-white;
+//
+//    .title {
+//      font-size: 20px;
+//      line-height: 28px;
+//      font-weight: 700;
+//      margin: 8px 0 24px;
+//    }
+//    .btn-group {
+//      gap: 14px;
+//      .button {
+//        width: 128px;
+//      }
+//    }
+//    .checkbox-group {
+//      margin: 10px 0;
+//      .checkbox-item {
+//        display: grid;
+//        grid-template-columns: 10% 20% auto;
+//        align-items: center;
+//        margin-bottom: 10px;
+//      }
+//      .avatar {
+//        vertical-align: middle;
+//      }
+//
+//      .el-checkbox__label {
+//        display: none;
+//      }
+//    }
+//
+//  }
+//}
 
 .animated {
   -webkit-animation-duration: 1s;
@@ -4248,6 +4268,11 @@ button {
   font-size: 10px;
 }
 
+.el-badge__content.is-dot {
+  height: 10px;
+  width: 10px;
+}
+
 .el-card.is-always-shadow {
   border-radius: 10px;
 }
@@ -4269,6 +4294,7 @@ button {
   cursor: pointer;
   font-size: 20px;
   font-weight: 500;
+  color: $btn-primary;
 }
 .el-icon:hover {
   color: $color-hover;
@@ -4308,37 +4334,3 @@ button {
 .el-image-viewer__img {
   width: 300px;
 }
-
-// LAYOUT // 
-.menu-icon {
-  cursor: pointer;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.menu-icon {
-  path, p {
-    stroke: #6B6969;
-    color: #6B6969;
-    stroke-width: 1.5;
-    transition: 0.2s all;
-  }
-}
-
-.menu-icon:hover {
-  path, p {
-    color: #28A8D7;
-    stroke: rgba(40, 168, 215, 0.7);
-  }
-}
-
-.menu-icon.is-selected {
-  path, p {
-    color: #28A8D7;
-    stroke: #28A8D7 !important;
-  }
-}
-
-
-//END LAYOUT//

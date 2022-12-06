@@ -123,7 +123,7 @@ export default {
       user: {},
       accountForm: {
         phone: '0955419015',
-        password: 'quangduy12',
+        password: '1',
         remember: '',
         errors: {}
       },

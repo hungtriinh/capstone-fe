@@ -8,7 +8,7 @@
         <el-empty v-if="!listEvent.length" description="Không có dữ liệu"></el-empty>
         <div v-else>
           <div class="main-content">
-            <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '10px' }" class="card-item">
+            <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '10px' }" class="card-item">
               <div class="d-flex justify-between">
                 <div class="list-image d-flex gap-10">
                   <img v-for="(img, key) in item.image" :key="key" :src="img" class="image">

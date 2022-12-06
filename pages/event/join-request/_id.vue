@@ -15,7 +15,7 @@
           <div class="main-content">
             <el-checkbox-group v-model="listChecked" class="checkbox-group" @change="handleCheckedCitiesChange">
 
-              <el-card v-for="(item, key) in listEvent" :key="key" shadow="hover" :body-style="{ padding: '2px 10px' }" class="card-item">
+              <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '2px 10px' }" class="card-item">
                 <div class="card-box">
                   <el-checkbox class="cb-hide-label" :label="item.requestId" :value="item.requestId"></el-checkbox>
                   <div style="padding-bottom: 12px;">
@@ -61,7 +61,7 @@ export default {
     return {
       id: this.$route.params.id,
       search: '',
-      listEvent: {},
+      listEvent: [],
       listChecked: [],
       checkAll: false,
       isIndeterminate: true,

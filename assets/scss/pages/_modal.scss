@@ -1,0 +1,50 @@
+.modal-backdrop {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .confirm-modal {
+    border-radius: 10px;
+    padding: 32px;
+    width: 570px;
+    background: $color-white;
+
+    .title {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 700;
+      margin: 8px 0 24px;
+    }
+    .btn-group {
+      gap: 14px;
+      .button {
+        width: 128px;
+      }
+    }
+    .checkbox-group {
+      margin: 10px 0;
+      .checkbox-item {
+        display: flex;
+        //grid-template-columns: 10% 20% auto;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 10px;
+      }
+      .avatar {
+        vertical-align: middle;
+      }
+
+      .el-checkbox__label {
+        display: none;
+      }
+    }
+
+  }
+}
