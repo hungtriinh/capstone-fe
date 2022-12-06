@@ -173,5 +173,19 @@
     "share" : "Chia sẻ mã QR để người khác",
     "share2" : "tham gia sự kiện",
     "url" : "Đường dẫn"
+  },
+  "navigation" : {
+    "event" : "Sự kiện",
+    "friends" : "Bạn bè",
+    "create_event" : "Tạo Sự kiện",
+    "activities" : "Hoạt động",
+    "personal" : "Cá nhân"
+  },
+  "profile" : {
+    "change_infor" : "Chỉnh sửa thông tin",
+    "faqs" : "FAQs",
+    "change_password" : "Đổi mật khẩu",
+    "request_join_group" : "Yêu cầu gia nhập nhóm",
+    "invitation_join_group" : "Lời mời tham gia nhóm"
   }
 }

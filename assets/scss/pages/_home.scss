@@ -39,12 +39,13 @@
   }
   .navigation-bar {
     bottom: 0;
-    width: 100%;
-    position: relative;
+    width: 450px;
+    position: fixed;
     margin-top: 100px;
     .navigation {
       display: grid;
       grid-template-columns: auto auto auto auto 15%;
+      justify-items: center;
       width: 100%;
     }
   }
