@@ -8,7 +8,7 @@
       </template>
       <template #postfix>
         <div>
-          <el-button type="success" class="bg-[#67C23A]" icon="el-icon-edit" circle @click="$emit('accept', infor)"></el-button>
+          <el-button type="success" class="bg-[#67C23A]" icon="el-icon-check" circle @click="$emit('accept', infor)"></el-button>
           <el-button type="danger" class="bg-[#F56C6C]" icon="el-icon-delete" circle @click="$emit('reject', infor)"></el-button>
         </div>
       </template>
