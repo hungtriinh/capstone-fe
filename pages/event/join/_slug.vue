@@ -117,105 +117,25 @@
       </div>
     </div>
     <el-dialog class="receipt-detail-dialog" :title="receiptDetail.receiptName" :visible.sync="dialogVisible">
-      <el-dialog
-        class="inner-dialog"
-        width="60%"
-        title="Report"
-        :visible.sync="innerVisible"
-        append-to-body>
-        <el-input
-          :autosize="{ minRows: 5, maxRows: 10}"
-          type="textarea" v-model="reportContent" placeholder="Nội dung report">
-        </el-input>
-        <el-button class="text-center mt-10 mb-10" @click="createReport(receiptId)" type="primary">Gửi</el-button>
-      </el-dialog>
-      <div class="d-flex justify-between">
-        <span class="time">{{ receiptDetail.date }}</span>
-        <el-tooltip effect="dark" content="Báo cáo chứng từ">
-          <i @click="innerVisible = true" style="font-size: 20px" class="el-icon el-icon-s-flag"></i>
-        </el-tooltip>
+      <div class="text-bold">Bạn có muốn tham gia event không?</div>
+      <div style="padding-bottom: 30px" class="btn-group text-center">
+        <el-button @click="handleRouter('/')">Từ chối</el-button>
+        <el-button @click="joinRequest" type="primary" >Đồng ý</el-button>
       </div>
-      <div class="event-item">
-        <el-timeline class="receipt-detail-card">
-          <div class="event-title d-flex justify-between items-center cursor-pointer">
-            <div class="d-flex gap-5 items-center event-name">
-              <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
-              <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
-              </div>
-            </div>
-            <div class="d-flex items-center ">
-              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
-            </div>
-          </div>
-          <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
-            <el-card>
-              <div class="d-flex justify-between">
-                <span class="text-normal-sm">{{ user.name }}</span>
-                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
-              </div>
-            </el-card>
-          </el-timeline-item>
-          <el-divider class="divider"></el-divider>
-        </el-timeline>
-        <div>
-          <div class="list-image d-flex gap-10 pb-10 flex-wrap">
-            <el-image v-show="receiptDetail.imgLink && !receiptDetail.imgLink.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
-            <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image"/>
-          </div>
-        </div>
-      </div>
-
     </el-dialog>
-<!--    <el-dialog class="receipt-detail-dialog" :title="detailDebt.receiptName" :visible.sync="debtVisible">-->
-<!--      <span class="time">{{ detailDebt.date }}</span>-->
-<!--      <div class="event-item">-->
-<!--        <el-timeline class="receipt-detail-card">-->
-<!--          <div class="event-title d-flex justify-between items-center cursor-pointer">-->
-<!--            <div class="d-flex gap-5 items-center event-name">-->
-<!--              <ShowAvatarElement :event="{ name: detailDebt.name, color: detailDebt.color }"></ShowAvatarElement>-->
-<!--              <div class="event-content">-->
-<!--                <h4 class="title text-bold">{{ detailDebt.name }}</h4>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="d-flex items-center ">-->
-<!--              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">-->
-<!--            <el-card>-->
-<!--              <div class="d-flex justify-between">-->
-<!--                <span class="text-normal-sm">{{ user.name }}</span>-->
-<!--                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>-->
-<!--              </div>-->
-<!--            </el-card>-->
-<!--          </el-timeline-item>-->
-<!--          <el-divider class="divider"></el-divider>-->
-<!--        </el-timeline>-->
-<!--        <div>-->
-<!--          <div class="list-image d-flex gap-10 pb-10">-->
-<!--            <el-image v-show="receiptDetail.imgLink && !receiptDetail.imgLink.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>-->
-<!--            <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image"/>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--    </el-dialog>-->
   </div>
 </template>
 <script>
-// import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
-// import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
-// import { validPhoneNoPrefix } from '@/utils/validate'
 import Chart from 'chart.js/auto'
 import {
-  GET_RECEIPT_LIST,
+  EVENT_CHECK_JOIN,
   INDEX_SET_LOADING,
   GET_SHARE_LINK,
   RECEIPT_DETAIL,
   DEBT_GET_DETAIL,
   REPORT_CREATE,
-  INDEX_SET_ERROR, INDEX_SET_SUCCESS
+  INDEX_SET_ERROR, INDEX_SET_SUCCESS,
+  EVENT_JOIN_REQUEST
 } from '~/store/store.const'
 
 export default {
@@ -242,7 +162,7 @@ export default {
     }
   },
   async created() {
-    // await this.getListEvent()
+    await this.getListEvent()
   },
   async mounted() {
     await this.getListEvent()
@@ -270,16 +190,44 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_RECEIPT_LIST, this.$route.params.id)
-        const { data, statusCode } = response
-        if (statusCode === 202) {
-          this.listReceipt = data
-          this.list = data.listReceipt
-          this.receiveOrPaidAmount = data.receiveOrPaidAmount
-          this.percent = data.totalAmount ? Math.floor(data.userAmount / data.totalAmount * 100) : 0
+        const response = await this.$store.dispatch(EVENT_CHECK_JOIN, this.$route.query.eventId)
+        if (response.statusCode === 202) {
+          this.$router.push('/event/detail/' + this.$route.query.eventId)
+        } else if (response.statusCode === 406) {
+          this.dialogVisible = true
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async joinRequest() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(EVENT_JOIN_REQUEST, this.$route.query.eventId)
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.data
+          })
+          this.$router.push('/')
+        } else if (response.statusCode === 400) {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: 'Nhóm không tồn tại'
+          })
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: 'Có lỗi xảy ra'
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Nhóm không tồn tại'
+        })
       }
       this.$store.commit(INDEX_SET_LOADING, false)
     },

@@ -164,7 +164,9 @@ h5 {
 .d-flex {
   display: flex
 }
-
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .flex-between {
   display: flex;
   align-items: center;
@@ -1083,10 +1085,14 @@ button {
 }
 .el-button--danger {
   background-color: $color-red-1;
+  border-radius: 20px;
+  font-weight: 600;
 }
 
 .el-button--success {
   background-color: $color-green-1;
+  font-weight: 600;
+  border-radius: 20px;
 }
 .el-button, .el-button:focus {
   //background: $color-btn-active;
@@ -1106,7 +1112,7 @@ button {
   background-image: none;
   background-color: $color-btn-disable;
   border-color: $color-btn-disable;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .el-button:active {
@@ -4333,4 +4339,15 @@ button {
 
 .el-image-viewer__img {
   width: 300px;
+}
+
+.is-selected {
+  color: $color-btn-active;
+
+}
+
+.el-page-header__content {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-black;
 }

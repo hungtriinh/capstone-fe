@@ -1,8 +1,14 @@
 .main-login {
-  width: 450px;
+  width: 650px;
   margin: 30px auto;
+  margin-bottom: 100px;
   @media only screen and (max-width: 500px) {
     width: 100%;
+    padding: 0 20px !important;
+  }
+  @media only screen and (min-width: 500px) and (max-width: 540px) {
+    width: 100%;
+    width: 450px;
     padding: 0 20px !important;
   }
 
@@ -69,7 +75,7 @@
   }
 
   .radio-check {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
   }
   .checkbox-item {
     display: grid;
@@ -81,7 +87,6 @@
     display: grid;
     gap: 5px;
     grid-template-columns: 8% 69% 20%;
-    margin-bottom: 20px;
   }
   .qr-share {
     margin-top: 20px;

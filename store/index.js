@@ -148,6 +148,36 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-sent/eventId=${data}`), context)
     })
   },
+  getDebtCode(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('paidDebt/paid-code'), context)
+    })
+  },
+  getDebtDetail(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-detail/PaidId=${data}`), context)
+    })
+  },
+  getAllDebt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`DebtReceiveDetail/getDebt/EventId=${data}`), context)
+    })
+  },
+  getAllReceipt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`DebtReceiveDetail/getReceive/EventId=${data}`), context)
+    })
+  },
+  clickIbutton(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`DebtReceiveDetail/showDetail/ReceipId=${data}`), context)
+    })
+  },
+  clickRemind(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('DebtReceiveDetail/sendSMS', data), context)
+    })
+  },
   // danh sach thanh vien
   getAllMember(context, data) {
     return new Promise((resolve, reject) => {
@@ -172,6 +202,51 @@ export const actions = {
   uploadReceipt(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/image/receipt', data), context)
+    })
+  },
+  uploadDebt(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/image/paiddept', data), context)
+    })
+  },
+  getListReport(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`report?eventid=${data}`), context)
+    })
+  },
+  approveReport(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('report/respone-report', data), context)
+    })
+  },
+  createReport(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('report', data), context)
+    })
+  },
+  getListReportHistory(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`report/history?eventid=${data}`), context)
+    })
+  },
+  getActivity(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('activity'), context)
+    })
+  },
+  getProfile(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('profile'), context)
+    })
+  },
+  checkJoinEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post(`event/join/eventid=${data}`), context)
+    })
+  },
+  eventRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post(`event/JoinRequest/EventId=${data}`), context)
     })
   }
 }

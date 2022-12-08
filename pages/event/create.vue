@@ -16,7 +16,7 @@
             <el-input
               id="eventName"
               ref="eventName"
-              v-model.trim="accountForm.eventName"
+              v-model="accountForm.eventName"
               :placeholder="$t('event.eventName')"
               autocomplete="off"
               name="eventName"

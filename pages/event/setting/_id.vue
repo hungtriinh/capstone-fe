@@ -67,7 +67,7 @@
             </div>
           </el-form>
 
-<!--           owner role 1-->
+          <!-- owner role 1-->
           <div v-if="listEvent.Role === 1">
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
@@ -77,6 +77,86 @@
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/join-request/' + id)">
               <span class="text-bold">Yêu cầu tham gia ({{listEvent.JoinRequest}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-waiting/' + id)">
+              <span class="text-bold">Chứng từ chờ duyệt ({{listEvent.ReceiptsSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
+              <span class="text-bold">Danh sách Yêu cầu trả tiền ({{listEvent.PaidDebtRequestSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report/' + id)">
+              <span class="text-bold">Báo cáo chờ duyệt</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
+              <span style="color: #e73434" class="text-bold   ">Đóng event</span>
+              <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+          </div>
+          <!-- role = 2 inspector-->
+          <div v-else-if="listEvent.Role === 2">
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
+              <span class="text-bold">Xem thành viên nhóm ({{listEvent.TotalMembers}} người) </span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-waiting/' + id)">
+              <span class="text-bold">Chứng từ chờ duyệt ({{listEvent.ReceiptsWaiting}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report-history/' + id)">
+              <span class="text-bold">Báo cáo đã gửi</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+              <span style="color: #e73434" class="text-bold">Rời khỏi nhóm</span>
+              <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+          </div>
+          <!-- role = 3 cashier-->
+
+          <div v-else-if="listEvent.Role === 3">
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
+              <span class="text-bold">Xem thành viên nhóm ({{listEvent.TotalMembers}} người) </span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-waiting/' + id)">
+              <span class="text-bold">Chứng từ chờ duyệt ({{listEvent.ReceiptsWaiting}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report-history/' + id)">
+              <span class="text-bold">Báo cáo đã gửi</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+              <span style="color: #e73434" class="text-bold">Rời khỏi nhóm</span>
+              <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+          </div>
+          <!-- role = 0 member-->
+
+          <div v-else>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
+              <span class="text-bold">Xem thành viên nhóm ({{listEvent.TotalMembers}} người) </span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -90,32 +170,8 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between">
-              <span class="text-bold">Quản lý báo cáo</span>
-              <i class="el-icon el-icon-arrow-right "></i>
-            </div>
-            <el-divider class="divider-setting"></el-divider>
-            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
-              <span style="color: #e73434" class="text-bold   ">Đóng event</span>
-              <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
-            </div>
-            <el-divider class="divider-setting"></el-divider>
-          </div>
-<!--          role = 2 inspector-->
-          <div v-else-if="listEvent.Role === 2">
-            <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-member/' + id)">
-              <span class="text-bold">Xem thành viên nhóm ({{listEvent.TotalMembers}} người) </span>
-              <i class="el-icon el-icon-arrow-right "></i>
-            </div>
-            <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-waiting/' + id)">
-              <span class="text-bold">Chứng từ chờ duyệt ({{listEvent.ReceiptsWaiting}})</span>
-              <i class="el-icon el-icon-arrow-right "></i>
-            </div>
-            <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between">
-              <span class="text-bold">Quản lý báo cáo</span>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report-history/' + id)">
+              <span class="text-bold">Báo cáo đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -125,6 +181,7 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
           </div>
+
         </div>
       </div>
     </div>
@@ -139,7 +196,8 @@ import {
   EVENT_CLOSE,
   GET_EVENT_DETAIL,
   INDEX_SET_LOADING,
-  INDEX_SET_SUCCESS
+  INDEX_SET_SUCCESS,
+  INDEX_SET_ERROR
 } from '~/store/store.const'
 
 export default {
@@ -240,9 +298,14 @@ export default {
         if (response.statusCode === 202) {
           this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,
-            text: response.message
+            text: response.data
           })
           this.handleRouter('/')
+        } else {
+          this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.data
+          })
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
@@ -260,7 +323,6 @@ export default {
       if (!this.isValid) {
         return
       }
-      this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const dto = this.accountForm
         dto.EventId = this.id
@@ -277,13 +339,25 @@ export default {
           this.editDes = false
         }
       } catch (e) {
-        this.$store.commit(INDEX_SET_LOADING, false)
       }
-      this.$store.commit(INDEX_SET_LOADING, false)
     },
     validateForm() {
       this.$refs.accountForm.validate(valid => {
         this.isValid = valid
+      })
+    },
+    openConfirmDialog() {
+      this.$confirm('Bạn có muốn đóng event này không?', 'Xác nhận', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.closeEvent()
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: 'Delete canceled'
+        // })
       })
     }
   }

@@ -1,4 +1,40 @@
 .main-login {
+
+  .main-content-event {
+    max-height: 900px;
+    overflow: scroll;
+  }
+  .main-content-event::-webkit-scrollbar {
+    display: none;
+  }
+  .receipt-detail-dialog {
+    .text-green {
+      color: $color-green-1;
+    }
+    .text-red {
+      color: $color-red-1;
+    }
+    .el-dialog {
+      width: 75%;
+      border-radius: 10px;
+    }
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: $color-black;
+    }
+    .receipt-detail-card {
+      margin-top: 30px;
+    }
+  }
+  .el-dialog__wrapper inner-dialog {
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: $color-black;
+    }
+  }
+
   .chart-title {
     gap: 20px
   }
@@ -52,7 +88,7 @@
   }
   .navigation-bar {
     bottom: 0;
-    width: 450px;
+    width: 650px;
     position: fixed;
     margin-top: 100px;
     .navigation {
@@ -83,7 +119,7 @@
     border-radius: 10px;
     padding: 16px 18px;
     margin-bottom: 20px;
-    max-height: 500px;
+    max-height: 745px;
     overflow: scroll;
     .card-item {
       border-radius: 20px;
@@ -167,4 +203,122 @@
 .event-navi {
   font-size: 18px;
   font-weight: 700;
+}
+
+.paid-debt {
+  .el-checkbox__inner {
+    border: 2px solid #DCDFE6;
+  }
+  .mt-30 {
+    margin-top: 30px;
+  }
+  .mt-200 {
+    margin-top: 200px;
+  }
+  .cb-group-hide-label {
+    margin-top: 20px;
+    .cb-hide-label {
+      .el-checkbox__label {
+        display: none;
+      }
+    }
+    .card-item {
+      width: 100%;
+    }
+  }
+  .paid-debt-select {
+    .el-input__inner::placeholder {
+      color: black;
+      font-weight: 700;
+      font-size: 16px;
+      width: 275px;
+    }
+    .el-input--suffix .el-input__inner {
+      padding-right: 45px;
+    }
+  }
+  .pay-method {
+    .total-money {
+      margin-top: 30px;
+    }
+  }
+  .btn-group-step {
+    justify-content: center;
+  }
+  .content-input-debt {
+    margin-left: 20px;
+    padding: 20px 0;
+    .show-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .button-upload {
+      padding: 0;
+      border: none;
+      background: $color-white;
+      margin-left: 14px;
+      position: relative;
+      width: 100%;
+      min-height: 30px;
+      button {
+        padding: 0;
+        border: none;
+        background: $color-white;
+        position: absolute;
+        bottom: 4px;
+        display: inline-block;
+        label {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 22px;
+          padding: 4px 16px;
+          background: $color-white;
+          cursor: pointer;
+          border: 1px solid $border-focus;
+          border-radius: 4px;
+        }
+      }
+    }
+    .first-name {
+      padding-right: 10px;
+    }
+    .last-name {
+      padding-left: 10px;
+    }
+  }
+
+}
+
+.debt-detail {
+  .debt-detail-btn {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid;
+
+  }
+
+  .de-btn {
+    padding: 10px 50px;
+  }
+}
+
+.profile {
+  .show-avatar-element {
+    .show-avatar {
+      height: 80px;
+      width: 80px;
+    }
+  }
+}
+
+.activity-page {
+  .activity {
+    max-height: 1035px;
+    overflow: scroll;
+  }
+  .activity::-webkit-scrollbar {
+    display: none;
+  }
 }

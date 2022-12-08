@@ -1,40 +1,124 @@
 <template>
-  <div class="main-login">
+  <div class="main-login paid-debt">
     <div>
       <div class="login login-width login-mobile">
-        <div class="title-box d-flex">
-          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/')">
-        </div>
-        <div class="total text-bold">
-          <div class="btn-group d-flex justify-center">
-            <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
-          </div>
-          <div class="">
-            <el-checkbox-group v-model="checkedDebt" class="checkbox-group" @change="handleCheckedCitiesChange">
-                <div v-for="(item, key) in listDebt" :key="key">
-                  <div class="checkbox-item-debt">
-                    <el-checkbox :label="item.userDeptId" :value="item.userDeptId" @change="changeCheck(item)"></el-checkbox>
-                    <div>
-                      <span class="text-bold">{{ item.receiptName }}</span><br>
-                      <span class="text-bold">{{ item.date }}</span><br>
-                      <span class="text-bold">{{ item.ownerName }}</span>
+        <el-page-header content="Trả nợ" @back="handleRouter('/event/detail/' + id)">
+        </el-page-header>
+        <div class="main-content">
+          <div v-if="step===1">
+            <el-card class="text-bold mb-10">
+              <div class="btn-group d-flex  ">
+                <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
+              </div>
+              <div class="mt-10">
+                <el-checkbox-group  v-model="checkedDebt" class="checkbox-group cb-group-hide-label" @change="handleCheckedCitiesChange">
+                    <div v-for="(item, key) in listDebt" :key="key">
+                      <div class="checkbox-item-debt cb-hide-label items-center">
+                        <el-checkbox :label="item.userDeptId" :value="item.userDeptId" @change="changeCheck(item)"></el-checkbox>
+                        <div :class="item.status === 4 ? 'text-yellow' : ''">
+                          <div class="d-flex gap-5">
+                            <el-tooltip class="item" effect="dark" content="Đang bị report" placement="bottom">
+                              <img style="width: 20px" v-if="item.status === 4" src="~/assets/images/icons/warning.svg" alt="">
+                            </el-tooltip>
+                            <div>
+                              <span class="text-bold">{{ item.receiptName }}</span><br>
+                              <span :class="item.status === 4 ? 'text-yellow' : ''" class="time">{{ item.date }}</span><br>
+                            </div>
+                          </div>
+                        </div>
+                        <div :class="item.status === 4 ? 'text-yellow' : ''" class="text-bold">{{ item.formatSlider }} ₫ </div>
+
+                      </div>
+                      <div class="block" style="margin-bottom: 20px">
+                        <el-slider v-model="item.debtLeft" :step="1000" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                      </div>
                     </div>
-                    <div class="text-bold">{{ item.debtLeft }}</div>
+                </el-checkbox-group>
+              </div>
+            </el-card>
+            <el-card class=" text-bold">
+              <div class="text-bold text-blue">
+                <span class="">{{ $t('debt.total') }}: </span><span>{{ formatTotalPaid }} </span><span> ₫</span>
+              </div>
+              <div class="mt-10">
+                <span class="text-bold text-red">{{ $t('debt.remainder') }}: </span><span class="text-bold text-red">{{formatRemainder}}</span><span class="text-bold text-red"> ₫</span>
+              </div>
+            </el-card>
+            <div class="btn-group text-center">
+              <el-button type="primary" @click="handleStep">{{ $t('debt.pay') }}</el-button>
+            </div>
+          </div>
+          <div v-if="step === 2" class="">
+            <div class="text-center">
+              <el-select v-model="value" class="paid-debt-select " placeholder="Chọn hình thức thanh toán">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div v-if="value === '1'" class="pay-method">
+              <el-card class="total-money text-center">
+                <span class="text-bold text-blue">
+                  Tổng số tiền: {{formatPrice}} ₫
+                </span>
+              </el-card>
+              <el-card class="mt-10">
+                <div class="text-center">
+                  <span class="text-bold text-blue ">Vui lòng up ảnh xác minh thanh toán</span>
+                </div>
+                <div ref="imageAvatar" class="content-input image-avatar">
+                  <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
+                  <img v-if="!imageDetailShow.length" class="text" src="/assets/icon/icon_user_default.svg" alt="">
+                  <div v-if="imageDetailShow.length" class="d-flex show-avatar">
+                    <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
+                      <img id="img-intro" class="show-image" :src="detail ? detail : '/assets/icon/icon_user_default.svg'" alt="">
+                      <img class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeImage(index)">
+                    </div>
                   </div>
-                  <div class="block">
-                    <el-slider v-model="item.debtLeft" :step="1000" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                  <div class="button-upload">
+                    <button type="button"><label for="upload-detail">Up ảnh</label></button>
                   </div>
                 </div>
-            </el-checkbox-group>
+              </el-card>
+            </div>
+            <div v-if="value === '2'" class="pay-method">
+              <el-card class="total-money text-center">
+                <span class="text-bold text-blue">
+                  Tổng số tiền: {{ formatPrice }} ₫
+                </span>
+                <br>
+                <span class="text-bold text-blue">
+                  Nội dung chuyển khoản: {{ code }}
+                </span>
+              </el-card>
+              <el-card class="mt-10">
+                <div class="text-center">
+                  <span class="text-bold text-blue ">Vui lòng up ảnh xác minh thanh toán</span>
+                </div>
+                <div ref="imageAvatar" class="content-input image-avatar">
+                  <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
+                  <img v-if="!imageDetailShow.length" class="text" src="/assets/icon/icon_user_default.svg" alt="">
+                  <div v-if="imageDetailShow.length" class="d-flex show-avatar">
+                    <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
+                      <img id="img-intro" class="show-image" :src="detail ? detail : '/assets/icon/icon_user_default.svg'" alt="">
+                      <img class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeImage(index)">
+                    </div>
+                  </div>
+                  <div class="button-upload">
+                    <button type="button"><label for="upload-detail">Up ảnh</label></button>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+            <div class="btn-group-step items-center d-flex  gap-10" :class=" !value ? 'mt-200' : 'mt-30'">
+              <el-button type="primary" @click="step=1" >Quay lại</el-button>
+              <el-button :disabled="!value ? true : false" type="primary" @click="handlePay">Hoàn tất</el-button>
+            </div>
           </div>
-        </div>
-        <div class="total text-bold">
-          <span class="">{{ $t('debt.total') }}: </span><span>{{ totalMoney }} </span><span>{{$t('currency.currency')}}</span>
-          <br>
-          <span class="">{{ $t('debt.remainder') }}: </span><span>{{ totalDebt - totalMoney }} </span><span>{{$t('currency.currency')}}</span>
-        </div>
-        <div class="btn-group text-center">
-          <el-button @click="handlePay">{{ $t('debt.pay') }}</el-button>
+
         </div>
       </div>
     </div>
@@ -44,6 +128,8 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
+import _ from 'lodash'
+import { formatPrice } from '@/utils/util'
 
 import {
   PAY_DEBT,
@@ -51,7 +137,8 @@ import {
   INDEX_SET_LIST_FRIEND,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
-  INDEX_SET_ERROR
+  INDEX_SET_ERROR, IMAGE_UPLOAD_DEBT,
+  GET_PAID_CODE
 } from '~/store/store.const'
 
 export default {
@@ -60,14 +147,26 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
+      imageDetailShow: [],
       checkedDebt: [],
       search: '',
       friends: '',
-      isIndeterminate: true,
+      isIndeterminate: false,
       listDebt: [],
       listId: [],
       checkAll: false,
-      totalMoney: 0
+      totalMoney: 0,
+      step: 1,
+      code: '',
+      value: '',
+      options: [{
+        value: '1',
+        label: 'Tiền mặt'
+      }, {
+        value: '2',
+        label: 'Chuyển khoản'
+      }]
     }
   },
   computed: {
@@ -77,6 +176,15 @@ export default {
         total += element.maxSlider
       })
       return total
+    },
+    formatPrice() {
+      return formatPrice(this.totalMoney)
+    },
+    formatRemainder() {
+      return formatPrice(this.totalDebt - this.totalMoney)
+    },
+    formatTotalPaid() {
+      return this.totalMoney ? formatPrice(this.totalMoney) : 0
     }
   },
   watch: {
@@ -110,6 +218,8 @@ export default {
   mounted() {
   },
   methods: {
+    formatVND() {
+    },
     async getlistDebt() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
@@ -121,6 +231,7 @@ export default {
           this.listDebt = data
           this.listDebt.forEach((element) => {
             element.maxSlider = element.debtLeft
+            element.formatSlider = formatPrice(element.debtLeft)
             element.check = false
           })
         }
@@ -129,12 +240,21 @@ export default {
       }
       this.$store.commit(INDEX_SET_LOADING, false)
 
-      this.listDebt.forEach(element => {
-        element.icon_fake = require('@/assets/images/event.png')
-      })
       this.listDebt.forEach((element) => {
         this.listId.push(element.userDeptId)
       })
+    },
+    async getPaidCode() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(GET_PAID_CODE)
+        if (response.statusCode === 202) {
+          this.code = response.data
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     handleRouter(router) {
       this.$router.push(router)
@@ -150,6 +270,19 @@ export default {
         element.check = val
       })
       this.isIndeterminate = false
+      if (val) {
+        let total = 0
+        this.listDebt.forEach((element) => {
+          element.check = true
+          total += element.debtLeft
+        })
+        this.totalMoney = total
+      } else {
+        this.listDebt.forEach((element) => {
+          element.check = false
+        })
+        this.totalMoney = 0
+      }
     },
     async create() {
       await this.$store.commit(INDEX_SET_LIST_FRIEND, this.checkedDebt)
@@ -168,15 +301,103 @@ export default {
         this.totalMoney -= value.debtLeft
       }
     },
+    handleStep() {
+      if (!this.checkedDebt.length) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa chọn khoản trả nợ' })
+        return
+      }
+      this.getPaidCode()
+      this.step = 2
+    },
+    removeImage(index) {
+      this.imageDetailShow = this.imageDetailShow.filter(function(item, key) {
+        return key !== index
+      })
+    },
+    checkFile(file) {
+      const allowedExtensions = /(\.heic|\.jpg|\.jpeg|\.png|\.svg)$/i
+      if (file.size >= 5000000) {
+        return 'Kích cỡ ảnh quá nặng'
+      }
+      if (!['image/jpeg', 'image/png', 'image/jpg', 'image/svg'].includes(file.type) && !allowedExtensions.exec(file.name)) {
+        return 'Ảnh sai định dạng'
+      }
+      return ''
+    },
+    async onFileChangeDetail(e) {
+      for (let x = 0; x < e.target.files.length; x++) {
+        const valid = this.checkFile(e.target.files[x])
+        if (valid) {
+          await this.$store.commit(INDEX_SET_ERROR, { show: true, text: valid })
+          return
+        }
+      }
+      await this.$store.commit(INDEX_SET_LOADING, true)
+      for (let x = 0; x < e.target.files.length; x++) {
+        const formData = new FormData()
+        formData.append('imgfile', e.target.files[x])
+        try {
+          const data = await this.$store.dispatch(IMAGE_UPLOAD_DEBT, formData)
+          switch (data.statusCode) {
+            case 202:
+              if (this.imageDetailShow.length < 3) {
+                this.imageDetailShow.push(data.data)
+              }
+              if (this.imageDetailShow.length >= 3) {
+                this.$refs.fileUploadDetail.value = null
+                return
+              }
+              break
+            case 500:
+              await this.$store.commit(INDEX_SET_ERROR, {
+                show: true,
+                text: data.error
+              })
+              break
+            default:
+              await this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.messages })
+              break
+          }
+        } catch (err) {
+          this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: this.$t('message.message_error') })
+        }
+        await this.$store.commit(INDEX_SET_LOADING, false)
+
+        if (this.imageDetailShow.length > 3) {
+          this.imageDetailShow.splice(3, this.imageDetailShow.length - 3)
+        }
+      }
+      this.$refs.fileUploadDetail.value = null
+      await this.$store.commit(INDEX_SET_LOADING, false)
+    },
+
     async handlePay() {
+      if (!this.imageDetailShow.length) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa up ảnh xác minh' })
+        return
+      }
+      const cloned = _.cloneDeep(this.listDebt)
+      cloned.forEach((element) => {
+        if (!element.check) {
+          element.debtLeft = 0
+        }
+      })
+      let type = ''
+      if (this.value === '1') {
+        type = 'money'
+      } else {
+        type = 'bank'
+      }
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const data = await this.$store.dispatch(PAY_DEBT, {
           'eventId': this.$route.params.id,
           'userId': 11,
-          'paidImage': 'paidimage.img',
+          'IMGLinks': this.imageDetailShow,
           'totalMoney': this.totalMoney,
-          'listEachPaidDebt': this.listDebt
+          'listEachPaidDebt': cloned,
+          'Code': this.code,
+          type
         })
         switch (data.statusCode) {
           case 202:
@@ -184,7 +405,7 @@ export default {
               show: true,
               text: data.message
             })
-            this.getlistDebt()
+            this.handleRouter('/event/detail/' + this.id)
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })

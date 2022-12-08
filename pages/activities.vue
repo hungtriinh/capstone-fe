@@ -1,33 +1,43 @@
 <template>
-  <div class="main-login">
+  <div class="main-login activity-page">
     <p class="text-[#273253] font-bold text-xl">
       {{ $t('activities.activities_history') }}
     </p>
     <div class="mt-6 d-flex justify-center">
-      <div>
-        <ActivityNotification
-          :sender="sender"
-          :notification="notification"
-          class="mt-4"
-        ></ActivityNotification>
-        <ActivityNotification
-          :sender="sender"
-          :notification="notification"
-          class="mt-4"
-        ></ActivityNotification>
+      <div class="activity">
+<!--        <ActivityNotification-->
+<!--          :sender="sender"-->
+<!--          :notification="notification"-->
+<!--          class="mt-4"-->
+<!--        ></ActivityNotification>-->
+<!--        <ActivityNotification-->
+<!--          :sender="sender"-->
+<!--          :notification="notification"-->
+<!--          class="mt-4"-->
+<!--        ></ActivityNotification>-->
+        <el-card v-for="(item, key) in notification" :key="key" :body-style="{ padding: '10px' }" class=" card-item mb-10 ">
+          <div class="text-bold text-blue">
+            {{item.content}}
+          </div>
+          <span class="time">{{item.date}}</span>
+        </el-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ActivityNotification from '../components/activities/ActivityNotification.vue'
-const MOCK_NOTI = {
-  action: 'đã duyệt Chứng từ',
-  content: '[Uống Bia] - 500k',
-  receiver: 'Hội nhóm FPT',
-  time: '1 ngày'
-}
+// import ActivityNotification from '../components/activities/ActivityNotification.vue'
+import {
+  INDEX_SET_LOADING,
+  ACTIVITY_GET
+} from '~/store/store.const'
+// const MOCK_NOTI = {
+//   action: 'đã duyệt Chứng từ',
+//   content: '[Uống Bia] - 500k',
+//   receiver: 'Hội nhóm FPT',
+//   time: '1 ngày'
+// }
 const MOCK_SENDER = {
   id: 1,
   name: 'Tran Viet Huy'
@@ -35,11 +45,29 @@ const MOCK_SENDER = {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Activities',
-  components: { ActivityNotification },
+  // components: { ActivityNotification },
+  created() {
+    this.getActivity()
+  },
   data() {
     return {
-      notification: { ...MOCK_NOTI },
+      notification: [],
       sender: { ...MOCK_SENDER }
+    }
+  },
+  methods: {
+    async getActivity() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(ACTIVITY_GET)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.notification = data
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }

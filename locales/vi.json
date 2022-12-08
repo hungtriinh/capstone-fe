@@ -67,7 +67,7 @@
     "pass_format": "Mật khẩu phải từ 8 kí tự đến 32 ký tự, bao gồm cả chữ, chữ số và kí tự đặc biệt",
     "insufficient_balance": "Không đủ số dư khả dụng",
     "phone": "Số điện thoại không hợp lệ",
-    "phone_length": "Số điện thoại phải từ 9 đến 12 ký tự",
+    "phone_length": "Số điện thoại phải từ 8 đến 20 ký tự",
     "code_phone_format": "Sai định dạng đầu số điện thoại",
     "invalid_2mb_image": "Kích thước file tối đa 2MB",
     "length_phone": "Số điện thoại phải nằm trong khoảng từ 9 đến 15 ký tự",
@@ -172,7 +172,9 @@
   "qr" : {
     "share" : "Chia sẻ mã QR để người khác",
     "share2" : "tham gia sự kiện",
-    "url" : "Đường dẫn"
+    "url" : "Đường dẫn",
+    "scan" : "Quét mã Qr",
+    "scan_note" : "Đặt mã qr nằm trong hình vuông"
   },
   "navigation" : {
     "event" : "Sự kiện",
