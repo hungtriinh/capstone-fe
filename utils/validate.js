@@ -97,7 +97,7 @@ export function validPhone(str) {
 }
 
 export function validPhoneNoPrefix(str) {
-  const reg = /^([0-9]{9,12})$\b/
+  const reg = /^([0-9]{8,20})$\b/
   return reg.test(str)
 }
 

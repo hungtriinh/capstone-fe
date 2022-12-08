@@ -1,6 +1,8 @@
 <template>
   <div class="main-login">
     <div class="login login-width login-mobile">
+      <el-page-header content="" @back="$router.push('/')">
+      </el-page-header>
       <h3 class="title text-center">{{ $t('home.qr') }}</h3>
       <QrCodeCommon class="d-flex justify-center" :value="value"/>
       <div class="text-center qr-share">

@@ -44,6 +44,12 @@ export const RECEIPT_WAITING = 'getListReceiptWaiting'
 export const GET_DEBT_LIST = 'getDebtList'
 export const PAY_DEBT = 'payDebt'
 export const DEBT_SENT_LIST = 'getDebtSent'
+export const GET_PAID_CODE = 'getDebtCode'
+export const DEBT_GET_DETAIL = 'getDebtDetail'
+export const DEBT_GET_ALL_DEBT = 'getAllDebt'
+export const DEBT_GET_ALL_RECEIPT = 'getAllReceipt'
+export const DEBT_CLICK_I = 'clickIbutton'
+export const DEBT_REMIND = 'clickRemind'
 
 // join request
 export const GET_REQUEST_WAITING = 'getRequestWaiting'
@@ -66,3 +72,19 @@ export const MEMBER_ROLE_REMOVE = 'removeRoleMember'
 
 // up anh
 export const IMAGE_UPLOAD_RECEIPT = 'uploadReceipt'
+export const IMAGE_UPLOAD_DEBT = 'uploadDebt'
+
+// report
+export const REPORT_GET_LIST = 'getListReport'
+export const REPORT_GET_LIST_HISTORY = 'getListReportHistory'
+export const REPORT_APPROVE = 'approveReport'
+export const REPORT_CREATE = 'createReport'
+
+// activity
+
+export const ACTIVITY_GET = 'getActivity'
+export const PROFILE_GET = 'getProfile'
+
+// check-join
+export const EVENT_CHECK_JOIN = 'checkJoinEvent'
+export const EVENT_JOIN_REQUEST = 'eventRequest'

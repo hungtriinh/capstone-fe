@@ -64,7 +64,7 @@ export default {
       listEvent: [],
       listChecked: [],
       checkAll: false,
-      isIndeterminate: true,
+      isIndeterminate: false,
       listRequestId: [],
       ListId: []
     }

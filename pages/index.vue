@@ -2,29 +2,35 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <div class="search-box">
+        <h3 class="title text-center text-[#011A51] font-semibold">Sự kiện</h3>
+
+        <div class="search-box d-flex items-center gap-10" >
           <el-input
             v-model="search"
             placeholder="Search"
             prefix-icon="el-icon-search">
           </el-input>
+          <img @click="handleRouter('/qr-scan')" src="~/assets/images/icons/qr-scan.svg" alt="">
         </div>
 
-        <el-card v-for="(item,key) in listEvent" :key="key"  :body-style="{ padding: '10px' }" class="card-item mb-10 event" >
+        <div class="main-content-event">
+          <el-card v-for="(item,key) in listEvent" :key="key"  :body-style="{ padding: '10px' }" class="card-item mb-10 event" >
           <div class="event-item">
             <el-timeline>
               <div class="event-title d-flex justify-between items-center cursor-pointer"  @click="handleRouter('event/detail/' + item.eventId)">
                 <div class="d-flex items-center event-name">
-                  <el-badge is-dot class="event-status item" :type="item.evenStatus === 0 ?  '' : 'success'">
+                  <el-badge is-dot class="event-status item" :type="item.eventStatus === 0 ?  '' : 'success'">
                     <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
                   </el-badge>
                   <div class="event-content">
                     <h4 class="title text-bold">{{ item.eventName }}</h4>
                   </div>
+                  <i style="margin-left: -5px" class="el-icon event-navi el-icon-arrow-right"></i>
+
                 </div>
                 <div class="d-flex items-center ">
-                  <span class="text-bold" :class="item.totalMoney.amount >= 0 ? 'text-green' : 'text-red'">{{item.totalMoney.amountFormat}}</span>
-                  <i class="el-icon event-navi el-icon-arrow-right"></i>
+                  <span class="text-bold" >{{item.receiptCount}} </span>
+                  <i style="margin-left: 3px" class=" el-icon-document"></i>
                 </div>
               </div>
               <el-timeline-item placement="top" v-if="item.debt.totalPeople !== 0">
@@ -44,6 +50,7 @@
             </div>
           </div>
         </el-card>
+        </div>
       </div>
     </div>
   </div>

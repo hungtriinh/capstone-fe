@@ -2,39 +2,34 @@
   <div class="main-login list-receipt-page">
     <div>
       <div class="login login-width login-mobile">
-        <el-page-header content="Danh sách chứng từ" @back="goBack">
-        </el-page-header>
+        <div class="d-flex justify-between">
+          <el-page-header content="Danh sách Yêu cầu trả tiền" @back="goBack">
+          </el-page-header>
+          <el-tooltip class="item" effect="dark" content="History" placement="bottom">
+            <i @click="handleRouter('/event/list-report-history/' + id)" class="el-icon el-icon-time" ></i>
+          </el-tooltip>
+        </div>
+
         <el-empty v-if="!listEvent.length" description="Không có chứng từ nào"></el-empty>
         <div v-else>
           <div class="main-content">
-            <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '10px' }" class="card-item">
-              <div class="d-flex justify-between">
-                <div class="list-image d-flex gap-10 flex-wrap">
-                  <el-image v-show="!item.imageLinks.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
-                  <el-image v-for="(img, key) in item.imageLinks" :key="key" :src="img" :preview-src-list="item.imageLinks" class="image"/>
-                </div>
-<!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
-                  <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmountFormat }}<i class="el-icon el-icon-arrow-right"></i></span>
-              </div>
-              <div class="">
-                <div class="flex-between">
-                  <div class="avatar-name d-flex items-center mt-10 gap-5">
-                    <ShowAvatarElement :event="{ name: item.user.name, color: item.color }"></ShowAvatarElement>
-                    <span>{{ item.user.name }}</span>
-                  </div>
-                </div>
-                <div class="bottom">
-                  <div>
-                    <time class="time">{{ item.date }}</time>
-                    <br>
-<!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
-                    <div><span class="text-bold">{{ item.receiptName }}</span></div>
 
+            <el-card v-for="(item, key) in listEvent" :key="key" :body-style="{ padding: '10px' }" class="card-item">
+              <div class="">
+                <div class="d-flex justify-between " style="flex-wrap: wrap;">
+                  <div>
+                    <span class="text-bold">Sự kiện: {{item.reportReceiptName}}</span>
+                    <br>
+                    <time class="time"> {{ item.createdAt }}</time>
+                    <br>
+                    <br>
+                    <!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
+                    <div class=""><span class="text-bold">Nội dung: {{ item.reportReason }}</span></div>
                   </div>
-                  <el-tag effect="dark" v-if="item.receiptStatus === 2" type="success">Đồng ý</el-tag>
-                  <el-tag effect="dark" v-else-if="item.receiptStatus === 3" type="danger">Từ chối</el-tag>
-                  <el-tag effect="dark" v-else-if="item.receiptStatus === 1" type="warning">Đang chờ</el-tag>
-                  <el-tag effect="dark" v-else type="">Trả hết</el-tag>
+                  <div class="  items-center">
+                    <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(2, item.id)"></el-button>
+                    <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(1, item.id)"></el-button>
+                  </div>
                 </div>
               </div>
             </el-card>
@@ -54,24 +49,18 @@
               </div>
             </div>
             <div class="d-flex items-center ">
-              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
+              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
             </div>
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
               <div class="d-flex justify-between">
                 <span class="text-normal-sm">{{ user.name }}</span>
-                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
+                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
               </div>
             </el-card>
           </el-timeline-item>
           <el-divider class="divider"></el-divider>
-          <div>
-            <div class="list-image d-flex gap-10 pb-10 flex-wrap">
-              <el-image v-show="receiptDetail.imgLink && !receiptDetail.imgLink.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
-              <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image"/>
-            </div>
-          </div>
         </el-timeline>
         <div>
           <!--              <img class="status-img" src="~/assets/images/icons/circle-red.svg" alt="status">-->
@@ -84,10 +73,11 @@
 </template>
 <script>
 import {
-  REQUEST_APPROVE,
-  GET_LIST_DOCUMENT,
+  REPORT_APPROVE,
+  REPORT_GET_LIST,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
+  INDEX_SET_ERROR,
   RECEIPT_DETAIL
 } from '~/store/store.const'
 
@@ -102,7 +92,11 @@ export default {
       id: this.$route.params.id,
       search: '',
       listEvent: [],
+      listRequestId: [],
       ListId: [],
+      listChecked: [],
+      checkAll: false,
+      isIndeterminate: false,
       receiptDetail: {},
       user: {},
       dialogVisible: false
@@ -124,10 +118,12 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_LIST_DOCUMENT, this.id)
-        const { data, statusCode } = response
-        if (statusCode === 202) {
-          this.listEvent = data
+        const response = await this.$store.dispatch(REPORT_GET_LIST, this.id)
+        if (response.statusCode === 202) {
+          this.listEvent = response.data
+          this.listEvent.forEach((element) => {
+            this.listRequestId.push(element.receiptId)
+          })
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
@@ -139,29 +135,38 @@ export default {
     },
     handleCheckedCitiesChange(value) {
       const checkedCount = value.length
-      this.checkAll = checkedCount === this.listFriend.length
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listFriend.length
+      this.checkAll = checkedCount === this.listEvent.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listEvent.length
     },
     handleCheckAllChange(val) {
-      this.checkedFriends = val ? this.listId : []
+      this.listChecked = val ? this.listRequestId : []
       this.isIndeterminate = false
     },
     goBack() {
       this.handleRouter('/event/setting/' + this.id)
     },
-    async eventAppove(id, status) {
+    async eventAppoveSelect(status, id) {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        this.ListId.push(id)
-        const response = await this.$store.dispatch(REQUEST_APPROVE, {
-          ListId: this.ListId,
-          status
+        const response = await this.$store.dispatch(REPORT_APPROVE, {
+          id,
+          reportstatus: status
         })
-        const { data, statusCode } = response
-        if (statusCode === 202) {
+        if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,
-            text: data.message
+            text: response.message
+          })
+          this.getListEvent()
+        } else if (response.statusCode === 400) {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.message
+          })
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.message
           })
         }
       } catch (e) {
@@ -177,8 +182,6 @@ export default {
           this.receiptDetail = response.data
           this.user = response.data.user
         }
-        console.log(this.receiptDetail)
-        console.log(this.user)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
@@ -187,6 +190,20 @@ export default {
     async openDetailDialog(id) {
       await this.getReceiptDetail(id)
       this.dialogVisible = true
+    },
+    openConfirmDialog(status, id) {
+      this.$confirm('Bạn có chắc chắn thực hiện thao tác này?', 'Xác nhận', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.eventAppoveSelect(status, id)
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: 'Delete canceled'
+        // })
+      })
     }
   }
 }

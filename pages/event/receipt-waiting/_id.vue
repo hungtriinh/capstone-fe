@@ -2,8 +2,14 @@
   <div class="main-login list-receipt-page">
     <div>
       <div class="login login-width login-mobile">
-        <el-page-header content="Chứng từ chờ tuyệt" @back="goBack">
-        </el-page-header>
+
+        <div class="d-flex justify-between">
+          <el-page-header content="Chứng từ chờ duyệt" @back="goBack">
+          </el-page-header>
+          <el-tooltip class="item" effect="dark" content="History" placement="bottom">
+            <i @click="handleRouter('/event/list-receipt/' + id)" class="el-icon el-icon-time" ></i>
+          </el-tooltip>
+        </div>
         <el-empty v-if="!listEvent.length" description="Không có chứng từ nào"></el-empty>
         <div v-else>
           <div class="main-content">
@@ -13,12 +19,12 @@
                 <el-checkbox class="cb-hide-label" :label="item.receiptId" :value="item.receiptId"></el-checkbox>
                 <el-card :body-style="{ padding: '10px' }" class="card-item">
                 <div class="d-flex justify-between">
-                <div class="list-image d-flex gap-10">
+                <div class="list-image d-flex gap-10 flex-wrap">
                   <el-image v-show="!item.imageLinks.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
                   <el-image v-for="(img, key) in item.imageLinks" :key="key" :src="img" :preview-src-list="item.imageLinks" class="image"/>
                 </div>
                 <!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
-                <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>
+                <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmountFormat }}<i class="el-icon el-icon-arrow-right"></i></span>
               </div>
               <div class="">
                 <div class="flex-between">
@@ -65,22 +71,23 @@
               </div>
             </div>
             <div class="d-flex items-center ">
-              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
+              <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
             </div>
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
               <div class="d-flex justify-between">
                 <span class="text-normal-sm">{{ user.name }}</span>
-                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
+                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
               </div>
             </el-card>
           </el-timeline-item>
           <el-divider class="divider"></el-divider>
         </el-timeline>
         <div>
-          <!--              <img class="status-img" src="~/assets/images/icons/circle-red.svg" alt="status">-->
-          <!--              <img src="~/assets/images/icons/dots.svg" alt="status">-->
+          <div style="padding-bottom: 30px" class="list-image d-flex gap-10 flex-wrap">
+            <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image"/>
+          </div>
         </div>
       </div>
 
@@ -93,7 +100,8 @@ import {
   RECEIPT_WAITING,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
-  RECEIPT_DETAIL
+  RECEIPT_DETAIL,
+  INDEX_SET_ERROR
 } from '~/store/store.const'
 
 export default {
@@ -111,7 +119,7 @@ export default {
       ListId: [],
       listChecked: [],
       checkAll: false,
-      isIndeterminate: true,
+      isIndeterminate: false,
       receiptDetail: {},
       user: {},
       dialogVisible: false
@@ -171,11 +179,20 @@ export default {
         if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,
-            text: response.message
+            text: response.data
           })
           this.getListEvent()
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.data
+          })
         }
       } catch (e) {
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Có lỗi xảy ra'
+        })
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)

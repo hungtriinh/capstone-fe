@@ -47,9 +47,9 @@ export default {
     return {
       checkedFriends: [],
       search: '',
-      checkAll: false,
+      checkAll: true,
       friends: '',
-      isIndeterminate: true
+      isIndeterminate: false
     }
   },
   watch: {

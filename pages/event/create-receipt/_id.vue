@@ -14,12 +14,12 @@
           label-position="left"
           @keyup.enter.native="login"
         >
-          <el-form-item class="email-login"   prop="receiptName" :error="(error.key === 'receiptName') ? error.value : ''">
-            <label for="email">{{ $t('receipt.name') }}</label>
+          <el-form-item class="email-login" style="margin-bottom: 5px" prop="receiptName" :error="(error.key === 'receiptName') ? error.value : ''">
+            <label for="email">Tên chứng từ</label>
             <el-input
               id="receiptName"
               ref="receiptName"
-              v-model.trim="accountForm.receiptName"
+              v-model="accountForm.receiptName"
               :placeholder="$t('receipt.name')"
               autocomplete="off"
               name="receiptName"
@@ -34,6 +34,7 @@
               id="receiptAmount"
               ref="receiptAmount"
               v-model="accountForm.receiptAmount"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*"
               :placeholder="$t('receipt.amount')"
               type="text"
               name="receiptAmount"
@@ -53,7 +54,9 @@
             <el-radio v-model="type" label="1">{{ $t('receipt.balance') }}</el-radio>
             <el-radio v-model="type" label="2">{{ $t('receipt.not_balance') }}</el-radio>
           </div>
-          <div >
+            <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>
+
+            <div >
             <div v-for="(item, key) in chooseMember" :key="key" class="checkbox-item">
               <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
 
@@ -69,18 +72,18 @@
                 name="debit"
                 type="text"
                 tabindex="2"
-                :placeholder="$t('receipt.amount_placeholder')"
+                placeholder="Số tiền"
                 ></el-input>
               <el-input
                 v-else
                 id="debit"
                 ref="debit"
-                :value="accountForm.receiptAmount ? accountForm.receiptAmount / chooseMember.length : ''"
+                :value="accountForm.receiptAmount ? Math.floor(accountForm.receiptAmount / (chooseMember.length + 1)) : ''"
                 autocomplete="off"
                 name="debit"
                 type="text"
                 tabindex="2"
-                :placeholder="$t('receipt.amount_placeholder')"
+                placeholder="Số tiền"
               ></el-input>
             </div>
           </div>
@@ -100,7 +103,7 @@
             </el-form-item>
           </div>
           <el-form-item>
-            <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
+            <div style="margin-bottom: 60px " :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 type="primary"
@@ -361,7 +364,7 @@ export default {
         dto.imglinks = this.imageDetailShow
         if (this.type === '1') {
           dto.userDepts.forEach((element) => {
-            element.debt = this.accountForm.receiptAmount ? this.accountForm.receiptAmount / this.chooseMember.length : ''
+            element.debt = this.accountForm.receiptAmount ? Math.floor(this.accountForm.receiptAmount / (this.chooseMember.length + 1)) : ''
           })
         }
         const data = await this.$store.dispatch(CREATE_RECEIPT, dto)
@@ -371,6 +374,11 @@ export default {
               show: true,
               text: data.message
             })
+            this.handleRouter('/event/detail/' + this.id)
+            break
+          case 400:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.error })
+
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })
@@ -387,6 +395,7 @@ export default {
       })
     },
     showAddMemberModal() {
+      this.chooseMember = []
       this.addMember = true
     },
     closeAddMemberModal() {

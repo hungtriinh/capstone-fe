@@ -45,8 +45,39 @@
     }
   }
 }
+@media screen and (max-width: 390px) {
+  .main-login .navigation-bar .navigation {
+    max-width: 350px !important;
+  }
+  .activity-page .activity {
+    max-height: 685px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .main-login .navigation-bar .navigation {
+    width: 86%;
+  }
+}
 
 @media screen and (max-width: 540px) {
+  .main-login .navigation-bar .navigation {
+    max-width: 450px;
+  }
+  .main-login .main-content-event {
+    max-height: 600px;
+  }
+  .main-login .detail {
+    max-height: 450px;
+  }
+  .paid-debt {
+    .paid-debt-select {
+      .el-input__inner::placeholder {
+        font-size: 14px;
+      }
+    }
+  }
+
   .el-image-viewer__img {
     width: 200px;
   }
@@ -86,7 +117,7 @@
   }
   .el-page-header {
     .el-page-header__content {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
   .el-button {
