@@ -122,7 +122,7 @@ export default {
       token: '',
       user: {},
       accountForm: {
-        phone: '84373243227',
+        phone: '0966123333',
         password: '1',
         remember: '',
         errors: {}
