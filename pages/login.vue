@@ -16,21 +16,30 @@
         >
           <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
             <label for="email">{{ $t('account.phone') }}</label>
-            <el-input
-              id="phone"
-              ref="phone"
-              v-model.trim="accountForm.phone"
-              :placeholder="$t('account.phone')"
-              autocomplete="off"
-              name="phone"
-              type="text"
-              tabindex="2"
-              maxlength="12"
-              oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-              pattern="[0-9]*"
-              inputmode="numeric"
-              @focus="resetValidate('phone')"
-            />
+            <div class="custom-register-input">
+              <el-input
+                id="phone"
+                ref="phone"
+                v-model.trim="accountForm.phone"
+                :placeholder="$t('account.phone')"
+                autocomplete="off"
+                name="phone"
+                type="text"
+                tabindex="2"
+                maxlength="12"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                @focus="resetValidate('phone')"
+              >
+                <template #prefix>
+                  <div class="d-flex items-center px-[10px]" style="height: 100%">
+                    <img src="@/assets/images/register/vietnam.svg" alt="" class="rounded-sm" style="width: 21px; height: 14px;"/>
+                    <span class="pl-[8px] text-[#606266]">+84</span>
+                  </div>
+                </template>
+              </el-input>
+            </div>
           </el-form-item>
           <el-form-item class="email-login" prop="password" :error="(error.key === 'password') ? error.value : ''">
             <label for="password">{{ $t('account.password') }}</label>
@@ -94,6 +103,7 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
 import { INDEX_SET_ERROR, INDEX_SET_LOADING } from '@/store/store.const'
 import { validPhoneNoPrefix } from '@/utils/validate'
 
@@ -111,19 +121,25 @@ export default {
       }
     }
 
-    // const validateCaptcha = (rule, value, callback) => {
-    //   if (this.captcha == null || !this.captcha) {
-    //     callback(new Error(this.$t('validation.captcha_req')))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.$t('validation.required', { _field_: this.$t('account.password') }).toString()))
+      } else {
+        if (value.length > 20 || value.length < 8) {
+          callback(new Error(this.$t('validation.pass_format')))
+        }
+        if (this.accountForm.password_confirmation !== '') {
+          this.$refs.accountForm.validateField('password_confirmation')
+        }
+        callback()
+      }
+    }
     return {
       token: '',
       user: {},
       accountForm: {
-        phone: '0966123333',
-        password: '1',
+        phone: '966419062',
+        password: '12345678',
         remember: '',
         errors: {}
       },
@@ -147,7 +163,8 @@ export default {
             required: true,
             message: this.$t('validation.required', { _field_: this.$t('account.password') }),
             trigger: 'blur'
-          }
+          },
+          { validator: validatePass, trigger: 'blur' }
         ],
         remember: []
       },
@@ -187,9 +204,10 @@ export default {
 
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
+        const dto = _.cloneDeep(this.accountForm)
         const result = await this.$auth.loginWith('local', {
           data: {
-            phoneNumber: this.accountForm.phone,
+            phoneNumber: '+84' + (dto.phone.startsWith('0') ? dto.phone.slice(1, dto.phone.length) : dto.phone),
             password: this.accountForm.password
           }
         })
@@ -222,5 +240,10 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
+<style>
+/* stylelint-disable */
+.custom-register-input .el-input--prefix .el-input__inner {
+  padding-left: 80px;
+}
+/* stylelint-enable */
 </style>

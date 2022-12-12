@@ -9,7 +9,7 @@
           :rules="accountRules"
           autocomplete="off"
           label-position="left"
-          @keyup.enter.native="login"
+          @keyup.enter.native="create"
         >
           <el-form-item class="email-login" prop="eventName" :error="(error.key === 'eventName') ? error.value : ''">
             <label for="email">{{ $t('event.eventName') }}</label>

@@ -92,7 +92,6 @@
 import { mapState } from 'vuex'
 import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
-import { validPassword } from '@/utils/validate'
 
 export default {
   name: 'RegisterPage',
@@ -102,7 +101,7 @@ export default {
       if (value === '') {
         callback(new Error(this.$t('validation.required', { _field_: this.$t('account.password') }).toString()))
       } else {
-        if (!validPassword(value)) {
+        if (value.length > 20 || value.length < 8) {
           callback(new Error(this.$t('validation.pass_format')))
         }
         if (this.accountForm.password_confirmation !== '') {

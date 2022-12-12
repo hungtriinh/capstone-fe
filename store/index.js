@@ -239,6 +239,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get('profile'), context)
     })
   },
+  updateProfile(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('user', data), context)
+    })
+  },
   checkJoinEvent(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post(`event/join/eventid=${data}`), context)
@@ -247,6 +252,51 @@ export const actions = {
   eventRequest(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post(`event/JoinRequest/EventId=${data}`), context)
+    })
+  },
+  getListFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend'), context)
+    })
+  },
+  getListFriendRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend/friend-request'), context)
+    })
+  },
+  sendFriendRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('friend/friend-request', data), context)
+    })
+  },
+  deleteFriendRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.delete(`friend/${data}`), context)
+    })
+  },
+  responseFriendRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('friend/response-request', data), context)
+    })
+  },
+  getFAQ(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('FAQ', data), context)
+    })
+  },
+  getGroupRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('/profile/request', data), context)
+    })
+  },
+  getGroupInvited(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('/profile/invite', data), context)
+    })
+  },
+  approveGroup(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/profile/respond', data), context)
     })
   }
 }

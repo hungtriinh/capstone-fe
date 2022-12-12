@@ -23,6 +23,7 @@ export const AUTH_SET_PERMISSIONS = 'authentication/setPermissions'
 export const AUTH_SEND_EMAIL_FORGOT = 'authentication/sendEmailForgot'
 export const AUTH_RESET_PASS = 'authentication/resetPass'
 export const AUTH_CHECK_TOKEN = 'authentication/checkToken'
+export const CHANGE_PASS = 'authentication/changePass'
 
 export const TYPE_LOGIN_OTP = 1
 export const TYPE_REGISTER_OTP = 2
@@ -84,7 +85,23 @@ export const REPORT_CREATE = 'createReport'
 
 export const ACTIVITY_GET = 'getActivity'
 export const PROFILE_GET = 'getProfile'
+export const PROFILE_UPDATE = 'updateProfile'
 
 // check-join
 export const EVENT_CHECK_JOIN = 'checkJoinEvent'
 export const EVENT_JOIN_REQUEST = 'eventRequest'
+
+// friend
+export const FRIEND_LIST = 'getListFriend'
+export const FRIEND_LIST_REQUEST = 'getListFriendRequest'
+export const FRIEND_SEND_REQUEST = 'sendFriendRequest'
+export const FRIEND_DELETE_REQUEST = 'deleteFriendRequest'
+export const FRIEND_RESPONSE_REQUEST = 'responseFriendRequest'
+
+// faq
+export const FAQ_LIST = 'getFAQ'
+
+// group
+export const GROUP_REQUEST = 'getGroupRequest'
+export const GROUP_INVITED = 'getGroupInvited'
+export const GROUP_APPROVE = 'approveGroup'

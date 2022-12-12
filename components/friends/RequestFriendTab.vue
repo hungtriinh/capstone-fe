@@ -17,11 +17,11 @@
 
 <script>
 import FriendRequest from './FriendRequest.vue'
-const MOCK_FRIEND = [
-  { id: 1, name: 'Tran Viet Huy' },
-  { id: 2, name: 'Trinh Hoang Hung' },
-  { id: 3, name: 'Nguyen Huy Hoang' }
-]
+import {
+  FRIEND_RESPONSE_REQUEST,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS
+} from '~/store/store.const'
 export default {
   name: 'CurrentFriendTab',
   components: {
@@ -30,15 +30,47 @@ export default {
   props: {
     listFriend: {
       type: Array,
-      default: () => ([...MOCK_FRIEND])
+      default: () => []
     }
   },
   methods: {
-    handleAccept(friend) {
-      console.log('accept', friend)
+    async handleAccept(friend) {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_RESPONSE_REQUEST, {
+          UserFriendId: friend.userId,
+          status: 1
+        })
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+          this.$emit('reload')
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
-    handleReject(friend) {
-      console.log('reject', friend)
+    async  handleReject(friend) {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_RESPONSE_REQUEST, {
+          UserFriendId: friend.userId,
+          status: 0
+        })
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+          this.$emit('reload')
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }
