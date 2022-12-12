@@ -2,16 +2,17 @@
   <div class="main-login profile">
     <div class="d-flex justify-center">
       <div v-if="!profile.Avatar">
-<!--      <FileUpload-->
-<!--        :width="145"-->
-<!--        :height="145"-->
-<!--        :circle="true"-->
-<!--        :disable="true"-->
-<!--        :default-image="''"-->
-<!--      />-->
+      <FileUpload
+        :width="145"
+        :height="145"
+        :circle="true"
+        :disable="true"
+        :default-image="''"
+      />
       </div>
-      <div v-else>
-        <ShowAvatarElement :event="{ name: profile.UserName }"></ShowAvatarElement>
+      <div class="profile-img" v-else>
+<!--        <ShowAvatarElement :event="{ name: profile.UserName }"></ShowAvatarElement>-->
+        <el-avatar :src="profile.Avatar" :size="100" :preview-src-list='profile.Avatar' class="image"/>
 
       </div>
     </div>
@@ -22,7 +23,7 @@
     <div class="d-flex justify-center mt-[40px]">
       <div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.change_infor')">
+          <Card :text-color="'white'" :title="$t('profile.change_infor')" @click="handleRouter('/profile/setting')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/lock.svg" alt="" />
@@ -36,7 +37,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.faqs')">
+          <Card :text-color="'white'" :title="$t('profile.faqs')" @click="handleRouter('faq')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/bell.svg" alt="" />
@@ -50,7 +51,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.change_password')">
+          <Card :text-color="'white'" :title="$t('profile.change_password')" @click="handleRouter('/change-pass')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/lock.svg" alt="" />
@@ -64,7 +65,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.request_join_group')">
+          <Card :text-color="'white'" :title="$t('profile.request_join_group')" @click="handleRouter('/group/requested')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/credit-card.svg" alt="" />
@@ -78,7 +79,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.invitation_join_group')">
+          <Card :text-color="'white'" :title="$t('profile.invitation_join_group')" @click="handleRouter('/group/invited')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/credit-card.svg" alt="" />
@@ -98,14 +99,14 @@
 
 <script>
 import Card from '@/components/common/Card.vue'
-// import FileUpload from '@/components/common/FileUpload.vue'
+import FileUpload from '@/components/common/FileUpload.vue'
 import { PROFILE_GET, INDEX_SET_LOADING } from '~/store/store.const'
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Profile',
   components: {
-    // FileUpload,
+    FileUpload,
     Card
   },
   asyncData({ isDev, route, store, env, params, query, req, res, redirect, error }) {
@@ -130,6 +131,9 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    handleRouter(router) {
+      this.$router.push(router)
     }
   },
   created() {

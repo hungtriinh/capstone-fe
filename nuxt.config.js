@@ -77,12 +77,12 @@ export default {
           property: 'data.access_token'
         },
         user: {
-          property: 'data'
-          // autoFetch: true
+          property: 'data',
+          autoFetch: true
         },
         endpoints: {
           login: { url: '/login', method: 'post' },
-          user: { url: '/event', method: 'get', propertyName: 'data' }
+          user: { url: '/profile', method: 'get', propertyName: 'data' }
         }
       }
     },

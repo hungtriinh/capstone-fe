@@ -1,39 +1,33 @@
 <template>
-  <div class="d-flex justify-between items-center my-3">
-    <div class="d-flex items-center">
-      <div class="p-[6px] bg-neutral-200 rounded-full mr-3">
-        <img
-          :src="getAvatar"
-          alt=""
-          class="rounded-full"
-          style="width: 36px; height: 36px"
-        />
+    <el-card class="mb-10">
+      <div class="d-flex justify-between items-center">
+        <div class="d-flex items-center gap-10">
+          <div >
+            <ShowAvatarElement :event="{ name: group.name }"></ShowAvatarElement>
+          </div>
+          <div class="text-[#273253]">
+            <p class="text-bold">{{ group.name }}</p>
+            <span class="time">{{ request.time }}</span>
+          </div>
+        </div>
+        <div>
+          <el-button
+            type="success"
+            class="bg-[#67C23A]"
+            icon="el-icon-check"
+            circle
+            @click="$emit('accept', group.id)"
+          ></el-button>
+          <el-button
+            type="danger"
+            class="bg-[#F56C6C]"
+            icon="el-icon-delete"
+            circle
+            @click="$emit('reject', group.id)"
+          ></el-button>
+        </div>
       </div>
-      <div class="text-[#273253]">
-        <span class="text-sm">{{ request.inviter }}</span>
-        <p class="font-bold text-lg">{{ group.name }}</p>
-        <span class="text-sm">{{ request.time }}</span>
-      </div>
-    </div>
-    <div>
-      <div>
-        <el-button
-          type="success"
-          class="bg-[#67C23A]"
-          icon="el-icon-check"
-          circle
-          @click="$emit('accept', group, request)"
-        ></el-button>
-        <el-button
-          type="danger"
-          class="bg-[#F56C6C]"
-          icon="el-icon-delete"
-          circle
-          @click="$emit('reject', group, request)"
-        ></el-button>
-      </div>
-    </div>
-  </div>
+    </el-card>
 </template>
 
 <script>

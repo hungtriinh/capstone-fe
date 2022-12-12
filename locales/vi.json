@@ -64,7 +64,7 @@
     "passNotMatch": "Mật khẩu không khớp",
     "email_format": "Email không đúng định dạng",
     "referrer_code_min": "Mã giới thiệu phải có 10 kí tự.",
-    "pass_format": "Mật khẩu phải từ 8 kí tự đến 32 ký tự, bao gồm cả chữ, chữ số và kí tự đặc biệt",
+    "pass_format": "Mật khẩu phải từ 8 kí tự đến 20 ký tự.",
     "insufficient_balance": "Không đủ số dư khả dụng",
     "phone": "Số điện thoại không hợp lệ",
     "phone_length": "Số điện thoại phải từ 8 đến 20 ký tự",
@@ -187,7 +187,7 @@
     "change_infor" : "Chỉnh sửa thông tin",
     "faqs" : "FAQs",
     "change_password" : "Đổi mật khẩu",
-    "request_join_group" : "Yêu cầu gia nhập nhóm",
+    "request_join_group" : "Yêu cầu gia nhập nhóm đã gửi",
     "invitation_join_group" : "Lời mời tham gia nhóm"
   },
   "friends" : {

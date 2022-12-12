@@ -117,6 +117,7 @@ export default {
     open() {
       const el = this.$refs.media
       el.click()
+      console.log('asdfsadf')
     },
     getFileExtension(file) {
       if (file) {

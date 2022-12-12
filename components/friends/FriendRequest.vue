@@ -1,10 +1,12 @@
 <template>
   <div>
-    <Card :text-color="'white'" :title="infor.name">
+    <Card :text-color="'white'" :title="infor.userName" :phone="infor.userPhone">
       <template #prefix>
         <div class="p-[6px] bg-neutral-200 rounded-full">
-          <img :src="getAvatar" style="width: 25px; height: 25px" alt="" />
-        </div>
+          <img v-if="getAvatar" :src="getAvatar" style="width: 25px; height: 25px" alt="" />
+          <div v-else>
+            <ShowAvatarElement :event="{ name: infor.userName }"></ShowAvatarElement>
+          </div>        </div>
       </template>
       <template #postfix>
         <div>
@@ -38,7 +40,7 @@ export default {
       if (this.infor.avatar) {
         return this.infor.avatar
       }
-      return require('~/assets/images/common/user.svg')
+      return ''
     }
   },
   methods: {

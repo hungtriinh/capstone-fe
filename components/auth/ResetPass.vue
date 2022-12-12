@@ -76,7 +76,6 @@
 <script>
 import { mapState } from 'vuex'
 // import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '@/store/store.const'
-import { validPassword } from '@/utils/validate'
 
 export default {
   name: 'ResetPasswordPage',
@@ -85,7 +84,7 @@ export default {
       if (value === '') {
         callback(new Error(this.$t('validation.required', { _field_: this.$t('account.password') }).toString()))
       } else {
-        if (!validPassword(value)) {
+        if (value.length > 20 || value.length < 8) {
           callback(new Error(this.$t('validation.pass_format')))
         }
         if (this.accountForm.password_confirmation !== '') {
@@ -162,7 +161,7 @@ export default {
         if (value === '') {
           callback(new Error(this.$t('validation.required', { _field_: this.$t('account.password') }).toString()))
         } else {
-          if (!validPassword(value)) {
+          if (value.length > 20 || value.length < 8) {
             callback(new Error(this.$t('validation.pass_format')))
           }
           if (this.accountForm.password_confirmation !== '') {
