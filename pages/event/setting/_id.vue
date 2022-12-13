@@ -76,7 +76,7 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/join-request/' + id)">
-              <span class="text-bold">Yêu cầu tham gia ({{listEvent.JoinRequest}})</span>
+              <span class="text-bold">Yêu cầu tham gia chờ duyệt ({{listEvent.JoinRequest}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -87,12 +87,12 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
-              <span class="text-bold">Danh sách Yêu cầu trả tiền ({{listEvent.PaidDebtRequestSent}})</span>
+              <span class="text-bold">Yêu cầu trả tiền chờ duyệt ({{listEvent.PaidDebtRequestSent}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report/' + id)">
-              <span class="text-bold">Báo cáo chờ duyệt</span>
+              <span class="text-bold">Báo cáo chờ duyệt ({{listEvent.ReportWaiting}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -115,12 +115,22 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
+              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
+              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-report-history/' + id)">
               <span class="text-bold">Báo cáo đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <div @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
               <span style="color: #e73434" class="text-bold">Rời khỏi nhóm</span>
               <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
             </div>
@@ -135,8 +145,18 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-waiting/' + id)">
-              <span class="text-bold">Chứng từ chờ duyệt ({{listEvent.ReceiptsWaiting}})</span>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
+              <span class="text-bold">Yêu cầu trả tiền chờ duyệt ({{listEvent.PaidDebtRequestSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
+              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
+              <i class="el-icon el-icon-arrow-right "></i>
+            </div>
+            <el-divider class="divider-setting"></el-divider>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
+              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -145,7 +165,7 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <div @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
               <span style="color: #e73434" class="text-bold">Rời khỏi nhóm</span>
               <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
             </div>
@@ -160,13 +180,13 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/list-receipt/' + id)">
-              <span class="text-bold">Danh sách chứng từ ({{listEvent.ReceiptsSent}})</span>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
+              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
-              <span class="text-bold">Danh sách Yêu cầu trả tiền ({{listEvent.PaidDebtRequestSent}})</span>
+            <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
+              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -175,7 +195,7 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div @click="closeEvent" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <div @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
               <span style="color: #e73434" class="text-bold">Rời khỏi nhóm</span>
               <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
             </div>

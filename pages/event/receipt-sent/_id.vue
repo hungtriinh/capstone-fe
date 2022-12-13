@@ -2,7 +2,7 @@
   <div class="main-login list-receipt-page">
     <div>
       <div class="login login-width login-mobile">
-        <el-page-header content="Lịch sử chứng từ đã duyệt" @back="goBack">
+        <el-page-header content="Chứng từ đã gửi" @back="goBack">
         </el-page-header>
         <el-empty v-if="!listEvent.length" description="Không có chứng từ nào"></el-empty>
         <div v-else>
@@ -13,8 +13,8 @@
                   <el-image v-show="!item.imageLinks.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
                   <el-image v-for="(img, key) in item.imageLinks" :key="key" :src="img" :preview-src-list="item.imageLinks" class="image"/>
                 </div>
-<!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
-                  <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmountFormat }}<i class="el-icon el-icon-arrow-right"></i></span>
+                <!--                <span class="text-bold money">{{ item.receiptAmount }}<i class="el-icon el-icon-arrow-right"></i></span>-->
+                <span @click="openDetailDialog(item.receiptId)" class="text-bold d-flex money">{{ item.receiptAmountFormat }}<i class="el-icon el-icon-arrow-right"></i></span>
               </div>
               <div class="">
                 <div class="flex-between">
@@ -27,7 +27,7 @@
                   <div>
                     <time class="time">{{ item.date }}</time>
                     <br>
-<!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
+                    <!--                    <div><span class="text-bold">{{ item.receiptName }}</span>: <span class="text-bold money">{{ item.receiptAmount }}</span></div>-->
                     <div><span class="text-bold">{{ item.receiptName }}</span></div>
 
                   </div>
@@ -85,7 +85,7 @@
 <script>
 import {
   REQUEST_APPROVE,
-  GET_RECEIPT_HANDLE,
+  GET_LIST_DOCUMENT,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   RECEIPT_DETAIL
@@ -124,7 +124,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(GET_RECEIPT_HANDLE, this.id)
+        const response = await this.$store.dispatch(GET_LIST_DOCUMENT, this.id)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data

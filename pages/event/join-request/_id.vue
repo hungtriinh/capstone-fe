@@ -3,7 +3,7 @@
     <div>
       <div class="login login-width login-mobile">
         <div class="d-flex justify-between">
-          <el-page-header content="Yêu cầu tham gia" @back="goBack">
+          <el-page-header content="Yêu cầu tham gia chờ duyệt" @back="goBack">
           </el-page-header>
           <el-tooltip class="item" effect="dark" content="History" placement="bottom">
             <i @click="handleRouter('history/' + id)" class="el-icon el-icon-time" ></i>
@@ -49,7 +49,13 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-import { REQUEST_APPROVE, GET_REQUEST_WAITING, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
+import {
+  REQUEST_APPROVE,
+  GET_REQUEST_WAITING,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS,
+  INDEX_SET_ERROR
+} from '~/store/store.const'
 
 export default {
   name: 'RequestPage',
@@ -143,8 +149,23 @@ export default {
             text: response.message
           })
           this.getListEvent()
+        } else if (response.statusCode === 406) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+          this.getListEvent()
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.data
+          })
         }
       } catch (e) {
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Có lỗi xảy ra'
+        })
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
