@@ -195,7 +195,8 @@ export default {
       isValid: false,
       addMember: false,
       listId: [],
-      listFriend: []
+      listFriend: [],
+      base64Image: ''
     }
   },
   computed: {
@@ -256,6 +257,11 @@ export default {
       }
       this.$refs.fileUploadAvatar.value = null
     },
+    isHeic(file) {
+      const x = file.type ? file.type.split('image/').pop() : file.name.split('.').pop().toLowerCase()
+      console.log(x)
+      return x === 'heic' || x === 'heif'
+    },
     async onFileChangeDetail(e) {
       for (let x = 0; x < e.target.files.length; x++) {
         const valid = this.checkFile(e.target.files[x])
@@ -302,7 +308,28 @@ export default {
       this.$refs.fileUploadDetail.value = null
       await this.$store.commit(INDEX_SET_LOADING, false)
     },
-
+    createBase64Image(file) {
+      const theReader = new FileReader()
+      theReader.onloadend = async() => {
+        this.base64Image = await theReader.result
+        const extension = this.getFileExtension(file)
+        const mimeType = file.type
+        const removePostfix = `data:${mimeType};base64,`
+        const base64Code = this.base64Image.replace(removePostfix, '')
+        console.log('file', extension, mimeType)
+        console.log('base64Code', removePostfix, base64Code)
+        console.log('this.base64Image', this.base64Image)
+        this.$emit('change', file, base64Code, extension, mimeType)
+      }
+      theReader.readAsDataURL(file)
+    },
+    getFileExtension(file) {
+      if (file) {
+        const extension = file.name.split('.').pop()
+        return extension
+      }
+      return ''
+    },
     async upLoadFile(type) {
       // const formData = new FormData()
       // formData.append('image', this.file)

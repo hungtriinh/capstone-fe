@@ -51,6 +51,9 @@ export const DEBT_GET_ALL_DEBT = 'getAllDebt'
 export const DEBT_GET_ALL_RECEIPT = 'getAllReceipt'
 export const DEBT_CLICK_I = 'clickIbutton'
 export const DEBT_REMIND = 'clickRemind'
+export const PAID_WAITING = 'getPaidRequest'
+export const PAID_ACCEPT = 'acceptPaid'
+export const GET_PAID_HANDLE = 'getPaidHandle'
 
 // join request
 export const GET_REQUEST_WAITING = 'getRequestWaiting'
@@ -59,6 +62,7 @@ export const REQUEST_APPROVE = 'approveRequest'
 
 // list-document
 export const GET_LIST_DOCUMENT = 'getListDocument'
+export const GET_RECEIPT_HANDLE = 'getReceiptHandle'
 
 // event
 export const GET_SHARE_LINK = 'getShareLink'

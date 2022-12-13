@@ -127,6 +127,16 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-sent/EventId=${data}`), context)
     })
   },
+  getReceiptHandle(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`receipt/receipt-handled/EventId=${data}`), context)
+    })
+  },
+  getPaidHandle(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-handled/EventId=${data}`), context)
+    })
+  },
   getReceiptDetail(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`receipt/receipt-detail/ReceiptId=${data}`), context)
@@ -156,6 +166,16 @@ export const actions = {
   getDebtDetail(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-detail/PaidId=${data}`), context)
+    })
+  },
+  getPaidRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`paidDebt/paidSent-waiting/eventId=${data}`), context)
+    })
+  },
+  acceptPaid(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('paidDebt/paid-approve', data), context)
     })
   },
   getAllDebt(context, data) {
