@@ -162,7 +162,7 @@ h5 {
 }
 
 .d-flex {
-  display: flex
+  display: flex;
 }
 .flex-wrap {
   flex-wrap: wrap;
@@ -171,6 +171,12 @@ h5 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.text-elipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .inline-flex {

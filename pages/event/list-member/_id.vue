@@ -80,7 +80,7 @@
       </div>
       <AddRoleMemberModal
         v-show="addMember"
-        :list-friend="listFriend"
+        :list-friend="listPromote"
         :list-id="listId"
         @close="closeAddMemberModal"
       >
@@ -96,6 +96,7 @@ import { mapState } from 'vuex'
 import {
   MEMBER_REMOVE,
   MEMBER_GET_ALL,
+  PROMOTE_GET_ALL,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR,
@@ -121,6 +122,7 @@ export default {
       addMember: false,
       listId: [],
       listFriend: [],
+      listPromote: [],
       chooseMember: [],
       roleType: ''
     }
@@ -135,6 +137,7 @@ export default {
   },
   created() {
     this.getListEvent()
+    this.getListPromote()
   },
   mounted() {
   },
@@ -151,6 +154,22 @@ export default {
           this.listEvent = data
           this.listFriend = data.members
           this.listFriend.forEach((element) => {
+            this.listId.push(element.userId)
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async getListPromote() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(PROMOTE_GET_ALL, this.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.listPromote = data
+          this.listPromote.forEach((element) => {
             this.listId.push(element.userId)
           })
         }

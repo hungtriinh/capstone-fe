@@ -116,12 +116,12 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
-              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
+              <span class="text-bold">Chứng từ đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
-              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
+              <span class="text-bold">Yêu cầu trả tiền đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -146,17 +146,17 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-request/' + id)">
-              <span class="text-bold">Yêu cầu trả tiền chờ duyệt ({{listEvent.PaidDebtRequestSent}})</span>
+              <span class="text-bold">Yêu cầu trả tiền chờ duyệt ({{listEvent.PaidRequestNumber}})</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
-              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
+              <span class="text-bold">Chứng từ đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
-              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
+              <span class="text-bold">Yêu cầu trả tiền đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
@@ -181,12 +181,12 @@
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/receipt-sent/' + id)">
-              <span class="text-bold">Chứng từ đã gửi ({{listEvent.ReceiptsSent}})</span>
+              <span class="text-bold">Chứng từ đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
             <div class="item-setting d-flex cursor-pointer items-center justify-between" @click="handleRouter('/event/paid-sent/' + id)">
-              <span class="text-bold">Yêu cầu trả tiền đã gửi ({{listEvent.PaidDebtSent}})</span>
+              <span class="text-bold">Yêu cầu trả tiền đã gửi</span>
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>

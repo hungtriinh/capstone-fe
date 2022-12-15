@@ -209,6 +209,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`member/eventId=${data}`), context)
     })
   },
+  getlistPromote(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`member/list-promote/eventId=${data}`), context)
+    })
+  },
   removeMember(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/member/remove-member', data), context)
@@ -307,6 +312,11 @@ export const actions = {
   searchFriend(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('friend/search-friend?phonenumber=' + data), context)
+    })
+  },
+  searchListFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend?phonenumber=' + data), context)
     })
   },
   sendFriend(context, data) {

@@ -13,7 +13,7 @@
       >
         <el-input
           v-model="accountForm.search"
-          placeholder="Search"
+          placeholder="Tìm kiếm theo số điện thoại"
           prefix-icon="el-icon-search"
           @keyup.enter.native="searchFriend">
         </el-input>

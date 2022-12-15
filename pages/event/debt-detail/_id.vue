@@ -55,7 +55,7 @@
       <span class="time">{{ receiptDetail.date }}</span>
       <div class="event-item">
         <el-timeline class="receipt-detail-card">
-          <div class="event-title d-flex justify-between items-center cursor-pointer">
+          <div class="event-title d-flex flex-wrap justify-between items-center cursor-pointer">
             <div class="d-flex gap-5 items-center event-name">
               <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
               <div class="event-content">
@@ -68,7 +68,7 @@
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
-              <div class="d-flex justify-between">
+              <div class="d-flex justify-between flex-wrap">
                 <span class="text-normal-sm">{{ user.name }}</span>
                 <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
               </div>

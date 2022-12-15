@@ -137,7 +137,7 @@
       </div>
       <div class="event-item">
         <el-timeline class="receipt-detail-card">
-          <div class="event-title d-flex justify-between items-center cursor-pointer">
+          <div class="event-title flex-wrap d-flex justify-between items-center cursor-pointer">
             <div class="d-flex gap-5 items-center event-name">
               <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
               <div class="event-content">
