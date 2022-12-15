@@ -2,7 +2,7 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center text-[#011A51] font-semibold">Sự kiện</h3>
+        <h3 class="title text-center text-[#011A51] font-semibold">Sự kiện1234</h3>
 
         <div class="search-box d-flex items-center gap-10" >
           <el-input
