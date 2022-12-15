@@ -2,15 +2,25 @@
   <div class="main-login">
     <div>
       <div class="login login-width login-mobile">
-        <h3 class="title text-center text-[#011A51] font-semibold">Sự kiện1234</h3>
+        <h3 class="title text-center text-[#011A51] font-semibold">Sự kiện</h3>
 
         <div class="search-box d-flex items-center gap-10" >
-          <el-input
-            v-model="search"
-            placeholder="Search"
+          <el-form
+            ref="accountForm"
+            style="width: 100%"
+            :model="accountForm"
+            autocomplete="off"
+            label-position="left"
+            @submit.native.prevent
+          >
+            <el-input
+              v-model="accountForm.search"
+              placeholder="Tìm kiếm sự kiện"
+              @keyup.enter.native="searchEvent">
             prefix-icon="el-icon-search">
-          </el-input>
-          <img @click="handleRouter('/qr-scan')" src="~/assets/images/icons/qr-scan.svg" alt="">
+            </el-input>
+          </el-form>
+          <img src="~/assets/images/icons/qr-scan.svg" alt="" @click="handleRouter('/qr-scan')">
         </div>
 
         <div class="main-content-event">
@@ -22,8 +32,8 @@
                   <el-badge is-dot class="event-status item" :type="item.eventStatus === 0 ?  '' : 'success'">
                     <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
                   </el-badge>
-                  <div class="event-content">
-                    <h4 class="title text-bold">{{ item.eventName }}</h4>
+                  <div class="event-content ">
+                    <h4 class="text-elipsis title text-bold">{{ item.eventName }}</h4>
                   </div>
                   <i style="margin-left: -5px" class="el-icon event-navi el-icon-arrow-right"></i>
 
@@ -33,13 +43,13 @@
                   <i style="margin-left: 3px" class=" el-icon-document"></i>
                 </div>
               </div>
-              <el-timeline-item placement="top" v-if="item.debt.totalPeople !== 0">
+              <el-timeline-item v-if="item.debt.totalPeople !== 0" placement="top">
                 <el-card>
                   <span class="text-normal-sm">Bạn nợ {{ item.debt.totalPeople }} người khác</span>
                   <span class="text-red"> {{ item.debt.money.amountFormat }}</span>
                 </el-card>
               </el-timeline-item>
-              <el-timeline-item placement="top" v-if="item.receive.totalPeople !== 0">
+              <el-timeline-item v-if="item.receive.totalPeople !== 0" placement="top">
                 <el-card>
                   <span class="text-normal-sm">{{ item.receive.totalPeople }} người khác nợ bạn </span>
                   <span class="text-green"> {{ item.receive.money.amountFormat }}</span>
@@ -59,7 +69,7 @@
 // import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
 // import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 // import { validPhoneNoPrefix } from '@/utils/validate'
-import { GET_EVENT_LIST, INDEX_SET_LOADING } from '~/store/store.const'
+import { GET_EVENT_LIST, INDEX_SET_LOADING, EVENT_SEARCH, INDEX_SET_ERROR } from '~/store/store.const'
 
 export default {
   name: 'MainPage',
@@ -69,7 +79,9 @@ export default {
   },
   data() {
     return {
-      search: '',
+      accountForm: {
+        search: ''
+      },
       listEvent: []
     }
   },
@@ -91,10 +103,32 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
-
-      this.listEvent.forEach(element => {
-        element.icon_fake = require('@/assets/images/event.png')
-      })
+    },
+    async searchEvent() {
+      if (this.accountForm.search === '' || this.accountForm.search.trim() === '') {
+        this.getListEvent()
+      } else {
+        this.$store.commit(INDEX_SET_LOADING, true)
+        try {
+          const response = await this.$store.dispatch(EVENT_SEARCH, this.accountForm.search)
+          const { data, statusCode } = response
+          if (statusCode === 202) {
+            this.listEvent = data
+          } else {
+            await this.$store.commit(INDEX_SET_ERROR, {
+              show: true,
+              text: response.message
+            })
+          }
+        } catch (e) {
+          this.$store.commit(INDEX_SET_LOADING, false)
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: 'Có lỗi xảy ra'
+          })
+        }
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
     },
     handleRouter(router) {
       this.$router.push(router)

@@ -7,7 +7,9 @@
         placeholder="Search"
         prefix-icon="el-icon-search">
       </el-input>
-      <div class="">
+      <el-empty v-if="!listFriend.length" description="Không có thành viên nào"></el-empty>
+
+      <div velse class="">
         <el-checkbox-group v-model="checkedFriends" class="checkbox-group" @change="handleCheckedCitiesChange">
           <div v-for="(item, key) in listFriend" :key="key" class="checkbox-item">
             <el-checkbox :label="item.userId" :value="item.userId"></el-checkbox>

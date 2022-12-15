@@ -18,8 +18,7 @@
         <el-empty v-if="!notification.length" description="Không có hoạt động nào"></el-empty>
 
         <el-card v-else v-for="(item, key) in notification" :key="key" :body-style="{ padding: '10px' }" class=" card-item mb-10 ">
-          <div class="text-bold text-blue">
-            {{item.content}}
+          <div v-html="item.content" class="text-normal text-blue">
           </div>
           <span class="time">{{item.date}}</span>
         </el-card>

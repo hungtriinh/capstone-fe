@@ -49,12 +49,17 @@ export const actions = {
   },
   getEventList(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.get('eventhihi'), context)
+      handleApi(resolve, reject, this.$axios.get('event'), context)
     })
   },
   getFriendList(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('friend'), context)
+    })
+  },
+  searchEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('event/search/name=' + data), context)
     })
   },
   createEvent(context, data) {
@@ -204,6 +209,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`member/eventId=${data}`), context)
     })
   },
+  getlistPromote(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`member/list-promote/eventId=${data}`), context)
+    })
+  },
   removeMember(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/member/remove-member', data), context)
@@ -299,6 +309,27 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.post('friend/response-request', data), context)
     })
   },
+  searchFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend/search-friend?phonenumber=' + data), context)
+    })
+  },
+  searchListFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend?phonenumber=' + data), context)
+    })
+  },
+  sendFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('friend/friend-request', data), context)
+    })
+  },
+  countFriend(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend/request-count'), context)
+    })
+  },
+  // faq
   getFAQ(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('FAQ', data), context)

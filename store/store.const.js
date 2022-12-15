@@ -68,9 +68,11 @@ export const GET_RECEIPT_HANDLE = 'getReceiptHandle'
 export const GET_SHARE_LINK = 'getShareLink'
 export const EVENT_CLOSE = 'closeEvent'
 export const EVENT_EDIT = 'editEvent'
+export const EVENT_SEARCH = 'searchEvent'
 
 // member
 export const MEMBER_GET_ALL = 'getAllMember'
+export const PROMOTE_GET_ALL = 'getlistPromote'
 export const MEMBER_REMOVE = 'removeMember'
 export const MEMBER_PROMOTE = 'promoteMember'
 export const MEMBER_ROLE_REMOVE = 'removeRoleMember'
@@ -101,6 +103,10 @@ export const FRIEND_LIST_REQUEST = 'getListFriendRequest'
 export const FRIEND_SEND_REQUEST = 'sendFriendRequest'
 export const FRIEND_DELETE_REQUEST = 'deleteFriendRequest'
 export const FRIEND_RESPONSE_REQUEST = 'responseFriendRequest'
+export const FRIEND_SEARCH = 'searchFriend'
+export const FRIEND_SEARCH_LIST = 'searchListFriend'
+export const FRIEND_SEND = 'sendFriend'
+export const FRIEND_COUNT = 'countFriend'
 
 // faq
 export const FAQ_LIST = 'getFAQ'
