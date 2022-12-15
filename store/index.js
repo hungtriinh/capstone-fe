@@ -49,7 +49,7 @@ export const actions = {
   },
   getEventList(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.get('event'), context)
+      handleApi(resolve, reject, this.$axios.get('eventhihi'), context)
     })
   },
   getFriendList(context, data) {
