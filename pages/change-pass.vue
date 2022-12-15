@@ -205,8 +205,8 @@ export default {
         await this.$store.commit(INDEX_SET_LOADING, true)
         const dto = {
           password: this.accountForm.password,
-          password_confirmation: this.accountForm.password_confirmation,
-          name: this.accountForm.name
+          new_password: this.accountForm.new_password,
+          password_confirmation: this.accountForm.password_confirmation
         }
         const data = await this.$store.dispatch(CHANGE_PASS, {
           ...dto

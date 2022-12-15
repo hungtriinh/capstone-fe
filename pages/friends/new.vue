@@ -1,9 +1,26 @@
 <template>
   <div class="main-login">
-    <div class="d-flex justify-center mb-5">
-        Search Bar Here
+    <el-page-header content="Tìm kiếm bạn bè" @back="$router.push('/friends')">
+    </el-page-header>
+    <div class="main-content"></div>
+    <div class="justify-center mb-5">
+      <el-form
+        ref="accountForm"
+        :model="accountForm"
+        autocomplete="off"
+        label-position="left"
+        @submit.native.prevent
+      >
+        <el-input
+          v-model="accountForm.search"
+          placeholder="Search"
+          prefix-icon="el-icon-search"
+          @keyup.enter.native="searchFriend">
+        </el-input>
+      </el-form>
     </div>
-    <div class="d-flex justify-center">
+    <el-empty v-if="!listFriend.length" description="Không có người dùng khả dụng"></el-empty>
+    <div v-else class="d-flex justify-center">
       <div>
         <FriendNew
           v-for="(item, index) in listFriend"
@@ -19,26 +36,71 @@
 
 <script>
 import FriendNew from '@/components/friends/FriendNew.vue'
-const MOCK_FRIEND = [
-  { id: 1, name: 'Tran Viet Huy' },
-  { id: 2, name: 'Trinh Hoang Hung' },
-  { id: 3, name: 'Nguyen Huy Hoang' }
-]
+import {
+  FRIEND_SEARCH,
+  INDEX_SET_ERROR,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS,
+  FRIEND_SEND
+} from '~/store/store.const'
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'New',
+  name: 'NewPage',
   components: {
     FriendNew
   },
-  props: {
-    listFriend: {
-      type: Array,
-      default: () => ([...MOCK_FRIEND])
+  data() {
+    return {
+      accountForm: {
+        search: ''
+      },
+      search: '',
+      listFriend: []
     }
   },
+  created() {
+    this.searchFriend()
+  },
   methods: {
-    handleAddFriend(friend) {
+    async handleAddFriend(friend) {
       console.log('accept', friend)
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_SEND, {
+          UserFriendID: friend.userId
+        })
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.message
+          })
+        }
+      } catch (e) {
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Có lỗi xảy ra'
+        })
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async searchFriend() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_SEARCH, this.accountForm.search)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.listFriend = data
+        }
+        console.log(this.listFriend)
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }

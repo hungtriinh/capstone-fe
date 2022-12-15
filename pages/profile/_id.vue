@@ -37,7 +37,7 @@
           </Card>
         </div>
         <div class="my-[8px]">
-          <Card :text-color="'white'" :title="$t('profile.faqs')" @click="handleRouter('faq')">
+          <Card :text-color="'white'" :title="$t('profile.faqs')" @click="handleRouter('/faq')">
             <template #prefix>
               <div class="p-[6px] bg-neutral-200 rounded-full">
                 <img src="~/assets/images/common/bell.svg" alt="" />

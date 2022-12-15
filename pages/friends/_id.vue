@@ -1,7 +1,11 @@
 <template>
   <div class="main-login">
     <div class="search d-flex justify-between items-center mb-5">
-      <div>Search Bar Here</div>
+      <el-input
+        v-model="search"
+        placeholder="Search"
+        prefix-icon="el-icon-search">
+      </el-input>
       <div>
         <img src="~/assets/images/common/add-friend.svg" alt="" class="cursor-pointer" @click="handleGoToNewFriends"/>
       </div>
@@ -18,7 +22,7 @@
         class="text-[#848484] font-semibold pb-1 cursor-pointer"
         :class="{ 'tab-selected': selectedTab === 'friendRequest' }"
       >
-        <el-badge :value="12" class="item">
+        <el-badge :value="count" class="item">
           <span @click="handleChangeTab('friendRequest')">{{
             $t('friends.friends_request')
           }}</span>
@@ -41,7 +45,7 @@
 <script>
 import CurrentFriendTab from '@/components/friends/CurrentFriendTab.vue'
 import RequestFriendTab from '@/components/friends/RequestFriendTab.vue'
-import { FRIEND_LIST, FRIEND_LIST_REQUEST, INDEX_SET_LOADING } from '~/store/store.const'
+import { FRIEND_LIST, FRIEND_LIST_REQUEST, INDEX_SET_LOADING, FRIEND_COUNT } from '~/store/store.const'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Friends',
@@ -53,12 +57,14 @@ export default {
     return {
       selectedTab: 'friendList',
       listFriend: [],
-      listRequestFriend: []
+      listRequestFriend: [],
+      count: ''
     }
   },
   created() {
     this.getListFriend()
     this.getListRequest()
+    this.countFriend()
   },
   methods: {
     handleChangeTab(tab) {
@@ -87,6 +93,19 @@ export default {
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listRequestFriend = data
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async countFriend() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_COUNT)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.count = data
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
