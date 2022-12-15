@@ -23,7 +23,7 @@
                     <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
                   </el-badge>
                   <div class="event-content">
-                    <h4 class="title text-bold">{{ item.eventName }}234234</h4>
+                    <h4 class="title text-bold">{{ item.eventName }}</h4>
                   </div>
                   <i style="margin-left: -5px" class="el-icon event-navi el-icon-arrow-right"></i>
 
