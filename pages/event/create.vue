@@ -47,6 +47,19 @@
               <el-button class="add-member" @click="showAddMemberModal">{{ $t('event.add_member') }}</el-button>
             </div>
           </div>
+          <el-card  v-for="(receipt, key) in listDisplay" :key="key" :body-style="{ padding: '10px' }" class=" card-item mb-10 ">
+            <div class="d-flex justify-between">
+              <div class="d-flex gap-10 items-center">
+                <div>
+                  <ShowAvatarElement :event="{ name: receipt.userPhone }"></ShowAvatarElement>
+                </div>
+                <div>
+                  <span class="text-bold">{{ receipt.userName }}</span><br>
+                  <span class="time">{{ receipt.userPhone }}</span>
+                </div>
+              </div>
+            </div>
+          </el-card>
           <el-form-item>
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
@@ -117,6 +130,7 @@ export default {
       isValid: false,
       addMember: false,
       listId: [],
+      listDisplay: [],
       listFriend: []
     }
   },
@@ -124,6 +138,18 @@ export default {
     ...mapState(['listFriends']),
     disabledButton() {
       return this.accountForm.eventName === '' || this.accountForm.eventDescript === ''
+    }
+  },
+  watch: {
+    listFriends(newValue, oldValue) {
+      const listDisplay = []
+      this.listFriend.forEach((element) => {
+        if (this.listFriends.includes(element.userId)) {
+          console.log(element)
+          listDisplay.push(element)
+        }
+      })
+      this.listDisplay = listDisplay
     }
   },
   created() {

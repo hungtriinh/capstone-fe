@@ -90,11 +90,18 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
+import {
+  AUTH_SIGNUP,
+  INDEX_SET_ERROR,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS
+} from '@/store/store.const'
 import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 
 export default {
   name: 'RegisterPage',
+  props: ['user_register', 'user_login'],
+
   // middleware: 'auth-guard',
   data() {
     const validatePass = (rule, value, callback) => {
@@ -127,7 +134,9 @@ export default {
       user: {},
       step: 3,
       accountForm: {
-        phone: '',
+        name: '',
+        password: '',
+        password_confirmation: '',
         errors: {}
       },
       errorResponse: [],
@@ -204,49 +213,32 @@ export default {
       this.accountForm.errors[ref] = ''
     },
     async register() {
-      this.errorResponse = []
-      this.isEditing = false
-      this.error = { key: null, value: '' }
+      console.log('asdfdsf')
       await this.validateForm()
       if (!this.isValid) {
         return
       }
-      this.step = 2
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        if (this.captcha == null || !this.captcha) {
-          const token = await this.$recaptcha.getResponse()
-          this.captcha = token.toString()
-        }
-        let dto = {
-          email: this.accountForm.email,
-          password: this.accountForm.password,
-          password_confirmation: this.accountForm.password_confirmation,
-          name: this.accountForm.name
-        }
-        if (this.accountForm.invite_code != null && this.accountForm.invite_code !== '') {
-          dto = { ...dto, invite_code: this.accountForm.invite_code }
-        }
-        const data = await this.$store.dispatch(AUTH_REGISTER, {
-          ...dto,
-          'g-recaptcha-response': this.captcha
+
+        const data = await this.$store.dispatch(AUTH_SIGNUP, {
+          'Phone': this.user_register,
+          'Name': this.accountForm.name,
+          'Password': this.accountForm.password
         })
-        switch (data.status_code) {
-          case 200:
+        switch (data.statusCode) {
+          case 202:
             this.$store.commit(INDEX_SET_SUCCESS, {
               show: true,
               text: data.message
             })
-            this.$store.commit(SET_EMAIL, this.accountForm.email)
-            this.token = data.data.token
-            this.user = { ...dto, 'g-recaptcha-response': this.captcha }
-            this.step = 2
+            this.$emit('changeStep', 3)
             break
-          case 422:
-            for (const [k] of Object.entries(data.data)) {
-              this.error = { key: k, value: data.data[k][0] }
-              this.errorResponse.push({ key: k, value: data.data[k][0] })
-            }
+          case 406:
+            this.$store.commit(INDEX_SET_ERROR, {
+              show: true,
+              text: data.message
+            })
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
@@ -254,9 +246,6 @@ export default {
         }
       } catch (err) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
-      }
-      if (this.isCaptchaExpireOrError) {
-        this.captcha = ''
       }
       this.$store.commit(INDEX_SET_LOADING, false)
     },

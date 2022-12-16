@@ -73,14 +73,14 @@
       </div>
     </el-form>
     <el-switch
-      v-model="friendSw"
+      v-model="AllowAddFriendStatus"
       style="display: block; margin-bottom: 30px"
       inactive-color="#ff4949"
       active-color="#13ce66"
       inactive-text="CHO PHÉP KẾT BẠN">
     </el-switch>
     <el-switch
-      v-model="groupSw"
+      v-model="AllowInviteEventStatus"
       style="display: block"
       inactive-text="CHO PHÉP THÊM VÀO NHÓM"
       inactive-color="#ff4949"
@@ -133,8 +133,8 @@ export default {
       fullscreenLoading: false,
       isValid: false,
       addMember: false,
-      friendSw: false,
-      groupSw: false,
+      AllowAddFriendStatus: false,
+      AllowInviteEventStatus: false,
       listId: [],
       listFriend: []
     }
@@ -155,8 +155,9 @@ export default {
       try {
         const response = await this.$store.dispatch(PROFILE_UPDATE, {
           Avatar: this.accountForm.avatar,
-          Phone: this.accountForm.eventName,
-          Name: this.accountForm.eventDescript
+          UserName: this.accountForm.eventDescript,
+          AllowAddFriendStatus: this.AllowAddFriendStatus ? 1 : 0,
+          AllowInviteEventStatus: this.AllowInviteEventStatus ? 1 : 0
         })
         if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
@@ -164,6 +165,7 @@ export default {
             text: response.message
           })
           this.$auth.fetchUser()
+          this.$router.push('/profile')
         } else {
           await this.$store.commit(INDEX_SET_ERROR, {
             show: true,

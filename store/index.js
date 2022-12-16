@@ -42,6 +42,21 @@ export const mutations = {
 }
 
 export const actions = {
+  sendOtp(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('signup/send-otp', data), context)
+    })
+  },
+  checkOtp(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('signup/check-otp', data), context)
+    })
+  },
+  signup(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('signup/register', data), context)
+    })
+  },
   uploadFile(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/upload-image', data), context)
@@ -60,6 +75,11 @@ export const actions = {
   searchEvent(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('event/search/name=' + data), context)
+    })
+  },
+  getEventIntroduce(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('event/EventIntroduce/EventId=' + data), context)
     })
   },
   createEvent(context, data) {
@@ -276,7 +296,7 @@ export const actions = {
   },
   checkJoinEvent(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.post(`event/join/eventid=${data}`), context)
+      handleApi(resolve, reject, this.$axios.post(`event/join/eventId=${data}`), context)
     })
   },
   eventRequest(context, data) {

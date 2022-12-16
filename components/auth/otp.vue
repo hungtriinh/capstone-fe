@@ -7,7 +7,7 @@
       :rules="otpRules"
       autocomplete="off"
       label-position="left"
-      @keyup.enter.native="submit"
+      @keyup.enter.native="checkOtp"
     >
       <!-- <div class="otp-title-register">{{ $t('otp.otpTitle') }}</div> -->
       <!-- <div class="otp-content-register">{{ $t('otp.otpContent') }}</div> -->
@@ -44,7 +44,7 @@
             v-loading.fullscreen.lock="fullscreenLoading"
             :loading="loading"
             :disabled="disabledButton"
-            @click.native="submit"
+            @click.native="checkOtp"
           >
             {{ $t('otp.submit') }}
           </el-button>
@@ -62,8 +62,9 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 import {
+  AUTH_CHECK_OTP,
   AUTH_RESEND_OTP,
   AUTH_VERIFY_REGISTER_OTP,
   INDEX_SET_ERROR,
@@ -110,7 +111,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['email']),
+    // ...mapState(['email']),
     disabledButton() {
       if (this.otpForm.verifyCode.length < LENGTH_CODE_OTP) {
         return true
@@ -263,6 +264,41 @@ export default {
           clearInterval(interval)
         }
       }, 1000)
+    },
+    checkOtp() {
+      this.$refs.otpForm.validate(async valid => {
+        if (valid) {
+          try {
+            await this.$store.commit(INDEX_SET_LOADING, true)
+
+            const data = await this.$store.dispatch(AUTH_CHECK_OTP, {
+              'Phone': this.user_register,
+              'Enter': this.getOtp()
+            })
+            switch (data.statusCode) {
+              case 202:
+                this.$store.commit(INDEX_SET_SUCCESS, {
+                  show: true,
+                  text: data.message
+                })
+                this.$emit('changeStep', 3)
+                break
+              case 406:
+                this.$store.commit(INDEX_SET_ERROR, {
+                  show: true,
+                  text: data.message
+                })
+                break
+              default:
+                this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+                break
+            }
+          } catch (err) {
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+          }
+          this.$store.commit(INDEX_SET_LOADING, false)
+        }
+      })
     },
     async resendOtp() {
       this.isResendOtp = true

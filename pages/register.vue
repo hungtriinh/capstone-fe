@@ -4,7 +4,7 @@
       <div class="login login-width login-mobile">
         <h3 class="title text-center text-[#011A51]">{{ $t('register.title') }}</h3>
         <p class="text-[#727E96] text-center font-light">{{getRegisterMessage}}</p>
-        <p v-if="step === 2">{{accountForm.phone}}</p>
+        <p v-if="step === 2" class="text-center">{{getPhoneFormat}}</p>
         <div class="d-flex justify-center pt-8">
           <img :src="getBackgroundImage" alt="">
         </div>
@@ -51,7 +51,7 @@
                 :loading="loading"
                 type="custom-primary"
                 :disabled="disabledButton"
-                @click.native="register"
+                @click.native="sendOtp"
               >
                 {{ $t('register.send_sms') }}
               </el-button>
@@ -59,10 +59,10 @@
           </el-form-item>
         </el-form>
         <div v-if="step===2" class="otp pt-8">
-          <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
+          <otp-page @changeStep="changeStep" :type="typeVerify" :token="token" :user_register="getPhoneFormat"></otp-page>
         </div>
         <div v-if="step===3" class="otp">
-          <forgot-pass :type="typeVerify" :token="token" :user_register="user"></forgot-pass>
+          <forgot-pass :type="typeVerify" :token="token" :user_register="getPhoneFormat"></forgot-pass>
         </div>
         <div class="d-flex align-items-center text-center font-normal" style="margin-top: 1.5rem">
               <span class="pr-[4px]">
@@ -77,8 +77,15 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
-import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
+import {
+  AUTH_SEND_OTP,
+  INDEX_SET_ERROR,
+  INDEX_SET_LOADING,
+  AUTH_CHECK_OTP,
+  INDEX_SET_SUCCESS
+} from '@/store/store.const'
 import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 import { validPhoneNoPrefix } from '@/utils/validate'
 import OtpPage from '@/components/auth/otp'
@@ -155,6 +162,10 @@ export default {
         return this.$t('register.welcome_message')
       }
     },
+    getPhoneFormat() {
+      const phone = _.cloneDeep(this.accountForm.phone)
+      return '+84' + (phone.startsWith('0') ? phone.slice(1, phone.length) : phone)
+    },
     getBackgroundImage() {
       return require(`~/assets/images/register/register-icon-${this.step}.svg`)
     }
@@ -178,41 +189,64 @@ export default {
       this.$refs.accountForm.fields.find((f) => f.prop === ref).clearValidate()
       this.accountForm.errors[ref] = ''
     },
-    async register() {
-      this.errorResponse = []
-      this.isEditing = false
-      this.error = { key: null, value: '' }
+    changeStep(step) {
+      this.step = step
+    },
+    async sendOtp() {
       await this.validateForm()
       if (!this.isValid) {
         return
       }
-      this.step = 2
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
-        const dto = {
-          email: this.accountForm.email,
-          password: this.accountForm.password,
-          password_confirmation: this.accountForm.password_confirmation,
-          name: this.accountForm.name
-        }
-        const data = await this.$store.dispatch(AUTH_REGISTER, {
-          ...dto
+        // const dto = {
+        //   phone: this.accountForm.phone
+        // }
+        const dto = _.cloneDeep(this.accountForm)
+
+        const data = await this.$store.dispatch(AUTH_SEND_OTP, {
+          phone: '+84' + (dto.phone.startsWith('0') ? dto.phone.slice(1, dto.phone.length) : dto.phone)
+
         })
-        switch (data.status_code) {
+        switch (data.statusCode) {
           case 202:
             this.$store.commit(INDEX_SET_SUCCESS, {
               show: true,
               text: data.message
             })
-            this.$store.commit(SET_EMAIL, this.accountForm.email)
-            this.token = data.data.token
             this.step = 2
             break
-          case 422:
-            for (const [k] of Object.entries(data.data)) {
-              this.error = { key: k, value: data.data[k][0] }
-              this.errorResponse.push({ key: k, value: data.data[k][0] })
-            }
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+            break
+        }
+      } catch (err) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async checkOtp(dto) {
+      this.step = 3
+      try {
+        await this.$store.commit(INDEX_SET_LOADING, true)
+
+        const data = await this.$store.dispatch(AUTH_CHECK_OTP, {
+          ...dto
+        })
+        switch (data.statusCode) {
+          case 202:
+            this.$store.commit(INDEX_SET_SUCCESS, {
+              show: true,
+              text: data.message
+            })
+            this.step = 3
+            break
+          case 406:
+            this.$store.commit(INDEX_SET_ERROR, {
+              show: true,
+              text: data.message
+            })
+            this.step = 3
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
