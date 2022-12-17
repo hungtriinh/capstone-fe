@@ -73,7 +73,7 @@ import { GET_EVENT_LIST, INDEX_SET_LOADING, EVENT_SEARCH, INDEX_SET_ERROR } from
 
 export default {
   name: 'MainPage',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     // ShowAvatarElement
   },

@@ -92,6 +92,21 @@
             </template>
           </Card>
         </div>
+        <div class="my-[8px]">
+          <Card :text-color="'white'" style="color: #E73434" :title="'Đăng xuất'" @click="logout">
+            <template #prefix>
+              <div class="p-[6px] bg-neutral-200 rounded-full">
+                <img class="logout-icon" src="~/assets/images/icons/logout.svg"/>
+              </div>
+            </template>
+            <template #postfix>
+              <div>
+                <img class="logout-icon" src="~/assets/images/icons/logout.svg"/>
+
+              </div>
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
@@ -134,6 +149,10 @@ export default {
     },
     handleRouter(router) {
       this.$router.push(router)
+    },
+    logout() {
+      this.$auth.strategy.token.set('')
+      this.handleRouter('/login')
     }
   },
   created() {

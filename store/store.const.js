@@ -16,6 +16,9 @@ export const AUTH_RESEND_OTP = 'authentication/reSendOtp'
 export const AUTH_VERIFY_REGISTER_OTP = 'authentication/verifyRegisterOtp'
 export const AUTH_LOGOUT = 'authentication/logout'
 export const AUTH_LOGIN = 'login'
+export const AUTH_SEND_OTP = 'sendOtp'
+export const AUTH_CHECK_OTP = 'checkOtp'
+export const AUTH_SIGNUP = 'signup'
 
 // constants
 export const AUTH_SET_ROLES = 'authentication/setRoles'
@@ -69,6 +72,7 @@ export const GET_SHARE_LINK = 'getShareLink'
 export const EVENT_CLOSE = 'closeEvent'
 export const EVENT_EDIT = 'editEvent'
 export const EVENT_SEARCH = 'searchEvent'
+export const EVENT_INTRODUCE = 'getEventIntroduce'
 
 // member
 export const MEMBER_GET_ALL = 'getAllMember'
@@ -96,6 +100,7 @@ export const PROFILE_UPDATE = 'updateProfile'
 // check-join
 export const EVENT_CHECK_JOIN = 'checkJoinEvent'
 export const EVENT_JOIN_REQUEST = 'eventRequest'
+export const EVENT_REQUEST_SENT = 'sentRequest'
 
 // friend
 export const FRIEND_LIST = 'getListFriend'
