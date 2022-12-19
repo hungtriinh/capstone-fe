@@ -111,7 +111,7 @@
           </el-card>
         </div>
         <div class="btn-group text-center">
-          <el-button v-if="receiveOrPaidAmount.color !== 'Gray' && listReceipt.eventStatus !== 0" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
+          <el-button v-if="receiveOrPaidAmount.color === 'Green ' && listReceipt.eventStatus !== 0" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
           <el-button v-if="listReceipt.eventStatus !== 0" type="primary" @click="handleRouter('/event/create-receipt/' + $route.params.id )">{{ $t('home.add_receipt') }}</el-button>
         </div>
       </div>

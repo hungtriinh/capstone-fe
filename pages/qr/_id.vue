@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      a: process.env.API_URL || 'https://api.bwallet.site/api/',
+      a: process.env.APP_URL || 'https://bwallet.site/',
       value: this.$cookies.get('eventUrl') || '',
       id: this.$route.params.id
     }
