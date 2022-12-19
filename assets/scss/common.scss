@@ -4350,6 +4350,48 @@ button {
   width: 300px;
 }
 
+// LAYOUT // 
+.menu-icon {
+  cursor: pointer;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menu-icon {
+  path, p {
+    stroke: #6B6969;
+    color: #6B6969;
+    stroke-width: 1.5;
+    transition: 0.2s all;
+  }
+}
+
+.menu-icon:hover {
+  path, p {
+    color: #28A8D7;
+    stroke: rgba(40, 168, 215, 0.7);
+  }
+}
+
+.menu-icon.is-selected {
+  path, p {
+    color: #28A8D7;
+    stroke: #28A8D7 !important;
+  }
+}
+
+
+//END LAYOUT//
+
+.el-button.is-circle {
+  padding: 8px;
+}
+
+.el-image-viewer__img {
+  width: 300px;
+}
+
 .is-selected {
   color: $color-btn-active;
 
