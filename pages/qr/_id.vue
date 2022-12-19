@@ -1,7 +1,7 @@
 <template>
   <div class="main-login">
     <div class="login login-width login-mobile">
-      <el-page-header content="" @back="$router.push('/')">
+      <el-page-header content="" @back="$router.push('/event/detail/' + id)">
       </el-page-header>
       <h3 class="title text-center">{{ $t('home.qr') }}</h3>
       <QrCodeCommon class="d-flex justify-center" :value="value"/>
@@ -10,7 +10,6 @@
         <br>
         <span class="text-bold">{{ $t('qr.share2') }}</span>
       </div>
-
       <el-form
         autocomplete="off"
         label-position="left">
@@ -18,7 +17,7 @@
         <el-form-item class="" :label="$t('qr.url')">
           <el-input
             ref="walletAddress"
-            :value="value"
+            :value="url"
             name="walletAddress"
             type="text"
             tabindex="2"
@@ -26,8 +25,8 @@
             readonly
           >
             <img
-              slot="suffix" class="cursor-pointer pd-r-10" src="~/assets/images/icons/copy.svg" alt="copy"
-              @click="copy(value)">
+              slot="suffix" class="cursor-pointer pd-0" src="~/assets/images/icons/copy.svg" alt="copy"
+              @click="copy(url)">
           </el-input>
         </el-form-item>
       </el-form>
@@ -49,13 +48,18 @@ export default {
   },
   data() {
     return {
-      value: this.$cookies.get('eventUrl') || ''
+      a: process.env.API_URL || 'https://localhost:44300/api',
+      value: this.$cookies.get('eventUrl') || '',
+      id: this.$route.params.id
     }
   },
   computed: {
     ...mapState(['listFriends']),
     disabledButton() {
       return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
+    },
+    url() {
+      return this.a + this.value + 'asdfasfsadfasdf'
     }
   },
   created() {

@@ -64,10 +64,10 @@
               </div>
             </div>
             <div v-else class="d-flex justify-center">
-                <span class="text-bold"><el-button
-                  type="primary"
-                  @click="handleRouter('/event/debt-detail/' + id)"
-                >Chi tiết</el-button></span>
+<!--                <span class="text-bold"><el-button-->
+<!--                  type="primary"-->
+<!--                  @click="handleRouter('/event/debt-detail/' + id)"-->
+<!--                >Chi tiết</el-button></span>-->
             </div>
 
           </el-card>
@@ -292,7 +292,7 @@ export default {
         const response = await this.$store.dispatch(GET_SHARE_LINK, this.id)
         if (response.statusCode === 202) {
           this.$cookies.set('eventUrl', response.data)
-          this.$router.push('/qr')
+          this.$router.push('/qr/' + this.id)
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

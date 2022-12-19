@@ -21,7 +21,7 @@
                   </div>
                 </div>
               </div>
-              <div v-else class="d-flex justify-center text-center">
+              <div v-else-if="!listEvent.inspector && role === 1" class="d-flex justify-center text-center">
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="up-role">
                     <img @click="showAddMemberModal(2)" class="cursor-pointer" src="~/assets/images/icons/add-member.svg" alt="">
@@ -31,6 +31,9 @@
                     <br><span class="text-[#011A51] font-semibold">Người kiểm duyệt</span>
                   </div>
                 </div>
+              </div>
+              <div class="text-center" v-else-if="!listEvent.inspector && role !== 1">
+                <span class=" text-[#011A51] font-semibold">Không có Người kiểm duyệt</span>
               </div>
               <div v-if="listEvent.cashier" class="d-flex justify-center text-center">
                 <div class="member-cashier-avatar d-flex items-center mt-10 gap-10">
@@ -45,16 +48,19 @@
                   </div>
                 </div>
               </div>
-              <div v-else class="d-flex justify-center text-center">
+              <div v-else-if="!listEvent.cashier && role === 1" class="d-flex justify-center text-center">
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="up-role">
                     <img class="cursor-pointer" src="~/assets/images/icons/add-member.svg" alt="" @click="showAddMemberModal(3)">
                   </div>
                   <div>
                     <span class="text-bold italic text-[#011A51]">Nhấn để thêm người thu ngân</span>
-                    <br><span class="text-[#011A51] font-semibold">Người thu ngân</span>
+                    <br><span class="text-center text-[#011A51] font-semibold">Người thu ngân</span>
                   </div>
                 </div>
+              </div>
+              <div class="text-center" v-else-if="!listEvent.cashier && role !== 1">
+                <span class="text-[#011A51] font-semibold">Không có Người thu ngân</span>
               </div>
             </el-card>
             <el-card :body-style="{ padding: '10px' }" class="card-item">
@@ -69,7 +75,7 @@
                       </div>
                     </div>
                     <div>
-                      <i class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
+                      <i v-if="item.role !== 1 && role === 1" class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
                     </div>
                   </div>
                 </div>
@@ -116,6 +122,7 @@ export default {
   },
   data() {
     return {
+      role: this.$cookies.get('getRole'),
       id: this.$route.params.id,
       search: '',
       listEvent: [],
@@ -135,9 +142,9 @@ export default {
       }
     }
   },
-  created() {
-    this.getListEvent()
-    this.getListPromote()
+  async created() {
+    await this.getListEvent()
+    await this.getListPromote()
   },
   mounted() {
   },

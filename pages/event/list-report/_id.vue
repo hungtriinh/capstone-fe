@@ -3,7 +3,7 @@
     <div>
       <div class="login login-width login-mobile">
         <div class="d-flex justify-between">
-          <el-page-header content="Danh sách Yêu cầu trả tiền" @back="goBack">
+          <el-page-header content="Danh sách Báo cáo" @back="goBack">
           </el-page-header>
           <el-tooltip class="item" effect="dark" content="History" placement="bottom">
             <i @click="handleRouter('/event/list-report-history/' + id)" class="el-icon el-icon-time" ></i>
