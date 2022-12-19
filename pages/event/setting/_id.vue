@@ -299,6 +299,7 @@ export default {
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data
+          this.$cookies.set('getRole', response.data.Role)
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

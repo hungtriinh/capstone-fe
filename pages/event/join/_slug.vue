@@ -30,7 +30,7 @@
           </el-card>
           <div class="main-content"></div>
           <div class="d-flex justify-center items-center">
-            <el-button type="primary text-center">
+            <el-button type="primary text-center" @click="joinRequest">
               Gửi yêu cầu tham gia
             </el-button>
           </div>
@@ -48,7 +48,7 @@ import {
   DEBT_GET_DETAIL,
   REPORT_CREATE,
   INDEX_SET_ERROR, INDEX_SET_SUCCESS,
-  EVENT_JOIN_REQUEST,
+  EVENT_REQUEST_SENT,
   EVENT_INTRODUCE
 } from '~/store/store.const'
 
@@ -59,6 +59,7 @@ export default {
   data() {
     return {
       search: '',
+      EventId: '',
       reportContent: '',
       receiptId: '',
       listReceipt: {},
@@ -77,8 +78,8 @@ export default {
     }
   },
   async created() {
-    await this.getListEvent()
     await this.checkJoin()
+    await this.getListEvent()
   },
   async mounted() {
   },
@@ -86,7 +87,7 @@ export default {
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(EVENT_INTRODUCE, 11)
+        const response = await this.$store.dispatch(EVENT_INTRODUCE, this.EventId)
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listEvent = data
@@ -106,22 +107,32 @@ export default {
         } else if (response.statusCode === 404) {
           console.log(response)
           this.$router.push('/404-not-found')
+        } else if (response.statusCode === 406) {
+          this.EventId = response.data.EventId
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: 'Có lỗi xảy ra'
+          })
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Có lỗi xảy ra'
+        })
       }
       this.$store.commit(INDEX_SET_LOADING, false)
     },
     async joinRequest() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(EVENT_JOIN_REQUEST, this.$route.query.eventId)
+        const response = await this.$store.dispatch(EVENT_REQUEST_SENT, this.EventId)
         if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,
             text: response.data
           })
-          this.$router.push('/')
         } else if (response.statusCode === 400) {
           await this.$store.commit(INDEX_SET_ERROR, {
             show: true,
@@ -137,7 +148,7 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
         await this.$store.commit(INDEX_SET_ERROR, {
           show: true,
-          text: 'Nhóm không tồn tại'
+          text: 'Có lỗi xảy ra'
         })
       }
       this.$store.commit(INDEX_SET_LOADING, false)

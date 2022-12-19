@@ -147,7 +147,7 @@ export default {
       this.isIndeterminate = false
     },
     goBack() {
-      this.handleRouter('/event/setting/' + this.id)
+      this.handleRouter('/event/receipt-waiting/' + this.id)
     },
     async eventAppove(id, status) {
       this.$store.commit(INDEX_SET_LOADING, true)

@@ -4228,6 +4228,9 @@ button {
 .pd-r-10 {
   padding: 15px 10px 0;
 }
+.pd-0 {
+  padding: 0;
+}
 
 // gap
 .gap-5 {
@@ -4362,3 +4365,8 @@ button {
   color: $color-black;
   font-weight: 600;
 }
+
+.el-icon-error:before {
+  color: #f56c6c;
+}
+

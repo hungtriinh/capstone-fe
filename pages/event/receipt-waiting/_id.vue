@@ -30,7 +30,12 @@
                 <div class="flex-between">
                   <div class="avatar-name d-flex items-center mt-10 gap-5">
                     <ShowAvatarElement :event="{ name: item.user.name, color: item.color }"></ShowAvatarElement>
-                    <span>{{ item.user.name }}</span>
+                    <div>
+
+                      <span>{{ item.user.name }}</span> <br>
+                      <p class="time">{{ item.user.phone}}</p>
+                    </div>
+
                   </div>
                 </div>
                 <div class="bottom">
@@ -68,6 +73,7 @@
               <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
               <div class="event-content">
                 <h4 class="title text-bold">{{ user.name }}</h4>
+                <span class="time">{{ user.phone}}</span>
               </div>
             </div>
             <div class="d-flex items-center ">

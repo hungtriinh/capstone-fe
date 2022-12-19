@@ -95,7 +95,7 @@ export default {
       this.isIndeterminate = false
     },
     goBack() {
-      this.handleRouter('/event/setting/' + this.id)
+      this.handleRouter('/event/join-request/' + this.id)
     },
     async eventAppove(status, id) {
       this.$store.commit(INDEX_SET_LOADING, true)

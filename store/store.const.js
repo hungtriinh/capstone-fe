@@ -35,6 +35,7 @@ export const GET_EVENT_LIST = 'getEventList'
 export const GET_EVENT_DETAIL = 'getEventDetail'
 export const GET_FRIEND_LIST = 'getFriendList'
 export const CREATE_EVENT = 'createEvent'
+export const EVENT_GETROLL = 'getRole'
 
 // receipt
 export const GET_RECEIPT_LIST = 'getReceiptList'

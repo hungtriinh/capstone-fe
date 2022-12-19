@@ -55,9 +55,25 @@
             <el-radio v-model="type" label="2">{{ $t('receipt.not_balance') }}</el-radio>
           </div>
             <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>
-            <div >
-              <span class="text-bold">Bạn: </span>
-              <span class="text-bold">Bạn: </span>
+            <div v-if="type !== '2' && accountForm.receiptAmount">
+              <div class="checkbox-item">
+                <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                <div>
+                  <span class="text-bold">{{ $auth.user.UserName}} (Tôi)</span><br>
+                  <span class="text-bold">{{ $auth.user.PhoneNumber }}</span><br>
+                </div>
+                <el-input
+                  disabled
+                  id="debit"
+                  ref="debit"
+                  :value="accountForm.receiptAmount ? accountForm.receiptAmount - (Math.floor(accountForm.receiptAmount / (chooseMember.length + 1) * chooseMember.length)) : ''"
+                  autocomplete="off"
+                  name="debit"
+                  type="text"
+                  tabindex="2"
+                  placeholder="Số tiền"
+                ></el-input>
+              </div>
             </div>
 
             <div >
@@ -66,6 +82,7 @@
 
               <div>
                 <span class="text-bold">{{ item.userName }}</span><br>
+                <span class="text-bold">{{ item.userPhone }}</span><br>
               </div>
               <el-input
                 v-if="type === '2'"
@@ -80,6 +97,7 @@
                 ></el-input>
               <el-input
                 v-else
+                disabled
                 id="debit"
                 ref="debit"
                 :value="accountForm.receiptAmount ? Math.floor(accountForm.receiptAmount / (chooseMember.length + 1)) : ''"

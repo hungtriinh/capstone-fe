@@ -172,7 +172,7 @@
   "qr" : {
     "share" : "Chia sẻ mã QR để người khác",
     "share2" : "tham gia sự kiện",
-    "url" : "Đường dẫn",
+    "url" : "Link sự kiện:",
     "scan" : "Quét mã Qr",
     "scan_note" : "Đặt mã qr nằm trong hình vuông"
   },

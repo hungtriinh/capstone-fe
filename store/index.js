@@ -82,6 +82,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get('event/EventIntroduce/EventId=' + data), context)
     })
   },
+  getRole(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('event/status/EventId=' + data), context)
+    })
+  },
   createEvent(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('event', data), context)
@@ -296,12 +301,17 @@ export const actions = {
   },
   checkJoinEvent(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.post(`event/join/eventId=${data}`), context)
+      handleApi(resolve, reject, this.$axios.get(`event/join?eventId=${data}`), context)
     })
   },
   eventRequest(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post(`event/JoinRequest/EventId=${data}`), context)
+    })
+  },
+  sentRequest(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/joinRequest/eventId=${data}`), context)
     })
   },
   getListFriend(context, data) {
