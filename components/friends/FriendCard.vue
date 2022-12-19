@@ -11,16 +11,17 @@
       </template>
       <template #postfix>
         <div>
-          <el-dropdown trigger="click" @command="handleRemoveFriend">
-            <img src="~/assets/images/common/user-minus.svg" alt="" />
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>{{
-                  $t('friends.remove_friend')
-                }}</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+          <img src="~/assets/images/common/user-minus.svg" alt="" @click="handleRemoveFriend"/>
+<!--          <el-dropdown trigger="click" @command="handleRemoveFriend">-->
+<!--            <img src="~/assets/images/common/user-minus.svg" alt="" />-->
+<!--            <template #dropdown>-->
+<!--              <el-dropdown-menu>-->
+<!--                <el-dropdown-item>{{-->
+<!--                  $t('friends.remove_friend')-->
+<!--                }}</el-dropdown-item>-->
+<!--              </el-dropdown-menu>-->
+<!--            </template>-->
+<!--          </el-dropdown>-->
         </div>
       </template>
     </Card>
@@ -55,7 +56,15 @@ export default {
   },
   methods: {
     handleRemoveFriend() {
-      this.$emit('remove', this.infor.userId)
+      this.$confirm('Bạn có chắc chắn xóa bạn bè này?', 'Xác nhận', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$emit('remove', this.infor.userId)
+      }).catch(() => {
+
+      })
     }
   }
 }

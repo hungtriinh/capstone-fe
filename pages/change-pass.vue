@@ -30,12 +30,17 @@
             v-model.trim="accountForm.password"
             :placeholder="$t('account.password')"
             autocomplete="off"
+            :type="showPass?'text':'password'"
             name="password"
-            type="text"
             tabindex="2"
             maxlength="50"
             @focus="resetValidate('password')"
-          />
+          >
+            <i slot="suffix" class="cursor-pointer" @click="displayPass('pass')">
+              <img v-if="showPass" class="icon-show-pass" src="~/assets/images/icons/eye-input.svg"/>
+              <img v-else class="icon-show-pass" src="@/assets/images/icons/hide-eye.svg"/>
+            </i>
+          </el-input>
         </el-form-item>
         <el-form-item
           class="email-login" :label="$t('account.new_password')" prop="new_password"
@@ -51,8 +56,8 @@
             autocomplete="off"
             @focus="resetValidate('new_password')"
           >
-            <i slot="suffix" class="cursor-pointer" @click="displayPass('pass')">
-              <img v-if="showPass" class="icon-show-pass" src="~/assets/images/icons/eye-input.svg"/>
+            <i slot="suffix" class="cursor-pointer" @click="displayPass('new_pass')">
+              <img v-if="showNewPass" class="icon-show-pass" src="~/assets/images/icons/eye-input.svg"/>
               <img v-else class="icon-show-pass" src="@/assets/images/icons/hide-eye.svg"/>
             </i>
           </el-input>
@@ -162,6 +167,7 @@ export default {
       isValid: false,
       isMounted: false,
       showPass: false,
+      showNewPass: false,
       showPassConfirm: false,
       isEditing: true,
       isCLickPhone: false
@@ -236,6 +242,8 @@ export default {
     displayPass(type) {
       if (type === 'pass') {
         this.showPass = !this.showPass
+      } else if (type === 'new_pass') {
+        this.showNewPass = !this.showNewPass
       } else {
         this.showPassConfirm = !this.showPassConfirm
       }

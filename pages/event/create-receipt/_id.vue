@@ -20,7 +20,7 @@
               id="receiptName"
               ref="receiptName"
               v-model="accountForm.receiptName"
-              :placeholder="$t('receipt.name')"
+              :placeholder="'Tên chứng từ'"
               autocomplete="off"
               name="receiptName"
               type="text"
@@ -55,6 +55,10 @@
             <el-radio v-model="type" label="2">{{ $t('receipt.not_balance') }}</el-radio>
           </div>
             <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>
+            <div >
+              <span class="text-bold">Bạn: </span>
+              <span class="text-bold">Bạn: </span>
+            </div>
 
             <div >
             <div v-for="(item, key) in chooseMember" :key="key" class="checkbox-item">
@@ -98,7 +102,7 @@
                 </div>
               </div>
               <div class="button-upload">
-                <button type="button"><label for="upload-detail">Up ảnh</label></button>
+                <button type="button"><label for="upload-detail">Thêm ảnh chứng từ</label></button>
               </div>
             </el-form-item>
           </div>
@@ -174,7 +178,7 @@ export default {
         receiptName: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('receipt.name') }),
+            message: this.$t('validation.required', { _field_: 'Tên chứng từ' }),
             trigger: 'blur'
           }
         ],

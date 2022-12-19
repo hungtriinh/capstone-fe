@@ -1,7 +1,7 @@
 <template>
   <div class="main-login">
     <div class="d-flex items-center justify-between">
-      <el-page-header content="Chỉnh sửa thông tin" @back="$router.push('profile')">
+      <el-page-header content="Chỉnh sửa thông tin" @back="$router.push('/profile')">
       </el-page-header>
       <div>
         <el-button
@@ -133,8 +133,8 @@ export default {
       fullscreenLoading: false,
       isValid: false,
       addMember: false,
-      AllowAddFriendStatus: false,
-      AllowInviteEventStatus: false,
+      AllowAddFriendStatus: this.$auth.user.RequestPending !== 0,
+      AllowInviteEventStatus: this.$auth.user.InvitePending !== 0,
       listId: [],
       listFriend: []
     }
@@ -150,7 +150,16 @@ export default {
     handleSelectBanner(file, base64Code, extension, mimeType) {
       console.log(file, base64Code, extension, mimeType)
     },
+    validateForm() {
+      this.$refs.accountForm.validate(valid => {
+        this.isValid = valid
+      })
+    },
     async handleSave() {
+      this.validateForm()
+      if (!this.isValid) {
+        return
+      }
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const response = await this.$store.dispatch(PROFILE_UPDATE, {

@@ -117,11 +117,6 @@ export default {
           }
         ],
         eventDescript: [
-          {
-            required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
-            trigger: 'blur'
-          }
         ]
       },
       valid: false,
@@ -137,7 +132,7 @@ export default {
   computed: {
     ...mapState(['listFriends']),
     disabledButton() {
-      return this.accountForm.eventName === '' || this.accountForm.eventDescript === ''
+      return this.accountForm.eventName === ''
     }
   },
   watch: {
