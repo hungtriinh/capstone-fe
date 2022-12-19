@@ -253,13 +253,6 @@ export default {
             message: this.$t('validation.required', { _field_: this.$t('event.eventName') }),
             trigger: 'blur'
           }
-        ],
-        EventDescript: [
-          {
-            required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
-            trigger: 'blur'
-          }
         ]
       }
     }
