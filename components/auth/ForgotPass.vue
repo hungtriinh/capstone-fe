@@ -14,7 +14,7 @@
             <el-input
               id="name"
               ref="name"
-              v-model.trim="accountForm.name"
+              v-model="accountForm.name"
               :placeholder="$t('register.name')"
               autocomplete="off"
               name="name"
@@ -213,7 +213,6 @@ export default {
       this.accountForm.errors[ref] = ''
     },
     async register() {
-      console.log('asdfdsf')
       await this.validateForm()
       if (!this.isValid) {
         return
@@ -232,7 +231,7 @@ export default {
               show: true,
               text: data.message
             })
-            this.$emit('changeStep', 3)
+            this.$router.push('/login')
             break
           case 406:
             this.$store.commit(INDEX_SET_ERROR, {
