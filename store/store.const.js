@@ -102,6 +102,7 @@ export const PROFILE_UPDATE = 'updateProfile'
 export const EVENT_CHECK_JOIN = 'checkJoinEvent'
 export const EVENT_JOIN_REQUEST = 'eventRequest'
 export const EVENT_REQUEST_SENT = 'sentRequest'
+export const EVENT_CHECK_STATUS = 'getEventStatus'
 
 // friend
 export const FRIEND_LIST = 'getListFriend'
