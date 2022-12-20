@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      a: process.env.APP_URL || 'https://bwallet.site/',
+      a: process.env.APP_URL || 'https://bwallet.site',
       value: this.$cookies.get('eventUrl') || '',
       id: this.$route.params.id
     }
@@ -59,7 +59,7 @@ export default {
       return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
     },
     url() {
-      return this.a + this.value + 'asdfasfsadfasdf'
+      return this.a + this.value
     }
   },
   created() {

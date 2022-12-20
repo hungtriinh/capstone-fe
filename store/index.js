@@ -314,6 +314,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get(`event/joinRequest/eventId=${data}`), context)
     })
   },
+  getEventStatus(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`event/status/eventId=${data}`), context)
+    })
+  },
   getListFriend(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('friend'), context)

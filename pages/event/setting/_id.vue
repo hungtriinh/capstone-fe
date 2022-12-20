@@ -96,11 +96,11 @@
               <i class="el-icon el-icon-arrow-right "></i>
             </div>
             <el-divider class="divider-setting"></el-divider>
-            <div @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
+            <div v-if="eventStatus !== 0" @click="openConfirmDialog" class="item-setting d-flex cursor-pointer items-center justify-between">
               <span style="color: #e73434" class="text-bold   ">Đóng event</span>
               <img class="logout-icon" src="@/assets/images/icons/logout.svg"/>
             </div>
-            <el-divider class="divider-setting"></el-divider>
+            <el-divider v-if="eventStatus !== 0" class="divider-setting"></el-divider>
           </div>
           <!-- role = 2 inspector-->
           <div v-else-if="listEvent.Role === 2">
@@ -217,7 +217,7 @@ import {
   GET_EVENT_DETAIL,
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
-  INDEX_SET_ERROR
+  INDEX_SET_ERROR, EVENT_CHECK_STATUS
 } from '~/store/store.const'
 
 export default {
@@ -229,6 +229,7 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
+      eventStatus: '',
       search: '',
       listEvent: {},
       circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
@@ -272,8 +273,9 @@ export default {
       }
     }
   },
-  created() {
-    this.getListEvent()
+  async created() {
+    await this.getListEvent()
+    await this.getEventStatus()
   },
   mounted() {
   },
@@ -293,6 +295,19 @@ export default {
         if (statusCode === 202) {
           this.listEvent = data
           this.$cookies.set('getRole', response.data.Role)
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async getEventStatus() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(EVENT_CHECK_STATUS, this.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.eventStatus = data.EventStatus
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

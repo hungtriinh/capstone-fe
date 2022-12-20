@@ -71,19 +71,23 @@ export default {
       receiveOrPaidAmount: {},
       hideTotal: false,
       innerVisible: false,
-      id: this.$route.params.slug,
+      id: this.$route.query.eventId,
       percent: '',
       dialogVisible: false,
       debtVisible: false
     }
   },
   async created() {
+    await this.getId()
     await this.checkJoin()
     await this.getListEvent()
   },
   async mounted() {
   },
   methods: {
+    getId() {
+      this.id = this.$route.query.eventId
+    },
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
@@ -101,11 +105,10 @@ export default {
     async checkJoin() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(EVENT_CHECK_JOIN, this.$route.query.eventId)
+        const response = await this.$store.dispatch(EVENT_CHECK_JOIN, this.id)
         if (response.statusCode === 202) {
           this.$router.push('/event/detail/' + response.data.EventId)
         } else if (response.statusCode === 404) {
-          console.log(response)
           this.$router.push('/404-not-found')
         } else if (response.statusCode === 406) {
           this.EventId = response.data.EventId
