@@ -172,7 +172,7 @@ export default {
               text: data.message
             })
             this.$cookies.set('eventUrl', data.data)
-            this.$router.push('/qr')
+            this.$router.push('/qr/' + data.data.EventId)
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })

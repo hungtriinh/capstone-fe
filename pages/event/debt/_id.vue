@@ -23,8 +23,7 @@
                             <div>
                               <span class="text-bold">{{ item.receiptName }}</span><br>
                               <span :class="item.status === 4 ? 'text-yellow' : ''" class="time">{{ item.date }}</span><br>
-                            </div>
-                          </div>
+                            </div></div>
                         </div>
                         <div :class="item.status === 4 ? 'text-yellow' : ''" class="text-bold">{{ item.formatSlider }} ₫ </div>
 
@@ -41,7 +40,7 @@
                 <span class="">{{ $t('debt.total') }}: </span><span>{{ formatTotalPaid }} </span><span> ₫</span>
               </div>
               <div class="mt-10">
-                <span class="text-bold text-red">{{ $t('debt.remainder') }}: </span><span class="text-bold text-red">{{formatRemainder}}</span><span class="text-bold text-red"> ₫</span>
+                <span class="text-bold text-red">{{ $t('debt.remainder') }}: </span><span class="text-bold text-red">{{formatRemainder ? formatRemainder : '0'}}</span><span class="text-bold text-red"> ₫</span>
               </div>
             </el-card>
             <div class="btn-group text-center">
@@ -138,7 +137,7 @@ import {
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR, IMAGE_UPLOAD_DEBT,
-  GET_PAID_CODE
+  GET_PAID_CODE, GET_PAID_CHECK
 } from '~/store/store.const'
 
 export default {
@@ -159,6 +158,7 @@ export default {
       totalMoney: 0,
       step: 1,
       code: '',
+      paidCheck: false,
       value: '',
       options: [{
         value: '1',
@@ -301,12 +301,16 @@ export default {
         this.totalMoney -= value.debtLeft
       }
     },
-    handleStep() {
+    async handleStep() {
+      await this.handlePaidCheck()
+      if (this.paidCheck) {
+        return
+      }
       if (!this.checkedDebt.length) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa chọn khoản trả nợ' })
         return
       }
-      this.getPaidCode()
+      await this.getPaidCode()
       this.step = 2
     },
     removeImage(index) {
@@ -370,7 +374,29 @@ export default {
       this.$refs.fileUploadDetail.value = null
       await this.$store.commit(INDEX_SET_LOADING, false)
     },
-
+    async handlePaidCheck() {
+      this.paidCheck = false
+      try {
+        const data = await this.$store.dispatch(GET_PAID_CHECK, this.id)
+        switch (data.statusCode) {
+          case 406:
+            this.$store.commit(INDEX_SET_ERROR, {
+              show: true,
+              text: data.message
+            })
+            console.log(data)
+            this.paidCheck = true
+            break
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+            break
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
     async handlePay() {
       if (!this.imageDetailShow.length) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa up ảnh xác minh' })

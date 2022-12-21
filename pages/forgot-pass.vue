@@ -69,9 +69,9 @@
               <span class="pr-[4px]">
                 {{ $t('account.back') }}
               </span>
-            <router-link to="/" class="align-items-center cursor-pointer underline lowercase text-[#344874]">
-              {{ $t('account.home') }}
-            </router-link>
+            <span @click="$router.push('/login')" class="align-items-center cursor-pointer underline lowercase text-[#344874]">
+              Đăng nhập
+            </span>
           </div>
       </div>
     </div>

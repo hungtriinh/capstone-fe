@@ -47,6 +47,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.post('signup/send-otp', data), context)
     })
   },
+  reSendOtp(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('signup/send-otp', data), context)
+    })
+  },
   checkOtp(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('signup/check-otp', data), context)
@@ -165,6 +170,11 @@ export const actions = {
   getPaidHandle(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-handled/EventId=${data}`), context)
+    })
+  },
+  getPaidCheck(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get(`paidDebt/paid-check/EventId=${data}`), context)
     })
   },
   getReceiptDetail(context, data) {
