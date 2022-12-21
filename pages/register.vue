@@ -15,7 +15,7 @@
           :rules="accountRules"
           label-position="left"
           class="pt-8"
-          @keyup.enter.native="register"
+          @keyup.enter.native="sendOtp"
         >
           <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
             <!-- <label for="email">{{ $t('account.phone') }}</label> -->

@@ -19,14 +19,17 @@ export const AUTH_LOGIN = 'login'
 export const AUTH_SEND_OTP = 'sendOtp'
 export const AUTH_CHECK_OTP = 'checkOtp'
 export const AUTH_SIGNUP = 'signup'
+export const PASS_SEND_OTP = 'sendOtpPass'
+export const PASS_CHECK_OTP = 'checkOtpPass'
+export const PASS_RESEND_OTP = 'reSendOtpPass'
 
 // constants
 export const AUTH_SET_ROLES = 'authentication/setRoles'
 export const AUTH_SET_PERMISSIONS = 'authentication/setPermissions'
-export const AUTH_SEND_EMAIL_FORGOT = 'authentication/sendEmailForgot'
 export const AUTH_RESET_PASS = 'authentication/resetPass'
 export const AUTH_CHECK_TOKEN = 'authentication/checkToken'
 export const CHANGE_PASS = 'authentication/changePass'
+export const FORGOT_PASS = 'authentication/forgotPass'
 
 export const TYPE_LOGIN_OTP = 1
 export const TYPE_REGISTER_OTP = 2

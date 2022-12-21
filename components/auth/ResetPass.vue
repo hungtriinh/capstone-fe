@@ -6,7 +6,7 @@
           :model="accountForm"
           :rules="accountRules"
           label-position="left"
-          @keyup.enter.native="register"
+          @keyup.enter.native="reset"
         >
           <el-form-item
             class="email-login" :label="$t('account.new_password')" prop="password"
@@ -75,10 +75,12 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { FORGOT_PASS, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '~/store/store.const'
 // import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS } from '@/store/store.const'
 
 export default {
   name: 'ResetPasswordPage',
+  props: ['user_register'],
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -226,20 +228,35 @@ export default {
       this.errorResponse = []
       this.error = { key: null, value: '' }
       await this.validateForm()
-      // if (!this.isValid) {
-      //   return
-      // }
-      // try {
-      //   await this.$store.commit(INDEX_SET_LOADING, true)
-      //   // const dto = {
-      //   //   token: this.token,
-      //   //   password: this.accountForm.password,
-      //   //   password_confirmation: this.accountForm.password_confirmation
-      //   // }
-      // } catch (err) {
-      //   this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
-      // }
-      // this.$store.commit(INDEX_SET_LOADING, false)
+      if (!this.isValid) {
+        return
+      }
+      try {
+        await this.$store.commit(INDEX_SET_LOADING, true)
+        const dto = {
+          phone: this.user_register,
+          password: this.accountForm.password,
+          password_confirmation: this.accountForm.password_confirmation
+        }
+        const data = await this.$store.dispatch(FORGOT_PASS, {
+          ...dto
+        })
+        switch (data.statusCode) {
+          case 202:
+            this.$store.commit(INDEX_SET_SUCCESS, {
+              show: true,
+              text: data.message
+            })
+            this.$router.push('/login')
+            break
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+            break
+        }
+      } catch (err) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     async validateForm() {
       await this.$refs.accountForm.validate(async valid => {

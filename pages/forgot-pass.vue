@@ -15,7 +15,7 @@
           class="pt-8"
           autocomplete="off"
           label-position="left"
-          @keydown.enter.native.prevent="submit"
+          @keydown.enter.native.prevent="sendOtp"
         >
           <el-form-item class="email-login" prop="phone" :error="(error.key === 'phone') ? error.value : ''">
             <!-- <label for="email">{{ $t('account.phone') }}</label> -->
@@ -52,7 +52,7 @@
                 :loading="loading"
                 type="custom-primary"
                 :disabled="disabledButton"
-                @click.native="submit"
+                @click.native="sendOtp"
               >
                 {{ $t('account.send') }}
               </el-button>
@@ -60,16 +60,16 @@
           </el-form-item>
         </el-form>
         <div v-if="step===2" class="otp">
-          <otp-page :type="typeVerify" :token="token" :user_register="user"></otp-page>
+          <otp-pass-page  @changeStep="changeStep" :token="token" :user_register="getPhoneFormat"></otp-pass-page>
         </div>
         <div v-if="step===3" class="otp">
-          <reset-pass :type="typeVerify" :token="token" :user_register="user"></reset-pass>
+          <reset-pass :token="token" :user_register="getPhoneFormat"></reset-pass>
         </div>
         <div class="d-flex align-items-center text-center font-normal" style="margin-top: 1.5rem">
               <span class="pr-[4px]">
                 {{ $t('account.back') }}
               </span>
-            <span @click="$router.push('/login')" class="align-items-center cursor-pointer underline lowercase text-[#344874]">
+            <span class="align-items-center cursor-pointer underline lowercase text-[#344874]" @click="$router.push('/login')">
               Đăng nhập
             </span>
           </div>
@@ -78,23 +78,32 @@
   </div>
 </template>
 <script>
-import { INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, AUTH_SEND_EMAIL_FORGOT } from '@/store/store.const'
-import { validEmail } from '@/utils/validate'
-import OtpPage from '@/components/auth/otp'
+import _ from 'lodash'
+import {
+  INDEX_SET_ERROR,
+  INDEX_SET_LOADING,
+  INDEX_SET_SUCCESS,
+  AUTH_SEND_EMAIL_FORGOT,
+  PASS_SEND_OTP
+} from '@/store/store.const'
+import { validPhoneNoPrefix } from '@/utils/validate'
+import OtpPassPage from '@/components/auth/otp-pass'
 import ResetPass from '~/components/auth/ResetPass'
 
 export default {
   name: 'ForgotPage',
   // middleware: 'auth-guard',
   components: {
-    OtpPage,
+    OtpPassPage,
     ResetPass
   },
   layout: 'none',
   data() {
-    const validdateEmail = (rule, value, callback) => {
-      if (!validEmail(value)) {
-        callback(new Error(this.$t('validation.email_format')))
+    const validPhoneNumber = (rule, value, callback) => {
+      if (value == null || value === '') {
+        callback()
+      } else if (!validPhoneNoPrefix(value)) {
+        callback(new Error(this.$t('validation.phone_length')))
       } else {
         callback()
       }
@@ -105,7 +114,7 @@ export default {
       token: '',
       user: {},
       accountForm: {
-        email: '',
+        phone: '',
         errors: {}
       },
       error: {
@@ -113,14 +122,14 @@ export default {
         value: ''
       },
       accountRules: {
-        email: [
+        phone: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('account.email') }),
+            message: this.$t('validation.required', { _field_: this.$t('account.phone') }),
             trigger: 'blur'
           },
           {
-            validator: validdateEmail, trigger: 'blur'
+            validator: validPhoneNumber, trigger: 'blur'
           }
         ]
       },
@@ -135,7 +144,12 @@ export default {
   },
   computed: {
     disabledButton() {
-      return this.accountForm.email === ''
+      return this.accountForm.phone === ''
+    },
+    getPhoneFormat() {
+      const phone = _.cloneDeep(this.accountForm.phone)
+      console.log('+84' + (phone.startsWith('0') ? phone.slice(1, phone.length) : phone))
+      return '+84' + (phone.startsWith('0') ? phone.slice(1, phone.length) : phone)
     },
     getTitle() {
       if (this.step === 1) {
@@ -191,6 +205,43 @@ export default {
       }
       this.$store.commit(INDEX_SET_LOADING, false)
     },
+    changeStep(step) {
+      this.step = step
+    },
+    async sendOtp() {
+      await this.validateForm()
+      if (!this.isValid) {
+        return
+      }
+      try {
+        await this.$store.commit(INDEX_SET_LOADING, true)
+        // const dto = {
+        //   phone: this.accountForm.phone
+        // }
+        const dto = _.cloneDeep(this.accountForm)
+
+        const data = await this.$store.dispatch(PASS_SEND_OTP, {
+          phone: '+84' + (dto.phone.startsWith('0') ? dto.phone.slice(1, dto.phone.length) : dto.phone)
+
+        })
+        switch (data.statusCode) {
+          case 202:
+            this.$store.commit(INDEX_SET_SUCCESS, {
+              show: true,
+              text: data.message
+            })
+            this.step = 2
+            break
+          default:
+            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
+            break
+        }
+      } catch (err) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+
     validateForm() {
       this.$refs.accountForm.validate(valid => {
         this.isValid = valid

@@ -171,7 +171,7 @@ export default {
               show: true,
               text: data.message
             })
-            this.$cookies.set('eventUrl', data.data)
+            this.$cookies.set('eventUrl', data.data.EventUrl)
             this.$router.push('/qr/' + data.data.EventId)
             break
           default:

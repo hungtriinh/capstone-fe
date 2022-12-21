@@ -9,10 +9,10 @@
 
           <div class="d-flex justify-between">
             <div class="d-flex justify-between gap-10 items-center">
-              <span @click="step = 1" :class="step === 1 ? 'debt-detail-btn' : ''" class="cursor-pointer de-btn text-bold text-red">Phải trả</span>
+              <span :class="step === 1 ? 'debt-detail-btn' : ''" class="cursor-pointer de-btn text-bold text-red" @click="step = 1">Phải trả</span>
             </div>
             <div class="d-flex justify-between gap-10 items-center">
-              <span @click="step = 2" :class="step !== 1 ? 'debt-detail-btn' : ''" class="cursor-pointer de-btn text-bold text-green">Nhận lại</span>
+              <span :class="step !== 1 ? 'debt-detail-btn' : ''" class="cursor-pointer de-btn text-bold text-green" @click="step = 2">Nhận lại</span>
             </div>
           </div>
         </el-card>
@@ -45,7 +45,7 @@
             </div>
           </el-card>
           <div class="text-center" style="margin-top: 30px">
-            <el-button v-if="step === 1 && this.money !== '0 ₫'" type="danger" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
+            <el-button v-if="step === 1 && money !== '0 ₫' && receiveOrPaidAmount !== 'Green'" type="danger" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
           </div>
 
         </div>
@@ -92,7 +92,7 @@ import {
   DEBT_CLICK_I,
   DEBT_GET_ALL_RECEIPT,
   DEBT_REMIND,
-  INDEX_SET_SUCCESS, INDEX_SET_ERROR
+  INDEX_SET_SUCCESS, INDEX_SET_ERROR, GET_RECEIPT_LIST
 } from '~/store/store.const'
 
 export default {
@@ -117,10 +117,16 @@ export default {
       debtVisible: false
     }
   },
-  async created() {
-    await this.getListEvent()
-  },
   watch: {
+    async receiveOrPaidAmount() {
+      if (this.receiveOrPaidAmount.color === 'Green') {
+        this.step = 2
+        await this.getListReceipt()
+      } else {
+        this.step = 1
+        await this.getListEvent()
+      }
+    },
     async step(newValue, oldValue) {
       if (this.step === 1) {
         await this.getListEvent()
@@ -128,6 +134,10 @@ export default {
         await this.getListReceipt()
       }
     }
+  },
+  async created() {
+    await this.getStatus()
+    // await this.getListEvent()
   },
   methods: {
     async getListEvent() {
@@ -160,6 +170,19 @@ export default {
     },
     handleRouter(router) {
       this.$router.push(router)
+    },
+    async getStatus() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(GET_RECEIPT_LIST, this.$route.params.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.receiveOrPaidAmount = data.receiveOrPaidAmount
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     async getShareLink() {
       this.$store.commit(INDEX_SET_LOADING, true)
