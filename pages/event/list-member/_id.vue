@@ -12,7 +12,7 @@
               <div v-if="listEvent.inspector" class="d-flex justify-center text-center">
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="remove-btn">
-                    <i class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.inspector.userId)"></i>
+                    <i v-if="eventStatus === 1 && role === 1" class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.inspector.userId)"></i>
                     <ShowAvatarElement :event="{ name: listEvent.inspector.name, color: listEvent.color }"></ShowAvatarElement>
                   </div>
                   <div>
@@ -21,7 +21,7 @@
                   </div>
                 </div>
               </div>
-              <div v-else-if="!listEvent.inspector && role === 1" class="d-flex justify-center text-center">
+              <div v-else-if="!listEvent.inspector && role === 1 && eventStatus === 1" class="d-flex justify-center text-center">
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="up-role">
                     <img @click="showAddMemberModal(2)" class="cursor-pointer" src="~/assets/images/icons/add-member.svg" alt="">
@@ -35,10 +35,13 @@
               <div class="text-center" v-else-if="!listEvent.inspector && role !== 1">
                 <span class=" text-[#011A51] font-semibold">Không có Người kiểm duyệt</span>
               </div>
+              <div class="text-center" v-else-if="!listEvent.inspector && eventStatus === 0">
+                <span class=" text-[#011A51] font-semibold">Không có Người kiểm duyệt</span>
+              </div>
               <div v-if="listEvent.cashier" class="d-flex justify-center text-center">
                 <div class="member-cashier-avatar d-flex items-center mt-10 gap-10">
                   <div class="remove-btn">
-                    <i class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.cashier.userId)"></i>
+                    <i v-if="eventStatus === 1 && role === 1" class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.cashier.userId)"></i>
                     <ShowAvatarElement :event="{ name: listEvent.cashier.name, color: listEvent.color }"></ShowAvatarElement>
                   </div>
 
@@ -48,7 +51,7 @@
                   </div>
                 </div>
               </div>
-              <div v-else-if="!listEvent.cashier && role === 1" class="d-flex justify-center text-center">
+              <div v-else-if="!listEvent.cashier && role === 1 && eventStatus === 1" class="d-flex justify-center text-center">
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="up-role">
                     <img class="cursor-pointer" src="~/assets/images/icons/add-member.svg" alt="" @click="showAddMemberModal(3)">
@@ -62,6 +65,9 @@
               <div class="text-center" v-else-if="!listEvent.cashier && role !== 1">
                 <span class="text-[#011A51] font-semibold">Không có Người thu ngân</span>
               </div>
+              <div class="text-center" v-else-if="!listEvent.cashier && eventStatus === 0">
+                <span class="text-[#011A51] font-semibold">Không có Người thu ngân</span>
+              </div>
             </el-card>
             <el-card :body-style="{ padding: '10px' }" class="card-item">
               <div v-for="(item, key) in listEvent.members" :key="key">
@@ -73,11 +79,14 @@
                       </el-badge>
                       <div>
                         <span class="text-bold">{{ item.name }}</span>
+                        <span class="text-bold-sm" v-if="item.role === 1">(Người tạo sự kiện)</span>
+                        <span class="text-bold-sm" v-if="item.role === 2">(Người kiểm duyệt)</span>
+                        <span class="text-bold-sm" v-if="item.role === 3">(Người tạo thu ngân)</span>
                         <br><span class="time">{{ item.phone }}</span>
                       </div>
                     </div>
                     <div>
-                      <i v-if="item.role !== 1 && role === 1" class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
+                      <i v-if="item.role !== 1 && role === 1 && eventStatus === 1" class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
                     </div>
                   </div>
                 </div>
@@ -109,7 +118,7 @@ import {
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR,
   GET_MEMBER_LIST, MEMBER_PROMOTE,
-  INDEX_SET_ROLE_MEMBER, MEMBER_ROLE_REMOVE
+  INDEX_SET_ROLE_MEMBER, MEMBER_ROLE_REMOVE, EVENT_CHECK_STATUS
 } from '~/store/store.const'
 
 export default {
@@ -129,6 +138,7 @@ export default {
       search: '',
       listEvent: [],
       addMember: false,
+      eventStatus: '',
       listId: [],
       listFriend: [],
       listPromote: [],
@@ -145,6 +155,7 @@ export default {
     }
   },
   async created() {
+    await this.getEventStatus()
     await this.getListEvent()
     await this.getListPromote()
   },
@@ -201,6 +212,19 @@ export default {
     },
     goBack() {
       this.handleRouter('/event/setting/' + this.id)
+    },
+    async getEventStatus() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(EVENT_CHECK_STATUS, this.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.eventStatus = data.EventStatus
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     async removeMember(id) {
       this.$store.commit(INDEX_SET_LOADING, true)
