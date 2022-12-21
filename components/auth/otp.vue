@@ -306,11 +306,10 @@ export default {
       try {
         this.$store.commit(INDEX_SET_LOADING, true)
         const data = await this.$store.dispatch(AUTH_RESEND_OTP, {
-          token: this.tokenLocal,
-          email: this.email
+          phone: this.user_register
         })
-        switch (data.status_code) {
-          case 200:
+        switch (data.statusCode) {
+          case 202:
             this.$store.commit(INDEX_SET_SUCCESS, {
               show: true,
               text: data.message

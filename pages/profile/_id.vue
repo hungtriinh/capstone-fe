@@ -150,9 +150,9 @@ export default {
     handleRouter(router) {
       this.$router.push(router)
     },
-    logout() {
-      this.$auth.strategy.token.set('')
-      this.handleRouter('/login')
+    async logout() {
+      await this.$auth.strategy.token.set('')
+      await this.handleRouter('/login')
     }
   },
   created() {

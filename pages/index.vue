@@ -29,7 +29,7 @@
             <el-timeline>
               <div class="event-title d-flex justify-between items-center cursor-pointer"  @click="handleRouter('event/detail/' + item.eventId)">
                 <div class="d-flex items-center event-name">
-                  <el-badge is-dot class="event-status item" :type="item.eventStatus === 0 ?  '' : 'success'">
+                  <el-badge is-dot class="event-status item" :type="item.eventStatus === 0 ?  'danger' : 'success'">
                     <ShowAvatarElement :event="{ name: item.eventName, color: item.color }"></ShowAvatarElement>
                   </el-badge>
                   <div class="event-content ">

@@ -330,6 +330,12 @@ export default {
             text: response.data
           })
           this.handleRouter('/')
+        } else if (response.statusCode === 406) {
+          this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.data
+          })
+          this.handleRouter('/')
         } else {
           this.$store.commit(INDEX_SET_ERROR, {
             show: true,

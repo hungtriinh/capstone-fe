@@ -12,7 +12,7 @@ export const SET_IS_OPT_PAGE = 'setIsOtpPage'
 export const LENGTH_CODE_OTP = 6
 export const OTP_EXPIRE = 300
 export const AUTH_REGISTER = 'authentication/register'
-export const AUTH_RESEND_OTP = 'authentication/reSendOtp'
+export const AUTH_RESEND_OTP = 'reSendOtp'
 export const AUTH_VERIFY_REGISTER_OTP = 'authentication/verifyRegisterOtp'
 export const AUTH_LOGOUT = 'authentication/logout'
 export const AUTH_LOGIN = 'login'
@@ -58,6 +58,7 @@ export const DEBT_REMIND = 'clickRemind'
 export const PAID_WAITING = 'getPaidRequest'
 export const PAID_ACCEPT = 'acceptPaid'
 export const GET_PAID_HANDLE = 'getPaidHandle'
+export const GET_PAID_CHECK = 'getPaidCheck'
 
 // join request
 export const GET_REQUEST_WAITING = 'getRequestWaiting'
