@@ -4333,6 +4333,7 @@ button {
   &--custom-primary{
     background-color: #117DBE;
     border: unset;
+    color: $color-white;
   }
   &--custom-primary:hover{
     background-color: #0e6aa1;
@@ -4350,7 +4351,7 @@ button {
   width: 300px;
 }
 
-// LAYOUT // 
+// LAYOUT //
 .menu-icon {
   cursor: pointer;
   width: fit-content;

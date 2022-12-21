@@ -139,7 +139,7 @@ export default {
       user: {},
       accountForm: {
         phone: '966419062',
-        password: '12345678',
+        password: '0123456789',
         remember: '',
         errors: {}
       },

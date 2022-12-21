@@ -13,5 +13,11 @@ export const actions = {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/password/change-password', data), context)
     })
+  },
+  forgotPass(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/password/new-password', data), context)
+    })
   }
+
 }

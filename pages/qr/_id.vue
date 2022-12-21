@@ -4,7 +4,7 @@
       <el-page-header content="" @back="$router.push('/event/detail/' + id)">
       </el-page-header>
       <h3 class="title text-center">{{ $t('home.qr') }}</h3>
-      <QrCodeCommon class="d-flex justify-center" :value="value"/>
+      <QrCodeCommon class="d-flex justify-center" :value="url"/>
       <div class="text-center qr-share">
         <span class="text-bold">{{ $t('qr.share') }}</span>
         <br>
