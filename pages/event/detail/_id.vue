@@ -161,7 +161,7 @@
         <div>
           <div class="list-image d-flex gap-10 pb-10 flex-wrap">
             <el-image v-show="receiptDetail.imgLink && !receiptDetail.imgLink.length" class="image" :preview-src-list="['https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png']" :src="'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'"/>
-            <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image"/>
+            <el-image v-for="(img, key) in receiptDetail.imgLink" :key="key" :src="img" :preview-src-list="receiptDetail.imgLink" class="image img-100"/>
           </div>
         </div>
       </div>

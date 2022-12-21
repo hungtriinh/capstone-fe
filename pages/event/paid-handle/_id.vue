@@ -78,7 +78,7 @@
           <el-divider class="divider"></el-divider>
           <div>
             <div class="list-image d-flex gap-10 pb-10">
-              <el-image :src="user.imageLink" :preview-src-list='user.imgLink' class="image"/>
+              <el-image :src="receiptDetail.imgLink" :preview-src-list="[receiptDetail.imgLink]" class="image img-100"/>
             </div>
           </div>
         </el-timeline>
