@@ -5,7 +5,7 @@
         <el-page-header :content="listEvent.eventName" @back="goBack">
           {{id}}
         </el-page-header>
-        <el-empty v-if="!listEvent" description="Không có thành viên  nào"></el-empty>
+        <el-empty v-if="!listEvent" description="Không có thành viên nào"></el-empty>
         <div v-else>
           <div class="main-content">
             <el-card :body-style="{ padding: '10px' }" class="card-item mb-10">
