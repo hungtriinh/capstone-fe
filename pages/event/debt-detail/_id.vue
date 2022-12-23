@@ -45,7 +45,7 @@
             </div>
           </el-card>
           <div class="text-center" style="margin-top: 30px">
-            <el-button v-if="step === 1 && money !== '0 ₫' && receiveOrPaidAmount !== 'Green'" type="danger" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
+            <el-button v-if="step === 1 && money !== '0 ₫' && receiveOrPaidAmount.color !== 'Green'" type="danger" @click="handlePaidCheckClick">{{ $t('home.pay') }}</el-button>
           </div>
 
         </div>
@@ -92,7 +92,7 @@ import {
   DEBT_CLICK_I,
   DEBT_GET_ALL_RECEIPT,
   DEBT_REMIND,
-  INDEX_SET_SUCCESS, INDEX_SET_ERROR, GET_RECEIPT_LIST
+  INDEX_SET_SUCCESS, INDEX_SET_ERROR, GET_RECEIPT_LIST, GET_PAID_CHECK
 } from '~/store/store.const'
 
 export default {
@@ -101,6 +101,7 @@ export default {
   },
   data() {
     return {
+      paidCheck: false,
       search: '',
       listReceipt: {},
       receiptDetail: {},
@@ -140,6 +141,32 @@ export default {
     // await this.getListEvent()
   },
   methods: {
+    async handlePaidCheckClick() {
+      await this.handlePaidCheck()
+      if (this.paidCheck) {
+        return
+      }
+      this.handleRouter('/event/debt/' + this.$route.params.id)
+    },
+    async handlePaidCheck() {
+      this.paidCheck = false
+      try {
+        const data = await this.$store.dispatch(GET_PAID_CHECK, this.id)
+        switch (data.statusCode) {
+          case 406:
+            this.$store.commit(INDEX_SET_ERROR, {
+              show: true,
+              text: data.message
+            })
+            this.paidCheck = true
+            break
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: this.$t('message.message_error') })
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {

@@ -18,7 +18,7 @@
                         <div :class="item.status === 4 ? 'text-yellow' : ''">
                           <div class="d-flex gap-5">
                             <el-tooltip class="item" effect="dark" content="Đang bị report" placement="bottom">
-                              <img style="width: 20px" v-if="item.status === 4" src="~/assets/images/icons/warning.svg" alt="">
+                              <img v-if="item.status === 4" style="width: 20px" src="~/assets/images/icons/warning.svg" alt="">
                             </el-tooltip>
                             <div>
                               <span class="text-bold">{{ item.receiptName }}</span><br>
@@ -49,7 +49,7 @@
           </div>
           <div v-if="step === 2" class="">
             <div class="text-center">
-              <el-select v-model="value" class="paid-debt-select " placeholder="Chọn hình thức thanh toán">
+              <el-select v-model="value" class="paid-debt-select mt-10" placeholder="Chọn hình thức thanh toán">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -92,6 +92,30 @@
                 <span class="text-bold text-blue">
                   Nội dung chuyển khoản: {{ code }}
                 </span>
+                <div>
+                  <span class="text-bold text-blue">Người tạo sự kiện:</span>
+                  <div class="member-avatar justify-center d-flex items-center mt-10 gap-10">
+                    <el-badge is-dot class="event-status item" :type="owner.friendStatus === 4 ?  'danger' : 'success'">
+                      <ShowAvatarElement :event="{ name: owner.name }"></ShowAvatarElement>
+                    </el-badge>
+                    <div>
+                      <span class="text-bold">{{ owner.name }}</span>
+                      <br><span class="time">{{ owner.phone }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="cashier">
+                  <span class="text-bold text-blue">Người thu ngân:</span>
+                  <div class="member-avatar d-flex justify-center items-center mt-10 gap-10">
+                    <el-badge is-dot class="event-status item" :type="cashier.friendStatus === 4 ?  'danger' : 'success'">
+                      <ShowAvatarElement :event="{ name: cashier.name }"></ShowAvatarElement>
+                    </el-badge>
+                    <div>
+                      <span class="text-bold">{{ cashier.name }}</span>
+                      <br><span class="time">{{ cashier.phone }}</span>
+                    </div>
+                  </div>
+                </div>
               </el-card>
               <el-card class="mt-10">
                 <div class="text-center">
@@ -107,7 +131,7 @@
                     </div>
                   </div>
                   <div class="button-upload">
-                    <button type="button"><label for="upload-detail">Up ảnh</label></button>
+                    <button style="margin-left: 10px" type="button"><label for="upload-detail">Tải ảnh</label></button>
                   </div>
                 </div>
               </el-card>
@@ -137,7 +161,7 @@ import {
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR, IMAGE_UPLOAD_DEBT,
-  GET_PAID_CODE, GET_PAID_CHECK
+  GET_PAID_CODE, GET_PAID_CHECK, MEMBER_GET_ALL
 } from '~/store/store.const'
 
 export default {
@@ -160,6 +184,8 @@ export default {
       code: '',
       paidCheck: false,
       value: '',
+      owner: '',
+      cashier: '',
       options: [{
         value: '1',
         label: 'Tiền mặt'
@@ -213,11 +239,27 @@ export default {
     }
   },
   created() {
+    this.getMemberInfo()
     this.getlistDebt()
   },
   mounted() {
   },
   methods: {
+    async getMemberInfo() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(MEMBER_GET_ALL, this.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.owner = data.members[0]
+          this.cashier = data.cashier
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+
     formatVND() {
     },
     async getlistDebt() {
@@ -386,9 +428,6 @@ export default {
             })
             console.log(data)
             this.paidCheck = true
-            break
-          default:
-            this.$store.commit(INDEX_SET_ERROR, { show: true, text: data.message })
             break
         }
       } catch (e) {
