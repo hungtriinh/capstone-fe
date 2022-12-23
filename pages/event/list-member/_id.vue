@@ -74,7 +74,7 @@
                 <div v-if="listEvent.members.length">
                   <div class="flex-between">
                     <div class="member-avatar d-flex items-center mt-10 gap-10">
-                      <el-badge is-dot class="event-status item" :type="item.friendStatus === 0 ?  'danger' : 'success'">
+                      <el-badge is-dot class="event-status item" :type="item.friendStatus === 4 ?  'danger' : 'success'">
                         <ShowAvatarElement :event="{ name: item.name }"></ShowAvatarElement>
                       </el-badge>
                       <div>

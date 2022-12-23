@@ -16,11 +16,11 @@
             :rules="accountRules"
             autocomplete="off"
             label-position="left"
-            @keyup.enter.native="login"
+            @submit.native.prevent
           >
             <div v-if="!editName" class="title text-center">
               <span class="text-bold">{{ listEvent.EventName }} </span>
-              <i class="el-icon el-icon-edit font-lg" @click="changeName"></i>
+              <i v-if="eventStatus !== 0" class="el-icon el-icon-edit font-lg" @click="changeName"></i>
             </div>
             <div v-else class="">
               <div class="d-flex items-center justify-center gap-5">
@@ -38,7 +38,7 @@
                     @blur="editEvent"
                     @focus="resetValidate('EventName')"
                   >
-                    <i slot="suffix" class="el-icon el-icon-edit el-input__icon font-lg" @click="changeName"></i>
+                    <i v-if="eventStatus !== 0" slot="suffix" class="el-icon el-icon-edit el-input__icon font-lg" @click="changeName"></i>
                   </el-input>
                 </el-form-item>
               </div>
@@ -61,7 +61,7 @@
                     @blur="changeDes"
                     @focus="resetValidate('EventDescript')"
                   />
-                  <i :class="editDes ? 'edit-des' : ''" class="el-icon el-icon-edit el-icon-edit-des font-lg" @click="editDes = !editDes"></i>
+                  <i v-if="eventStatus !== 0" :class="editDes ? 'edit-des' : ''" class="el-icon el-icon-edit el-icon-edit-des font-lg" @click="editDes = !editDes"></i>
                 </el-form-item>
               </div>
             </div>
@@ -270,6 +270,11 @@ export default {
     editDes() {
       if (this.editDes) {
         this.$refs.EventDescript.focus()
+      }
+    },
+    'accountForm.EventDescript'() {
+      if (this.accountForm.EventDescript === '' || this.accountForm.EventDescript.trim() === '') {
+        this.editEvent()
       }
     }
   },

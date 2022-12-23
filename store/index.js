@@ -266,7 +266,7 @@ export const actions = {
   },
   removeMember(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.post('/member/remove-member', data), context)
+      handleApi(resolve, reject, this.$axios.post('/member/inactive-member', data), context)
     })
   },
   promoteMember(context, data) {
@@ -326,7 +326,7 @@ export const actions = {
   },
   checkJoinEvent(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.get(`event/join?eventId=${data}`), context)
+      handleApi(resolve, reject, this.$axios.get('event/join?eventId=' + new URLSearchParams(data).toString()), context)
     })
   },
   eventRequest(context, data) {
