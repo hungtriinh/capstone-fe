@@ -326,7 +326,7 @@ export const actions = {
   },
   checkJoinEvent(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.get('event/join?eventId=' + new URLSearchParams(data).toString()), context)
+      handleApi(resolve, reject, this.$axios.get('event/join?eventId=' + data), context)
     })
   },
   eventRequest(context, data) {

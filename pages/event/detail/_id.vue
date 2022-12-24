@@ -87,7 +87,7 @@
               </div>
 
               <div class="d-flex gap-5 items-center">
-                <div class="text-blue text-end cursor-pointer" @click="openDetailDialog(receipt.id)">Tổng <br> {{ receipt.receiptAmountFormat }}</div>
+                <div class="text-blue text-end cursor-pointer" @click="openDetailDialog(receipt.id)">Tổng {{ receipt.receiptAmountFormat }}</div>
                 <i class="el-icon el-icon-arrow-right"></i>
               </div>
             </div>

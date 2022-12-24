@@ -74,7 +74,7 @@
                 <div v-if="listEvent.members.length">
                   <div class="flex-between">
                     <div class="member-avatar d-flex items-center mt-10 gap-10">
-                      <el-badge is-dot class="event-status item" :type="item.friendStatus === 4 ?  'danger' : 'success'">
+                      <el-badge is-dot class="event-status item" :type="item.role === 4 ?  'danger' : 'success'">
                         <ShowAvatarElement :event="{ name: item.name }"></ShowAvatarElement>
                       </el-badge>
                       <div>
@@ -85,8 +85,10 @@
                         <br><span class="time">{{ item.phone }}</span>
                       </div>
                     </div>
-                    <div>
-                      <i v-if="item.role !== 1 && role === 1 && eventStatus === 1" class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
+                    <div class="d-flex items-center gap-5">
+                      <img v-if="item.friendStatus === 2 || item.friendStatus === 1" @click="handleAddFriend(item.userId)" class="cursor-pointer" src="~/assets/images/icons/add-fr.svg" alt="">
+                      <img v-if="item.friendStatus === 3" class="cursor-pointer" src="~/assets/images/icons/friend-1.svg" alt="">
+                      <i v-if="item.role !== 1 && item.role !== 4 && role === 1 && eventStatus === 1" class="el-icon el-icon-error" @click="openConfirmDialog(item.userId)"></i>
                     </div>
                   </div>
                 </div>
@@ -118,7 +120,7 @@ import {
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR,
   GET_MEMBER_LIST, MEMBER_PROMOTE,
-  INDEX_SET_ROLE_MEMBER, MEMBER_ROLE_REMOVE, EVENT_CHECK_STATUS
+  INDEX_SET_ROLE_MEMBER, MEMBER_ROLE_REMOVE, EVENT_CHECK_STATUS, FRIEND_SEND
 } from '~/store/store.const'
 
 export default {
@@ -165,6 +167,38 @@ export default {
     errorHandler() {
       return true
     },
+    async handleAddFriend(id) {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_SEND, {
+          UserFriendID: id
+        })
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+        } else if (response.statusCode === 400) {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.error
+          })
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.message
+          })
+        }
+      } catch (e) {
+        await this.$store.commit(INDEX_SET_ERROR, {
+          show: true,
+          text: 'Có lỗi xảy ra'
+        })
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+
     async getListEvent() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
