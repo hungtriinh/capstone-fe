@@ -133,8 +133,8 @@ export default {
       fullscreenLoading: false,
       isValid: false,
       addMember: false,
-      AllowAddFriendStatus: this.$auth.user.RequestPending !== 0,
-      AllowInviteEventStatus: this.$auth.user.InvitePending !== 0,
+      AllowAddFriendStatus: this.$auth.user.AllowAddFriendStatus !== 0,
+      AllowInviteEventStatus: this.$auth.user.AllowInviteEventStatus !== 0,
       listId: [],
       listFriend: []
     }
