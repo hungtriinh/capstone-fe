@@ -39,8 +39,6 @@
         </el-badge>
       </div>
     </div>
-    <el-empty v-if="!listFriend.length" description="Không có người dùng khả dụng"></el-empty>
-    <div v-else></div>
     <CurrentFriendTab
       v-show="selectedTab === 'friendList'"
       :list-friend="listFriend"
