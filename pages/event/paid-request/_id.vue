@@ -71,30 +71,36 @@
       <span class="time">{{ receiptDetail.date }}</span>
       <div class="event-item">
         <el-timeline class="receipt-detail-card">
-          <div class="event-title d-flex justify-between items-center cursor-pointer">
-            <div class="d-flex gap-5 items-center event-name">
-              <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
+          <div class="event-title d-flex justify-between flex-wrap items-center cursor-pointer">
+            <div class="d-flex gap-10 items-center">
+              <div>
+                <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
+              </div>
+              <div>
+                <span class="text-bold">{{ user.name }}</span><br>
+                <span class="time">{{ user.phone }}</span>
               </div>
             </div>
             <div class="d-flex items-center ">
               <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
             </div>
           </div>
-          <el-card class="mb-10" v-for="(user, key) in receiptDetail.users" :key="key" placement="top">
-            <div class="d-flex justify-between">
-              <div class="d-flex gap-10 items-center">
-                <div>
-                  <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
+          <el-timeline-item placement="top">
+            <el-card class="mb-10" v-for="(user, key) in receiptDetail.users" :key="key" placement="top">
+              <div class="d-flex flex-wrap justify-between">
+                <div class="d-flex gap-10 items-center">
+                  <div>
+                    <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
+                  </div>
+                  <div>
+                    <span class="text-bold">{{ user.name }}</span><br>
+                    <span class="time">{{ user.phone }}</span>
+                  </div>
                 </div>
-                <div>
-                  <span class="text-bold">{{ user.name }}</span><br>
-                  <span class="time">{{ user.phone }}</span>
-                </div>
+                <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
               </div>
-              <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
-            </div>
-          </el-card>
+            </el-card>
+          </el-timeline-item>
           <el-divider class="divider"></el-divider>
           <div>
             <div class="list-image d-flex gap-10 pb-10">
@@ -226,7 +232,7 @@ export default {
         const response = await this.$store.dispatch(DEBT_GET_DETAIL, id)
         if (response.statusCode === 202) {
           this.receiptDetail = response.data
-          this.user = response.data.users
+          this.user = response.data.user
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)

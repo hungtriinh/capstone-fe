@@ -73,6 +73,11 @@ export default {
             show: true,
             text: response.message
           })
+        } else if (response.statusCode === 400) {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.error
+          })
         } else {
           await this.$store.commit(INDEX_SET_ERROR, {
             show: true,

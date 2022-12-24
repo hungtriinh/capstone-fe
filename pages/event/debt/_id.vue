@@ -63,10 +63,34 @@
                 <span class="text-bold text-blue">
                   Tổng số tiền: {{formatPrice}} ₫
                 </span>
+                <div v-if="cashier">
+                  <span class="text-bold text-blue">Người nhận:</span>
+                  <div class="member-avatar d-flex justify-center items-center mt-10 gap-10">
+                    <el-badge is-dot class="event-status item" :type="cashier.friendStatus === 4 ?  'danger' : 'success'">
+                      <ShowAvatarElement :event="{ name: cashier.name }"></ShowAvatarElement>
+                    </el-badge>
+                    <div>
+                      <span class="text-bold">{{ cashier.name }}</span>
+                      <br><span class="time">{{ cashier.phone }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <span class="text-bold text-blue">Người nhận:</span>
+                  <div class="member-avatar justify-center d-flex items-center mt-10 gap-10">
+                    <el-badge is-dot class="event-status item" :type="owner.role === 4 ?  'danger' : 'success'">
+                      <ShowAvatarElement :event="{ name: owner.name }"></ShowAvatarElement>
+                    </el-badge>
+                    <div>
+                      <span class="text-bold">{{ owner.name }}</span>
+                      <br><span class="time">{{ owner.phone }}</span>
+                    </div>
+                  </div>
+                </div>
               </el-card>
               <el-card class="mt-10">
                 <div class="text-center">
-                  <span class="text-bold text-blue ">Vui lòng up ảnh xác minh thanh toán</span>
+                  <span class="text-bold text-blue ">Vui lòng tải ảnh xác minh thanh toán</span>
                 </div>
                 <div ref="imageAvatar" class="content-input image-avatar">
                   <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
@@ -78,7 +102,7 @@
                     </div>
                   </div>
                   <div class="button-upload">
-                    <button type="button"><label for="upload-detail">Up ảnh</label></button>
+                    <button style="margin-left: 25px" type="button"><label for="upload-detail">Tải ảnh</label></button>
                   </div>
                 </div>
               </el-card>
@@ -92,20 +116,8 @@
                 <span class="text-bold text-blue">
                   Nội dung chuyển khoản: {{ code }}
                 </span>
-                <div>
-                  <span class="text-bold text-blue">Người tạo sự kiện:</span>
-                  <div class="member-avatar justify-center d-flex items-center mt-10 gap-10">
-                    <el-badge is-dot class="event-status item" :type="owner.friendStatus === 4 ?  'danger' : 'success'">
-                      <ShowAvatarElement :event="{ name: owner.name }"></ShowAvatarElement>
-                    </el-badge>
-                    <div>
-                      <span class="text-bold">{{ owner.name }}</span>
-                      <br><span class="time">{{ owner.phone }}</span>
-                    </div>
-                  </div>
-                </div>
                 <div v-if="cashier">
-                  <span class="text-bold text-blue">Người thu ngân:</span>
+                  <span class="text-bold text-blue">Người nhận:</span>
                   <div class="member-avatar d-flex justify-center items-center mt-10 gap-10">
                     <el-badge is-dot class="event-status item" :type="cashier.friendStatus === 4 ?  'danger' : 'success'">
                       <ShowAvatarElement :event="{ name: cashier.name }"></ShowAvatarElement>
@@ -116,10 +128,22 @@
                     </div>
                   </div>
                 </div>
+                <div v-else>
+                  <span class="text-bold text-blue">Người nhận:</span>
+                  <div class="member-avatar justify-center d-flex items-center mt-10 gap-10">
+                    <el-badge is-dot class="event-status item" :type="owner.role === 4 ?  'danger' : 'success'">
+                      <ShowAvatarElement :event="{ name: owner.name }"></ShowAvatarElement>
+                    </el-badge>
+                    <div>
+                      <span class="text-bold">{{ owner.name }}</span>
+                      <br><span class="time">{{ owner.phone }}</span>
+                    </div>
+                  </div>
+                </div>
               </el-card>
               <el-card class="mt-10">
                 <div class="text-center">
-                  <span class="text-bold text-blue ">Vui lòng up ảnh xác minh thanh toán</span>
+                  <span class="text-bold text-blue ">Vui lòng tải ảnh xác minh thanh toán</span>
                 </div>
                 <div ref="imageAvatar" class="content-input image-avatar">
                   <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
@@ -131,7 +155,7 @@
                     </div>
                   </div>
                   <div class="button-upload">
-                    <button style="margin-left: 10px" type="button"><label for="upload-detail">Tải ảnh</label></button>
+                    <button style="margin-left: 25px" type="button"><label for="upload-detail">Tải ảnh</label></button>
                   </div>
                 </div>
               </el-card>
@@ -438,7 +462,7 @@ export default {
     },
     async handlePay() {
       if (!this.imageDetailShow.length) {
-        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa up ảnh xác minh' })
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa tải ảnh xác minh' })
         return
       }
       const cloned = _.cloneDeep(this.listDebt)
