@@ -29,13 +29,30 @@
               @click="copy(url)">
           </el-input>
         </el-form-item>
+        <div class="d-flex align-items-center justify-center">
+          <div
+            class="content cursor-pointer login-page__forgot-password align-items-center">
+            <el-button type="primary" class="" @click="showInviteModal">Mời bạn bè</el-button>
+          </div>
+        </div>
       </el-form>
     </div>
+    <InviteModal
+      v-show="invite"
+      :list-friend="listFriend"
+      :list-id="listId"
+      :id="id"
+      @searchFr="searchFr"
+      @close="close"
+    >
+    </InviteModal>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import {
+  FRIEND_LIST_INVITE,
+  INDEX_SET_LOADING,
   INDEX_SET_SUCCESS
 } from '~/store/store.const'
 
@@ -50,19 +67,29 @@ export default {
     return {
       a: process.env.APP_URL || 'https://bwallet.site',
       value: this.$cookies.get('eventUrl') || '',
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      invite: false,
+      listFriend: [],
+      listId: []
     }
   },
   computed: {
     ...mapState(['listFriends']),
-    disabledButton() {
-      return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
-    },
     url() {
       return this.a + this.value
     }
   },
+  watch: {
+    listFriends() {
+      this.listFriend.forEach((element) => {
+        if (this.listFriends.includes(element.userId)) {
+          this.chooseMember.push(element)
+        }
+      })
+    }
+  },
   created() {
+    this.getListFriend()
   },
   methods: {
     copy(data) {
@@ -76,6 +103,50 @@ export default {
         show: true,
         text: this.$t('noti.copy_success')
       })
+    },
+    showInviteModal() {
+      this.invite = true
+    },
+    close() {
+      this.invite = false
+    },
+    async getListFriend() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_LIST_INVITE, {
+          id: this.$route.params.id,
+          query: ''
+        })
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.listFriend = data
+          this.listFriend.forEach((element) => {
+            this.listId.push(element.userId)
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
+    },
+    async searchFr(key) {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_LIST_INVITE, {
+          id: this.$route.params.id,
+          query: key
+        })
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.listFriend = data
+          this.listFriend.forEach((element) => {
+            this.listId.push(element.userId)
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     }
   }
 }

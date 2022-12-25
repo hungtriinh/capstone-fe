@@ -175,7 +175,6 @@ export default {
         if (statusCode === 202) {
           this.listReceipt = data
           this.money = data.amount
-          console.log(this.money)
         }
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
@@ -232,8 +231,6 @@ export default {
           this.receiptDetail = response.data
           this.user = response.data.user
         }
-        console.log(this.receiptDetail)
-        console.log(this.user)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }

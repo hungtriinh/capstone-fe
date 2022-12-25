@@ -177,8 +177,6 @@ export default {
           this.receiptDetail = response.data
           this.user = response.data.user
         }
-        console.log(this.receiptDetail)
-        console.log(this.user)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }

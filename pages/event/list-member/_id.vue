@@ -81,7 +81,7 @@
                         <span class="text-bold">{{ item.name }}</span>
                         <span class="text-bold-sm" v-if="item.role === 1">(Người tạo sự kiện)</span>
                         <span class="text-bold-sm" v-if="item.role === 2">(Người kiểm duyệt)</span>
-                        <span class="text-bold-sm" v-if="item.role === 3">(Người tạo thu ngân)</span>
+                        <span class="text-bold-sm" v-if="item.role === 3">(Người thu ngân)</span>
                         <br><span class="time">{{ item.phone }}</span>
                       </div>
                     </div>
@@ -150,7 +150,6 @@ export default {
   },
   watch: {
     roleMember() {
-      console.log(this.roleMember)
       if (this.roleMember.length) {
         this.promoteMember(this.roleMember[0], this.roleType)
       }

@@ -148,7 +148,6 @@ export default {
     },
     getPhoneFormat() {
       const phone = _.cloneDeep(this.accountForm.phone)
-      console.log('+84' + (phone.startsWith('0') ? phone.slice(1, phone.length) : phone))
       return '+84' + (phone.startsWith('0') ? phone.slice(1, phone.length) : phone)
     },
     getTitle() {

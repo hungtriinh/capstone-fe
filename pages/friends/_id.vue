@@ -133,7 +133,6 @@ export default {
         if (statusCode === 202) {
           this.listFriend = data
         }
-        console.log(this.listFriend)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }

@@ -110,6 +110,7 @@ export const EVENT_CHECK_STATUS = 'getEventStatus'
 
 // friend
 export const FRIEND_LIST = 'getListFriend'
+export const FRIEND_LIST_INVITE = 'getListFriendToEvent'
 export const FRIEND_LIST_REQUEST = 'getListFriendRequest'
 export const FRIEND_SEND_REQUEST = 'sendFriendRequest'
 export const FRIEND_DELETE_REQUEST = 'deleteFriendRequest'
@@ -118,6 +119,7 @@ export const FRIEND_SEARCH = 'searchFriend'
 export const FRIEND_SEARCH_LIST = 'searchListFriend'
 export const FRIEND_SEND = 'sendFriend'
 export const FRIEND_COUNT = 'countFriend'
+export const FRIEND_INVITE_TO_EVENT = 'inviteToEvent'
 
 // faq
 export const FAQ_LIST = 'getFAQ'

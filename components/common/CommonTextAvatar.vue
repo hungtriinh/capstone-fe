@@ -18,7 +18,6 @@ export default {
       const name = this.user.name
       if (name) {
         const nameParts = name.split(/\s+/)
-        // console.log(nameParts)
         let convertName = ''
         if (nameParts) {
           if (nameParts.length === 1) {
