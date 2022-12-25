@@ -349,6 +349,11 @@ export const actions = {
       handleApi(resolve, reject, this.$axios.get('friend'), context)
     })
   },
+  getListFriendToEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.get('friend/add-member?eventId=' + data.id + '&search=' + data.query), context)
+    })
+  },
   getListFriendRequest(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('friend/friend-request'), context)
@@ -387,6 +392,11 @@ export const actions = {
   countFriend(context, data) {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.get('friend/request-count'), context)
+    })
+  },
+  inviteToEvent(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('friend/add-member', data), context)
     })
   },
   // faq

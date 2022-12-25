@@ -140,7 +140,6 @@ export default {
       const listDisplay = []
       this.listFriend.forEach((element) => {
         if (this.listFriends.includes(element.userId)) {
-          console.log(element)
           listDisplay.push(element)
         }
       })

@@ -164,11 +164,8 @@ export default {
   data() {
     const validArray = (rule, value, callback) => {
       if (!value) {
-        console.log('ádf')
         callback(new Error('Người tham gia không được để trống'))
       } else {
-        console.log('ádf')
-
         callback()
       }
     }

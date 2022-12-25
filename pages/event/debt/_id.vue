@@ -29,7 +29,7 @@
 
                       </div>
                       <div class="block" style="margin-bottom: 20px">
-                        <el-slider v-model="item.debtLeft" :step="1000" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                        <el-slider v-model="item.debtLeft" show-input :step="1" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
                       </div>
                     </div>
                 </el-checkbox-group>
@@ -185,7 +185,7 @@ import {
   INDEX_SET_LOADING,
   INDEX_SET_SUCCESS,
   INDEX_SET_ERROR, IMAGE_UPLOAD_DEBT,
-  GET_PAID_CODE, GET_PAID_CHECK, MEMBER_GET_ALL
+  GET_PAID_CODE, GET_PAID_CHECK, MEMBER_GET_ALL, GET_RECEIPT_LIST
 } from '~/store/store.const'
 
 export default {
@@ -205,6 +205,7 @@ export default {
       checkAll: false,
       totalMoney: 0,
       step: 1,
+      receiveOrPaidAmount: '',
       code: '',
       paidCheck: false,
       value: '',
@@ -265,6 +266,7 @@ export default {
   created() {
     this.getMemberInfo()
     this.getlistDebt()
+    this.getDebtTotal()
   },
   mounted() {
   },
@@ -285,6 +287,19 @@ export default {
     },
 
     formatVND() {
+    },
+    async getDebtTotal() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(GET_RECEIPT_LIST, this.$route.params.id)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.receiveOrPaidAmount = data.receiveOrPaidAmount
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     async getlistDebt() {
       this.$store.commit(INDEX_SET_LOADING, true)
@@ -376,6 +391,10 @@ export default {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa chọn khoản trả nợ' })
         return
       }
+      if (this.receiveOrPaidAmount.amount < this.totalMoney) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chỉ cần trả nợ ' + this.receiveOrPaidAmount.amountFormat })
+        return
+      }
       await this.getPaidCode()
       this.step = 2
     },
@@ -450,7 +469,6 @@ export default {
               show: true,
               text: data.message
             })
-            console.log(data)
             this.paidCheck = true
             break
         }

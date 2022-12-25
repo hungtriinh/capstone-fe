@@ -260,11 +260,8 @@ export default {
   },
   watch: {
     listEvent(newValue, oldValue) {
-      console.log(this.listEvent)
       for (const item in this.listEvent) {
         this.accountForm[item] = this.listEvent[item]
-        // console.log(this.listEvent[item])
-        // console.log(this.accountForm[item])
       }
     },
     editDes() {

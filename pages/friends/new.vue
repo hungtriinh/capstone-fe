@@ -62,7 +62,6 @@ export default {
   },
   methods: {
     async handleAddFriend(friend) {
-      console.log('accept', friend)
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
         const response = await this.$store.dispatch(FRIEND_SEND, {
@@ -101,7 +100,6 @@ export default {
         if (statusCode === 202) {
           this.listFriend = data
         }
-        console.log(this.listFriend)
       } catch (e) {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
