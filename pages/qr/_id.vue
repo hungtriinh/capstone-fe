@@ -43,6 +43,7 @@
       :list-id="listId"
       :id="id"
       @searchFr="searchFr"
+      @reload="reload"
       @close="close"
     >
     </InviteModal>
@@ -103,6 +104,9 @@ export default {
         show: true,
         text: this.$t('noti.copy_success')
       })
+    },
+    async reload() {
+      await this.getListFriend()
     },
     showInviteModal() {
       this.invite = true

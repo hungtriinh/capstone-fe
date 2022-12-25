@@ -1,9 +1,9 @@
 <template>
   <div class="modal-backdrop">
-    <div class="confirm-modal text-center">
+    <div class="confirm-modal">
       <div class="d-flex justify-between">
         <div class="title text-bold"> {{ $t('event.add_member') }} </div>
-        <i @click="$emit('close')" class="el-icon el-icon-close"></i>
+        <i @click="close" class="el-icon el-icon-close"></i>
       </div>
       <el-input
         @input="searchFr"
@@ -17,11 +17,12 @@
         <el-checkbox-group v-model="checkedFriends" class="checkbox-group" @change="handleCheckedCitiesChange">
           <div v-for="(item, key) in listFriend" :key="key" class="checkbox-item">
             <el-checkbox :label="item.userId" :value="item.userId"></el-checkbox>
-            <img class="avatar" src="@/assets/images/event.png" alt="">
+            <el-badge is-dot class="event-status item" :type="item.friendStatus === 4 ?  'danger' : 'success'">
+              <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+            </el-badge>
             <div>
               <span class="text-bold">{{ item.userName }}</span><br>
-              <span class="text-bold">{{ item.userPhone }}</span><br>
-              <span class="text-bold">{{ item.bankInfo }}</span>
+              <span class="time">{{ item.userPhone }}</span><br>
             </div>
           </div>
         </el-checkbox-group>
@@ -75,6 +76,8 @@ export default {
   },
   methods: {
     close() {
+      this.search = ''
+      this.$emit('reload')
       this.$emit('close')
     },
     handleRouter() {
