@@ -128,3 +128,7 @@ export const FAQ_LIST = 'getFAQ'
 export const GROUP_REQUEST = 'getGroupRequest'
 export const GROUP_INVITED = 'getGroupInvited'
 export const GROUP_APPROVE = 'approveGroup'
+
+// image
+
+export const IMAGE_BASE64 = 'upBase64'
