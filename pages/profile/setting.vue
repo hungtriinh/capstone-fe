@@ -92,7 +92,7 @@
 
 <script>
 import FileUpload from '@/components/common/FileUpload.vue'
-import { INDEX_SET_LOADING, INDEX_SET_SUCCESS, PROFILE_UPDATE, INDEX_SET_ERROR } from '~/store/store.const'
+import { INDEX_SET_LOADING, INDEX_SET_SUCCESS, PROFILE_UPDATE, INDEX_SET_ERROR, IMAGE_BASE64 } from '~/store/store.const'
 export default {
   name: 'SettingPage',
   components: {
@@ -136,7 +136,10 @@ export default {
       AllowAddFriendStatus: this.$auth.user.AllowAddFriendStatus !== 0,
       AllowInviteEventStatus: this.$auth.user.AllowInviteEventStatus !== 0,
       listId: [],
-      listFriend: []
+      listFriend: [],
+      fileName: '',
+      base64code: '',
+      sourceImg: ''
     }
   },
   methods: {
@@ -149,11 +152,39 @@ export default {
     },
     handleSelectBanner(file, base64Code, extension, mimeType) {
       console.log(file, base64Code, extension, mimeType)
+      this.fileName = file.name
+      this.base64code = base64Code
     },
     validateForm() {
       this.$refs.accountForm.validate(valid => {
         this.isValid = valid
       })
+    },
+    async upBase64Img() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(IMAGE_BASE64, {
+          fileName: this.fileName,
+          folder: 'user',
+          base64String: this.base64code
+        })
+        if (response.statusCode === 202) {
+          await this.$store.commit(INDEX_SET_SUCCESS, {
+            show: true,
+            text: response.message
+          })
+          this.sourceImg = response.data
+          console.log(this.sourceImg)
+        } else {
+          await this.$store.commit(INDEX_SET_ERROR, {
+            show: true,
+            text: response.message
+          })
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     async handleSave() {
       this.validateForm()
@@ -162,8 +193,11 @@ export default {
       }
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
+        if (this.base64code) {
+          await this.upBase64Img()
+        }
         const response = await this.$store.dispatch(PROFILE_UPDATE, {
-          Avatar: this.accountForm.avatar,
+          Avatar: this.sourceImg,
           UserName: this.accountForm.eventDescript,
           AllowAddFriendStatus: this.AllowAddFriendStatus ? 1 : 0,
           AllowInviteEventStatus: this.AllowInviteEventStatus ? 1 : 0

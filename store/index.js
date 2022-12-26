@@ -419,5 +419,10 @@ export const actions = {
     return new Promise((resolve, reject) => {
       handleApi(resolve, reject, this.$axios.post('/profile/respond', data), context)
     })
+  },
+  upBase64(context, data) {
+    return new Promise((resolve, reject) => {
+      handleApi(resolve, reject, this.$axios.post('/image/base64/savefile', data), context)
+    })
   }
 }
