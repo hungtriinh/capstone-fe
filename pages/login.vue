@@ -175,12 +175,20 @@ export default {
       isValid: false
     }
   },
+  async created() {
+    await this.checkLogin()
+  },
   computed: {
     disabledButton() {
       return this.accountForm.phone === '' || this.accountForm.password === ''
     }
   },
   methods: {
+    checkLogin() {
+      if (this.$auth.loggedIn) {
+        this.$router.push('/event')
+      }
+    },
     handeRegister() {
       this.$router.push('/register')
     },
