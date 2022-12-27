@@ -45,6 +45,7 @@ import {
 } from '~/store/store.const'
 export default {
   name: 'NewPage',
+  middleware: 'auth',
   components: {
     FriendNew
   },

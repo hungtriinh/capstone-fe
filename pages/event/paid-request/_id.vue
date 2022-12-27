@@ -129,7 +129,7 @@ import {
 
 export default {
   name: 'ListReceiptPage',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     // ShowAvatarElement
   },

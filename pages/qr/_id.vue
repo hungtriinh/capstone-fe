@@ -61,6 +61,7 @@ import QrCodeCommon from '~/components/qrcode/QrCodeCommon'
 
 export default {
   name: 'QrPage',
+  middleware: 'auth',
   components: {
     QrCodeCommon
   },

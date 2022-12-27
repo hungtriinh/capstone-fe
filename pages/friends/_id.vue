@@ -59,6 +59,7 @@ import { FRIEND_LIST, FRIEND_LIST_REQUEST, INDEX_SET_LOADING, FRIEND_COUNT, FRIE
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Friends',
+  middleware: 'auth',
   components: {
     CurrentFriendTab,
     RequestFriendTab

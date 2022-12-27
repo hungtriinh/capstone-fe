@@ -120,6 +120,7 @@ import { PROFILE_GET, INDEX_SET_LOADING } from '~/store/store.const'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Profile',
+  middleware: 'auth',
   components: {
     FileUpload,
     Card
@@ -151,6 +152,7 @@ export default {
       this.$router.push(router)
     },
     async logout() {
+      await this.$auth.logout()
       await this.$auth.strategy.token.set('')
       await this.handleRouter('/login')
     }

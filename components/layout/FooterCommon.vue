@@ -2,7 +2,7 @@
   <div class="navigation-bar pb-[10px]">
     <div class="navigation">
       <!-- <img  src="@/assets/images/icons/event.svg" alt=""> -->
-      <div class="menu-icon cursor-pointer" @click="handleRouter('/')" :class="{'is-selected' : $route.path === ('/') || $route.path.includes('/event') && !$route.path.includes('/event/create')}">
+      <div class="menu-icon cursor-pointer" @click="handleRouter('/event')" :class="{'is-selected' : $route.path === ('/') || $route.path.includes('/event') && !$route.path.includes('/event/create')}">
         <svg
           width="34"
           height="33"

@@ -215,7 +215,7 @@ export default {
         const data = result.data
         switch (data.statusCode) {
           case 202:
-            await this.$router.push('/')
+            await this.$router.push('/event')
             break
           default:
             this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: data.message })

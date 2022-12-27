@@ -31,6 +31,7 @@ import {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Requested',
+  middleware: 'auth',
   components: {
     InviteCard
   },
