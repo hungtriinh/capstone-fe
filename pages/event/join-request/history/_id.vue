@@ -40,7 +40,7 @@ import { REQUEST_APPROVE, GET_REQUEST_HISTORY, INDEX_SET_LOADING, INDEX_SET_SUCC
 
 export default {
   name: 'RequestPage',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     // ShowAvatarElement
   },

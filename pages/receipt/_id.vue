@@ -53,7 +53,7 @@ import { RECEIPT_DETAIL, INDEX_SET_LOADING } from '~/store/store.const'
 
 export default {
   name: 'ReceiptPage',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     // ShowAvatarElement
   },

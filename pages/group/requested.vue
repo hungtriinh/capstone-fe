@@ -20,6 +20,7 @@ import RequestCard from '../../components/group/RequestCard.vue'
 import { GROUP_REQUEST, INDEX_SET_LOADING } from '~/store/store.const'
 export default {
   name: 'RequestedPage',
+  middleware: 'auth',
   components: {
     RequestCard
   },

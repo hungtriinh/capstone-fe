@@ -59,7 +59,7 @@ import {
 
 export default {
   name: 'RequestPage',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     // ShowAvatarElement
   },

@@ -46,6 +46,7 @@ const MOCK_SENDER = {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Activities',
+  middleware: 'auth',
   // components: { ActivityNotification },
   created() {
     this.getActivity()

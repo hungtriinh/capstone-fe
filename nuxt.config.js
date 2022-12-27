@@ -82,7 +82,8 @@ export default {
         },
         endpoints: {
           login: { url: '/login', method: 'post' },
-          user: { url: '/profile', method: 'get', propertyName: 'data' }
+          user: { url: '/profile', method: 'get', propertyName: 'data' },
+          logout: false
         }
       }
     },

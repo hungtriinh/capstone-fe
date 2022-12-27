@@ -20,7 +20,7 @@
 import { INDEX_SET_LOADING, FAQ_LIST } from '~/store/store.const'
 export default {
   name: 'SettingPage',
-
+  middleware: 'auth',
   data() {
     return {
       listFAQ: [],

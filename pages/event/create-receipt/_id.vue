@@ -161,6 +161,7 @@ import {
 
 export default {
   name: 'CreateReceiptPage',
+  middleware: 'auth',
   data() {
     const validArray = (rule, value, callback) => {
       if (!value) {

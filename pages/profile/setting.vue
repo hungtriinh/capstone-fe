@@ -95,6 +95,7 @@ import FileUpload from '@/components/common/FileUpload.vue'
 import { INDEX_SET_LOADING, INDEX_SET_SUCCESS, PROFILE_UPDATE, INDEX_SET_ERROR, IMAGE_BASE64 } from '~/store/store.const'
 export default {
   name: 'SettingPage',
+  middleware: 'auth',
   components: {
     FileUpload
   },

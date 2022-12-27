@@ -92,6 +92,7 @@ import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
 
 export default {
   name: 'RegisterPage',
+  middleware: 'auth',
   // middleware: 'auth-guard',
   data() {
     const validatePass = (rule, value, callback) => {

@@ -5,7 +5,7 @@
         <div class="d-flex justify-between">
           <div class="title-box d-flex">
             <!--          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/')">-->
-            <i class="el-icon el-icon-back" @click="handleRouter('/')"></i>
+            <i class="el-icon el-icon-back" @click="handleRouter('/event')"></i>
             <div class="d-flex cursor-pointer items-center gap-5"  @click="handleRouter('/event/setting/' + id)">
               <ShowAvatarElement :event="{ name: listReceipt.eventName, color: listReceipt.color }"></ShowAvatarElement>
 
@@ -220,6 +220,7 @@ import {
 
 export default {
   name: 'MainPage',
+  middleware: 'auth',
   components: {
   },
   data() {

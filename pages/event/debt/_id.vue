@@ -190,6 +190,7 @@ import {
 
 export default {
   name: 'MainPage',
+  middleware: 'auth',
   components: {
   },
   data() {
