@@ -39,35 +39,55 @@
           </div>
 
           <el-card shadow="hover" :body-style="{ padding: '10px' }" class=" card-item mt-10 ">
-            <div v-if="receiveOrPaidAmount.color === 'Green'" class="d-flex justify-between">
-              <div class="d-flex justify-between gap-10 items-center">
-                <span class="text-bold text-green">Chờ nhận lại: </span>
-                <span class="text-bold text-green">{{ receiveOrPaidAmount.amountFormat }}</span>
-              </div>
-              <div>
-                <el-button
-                  type="primary"
-                  @click="handleRouter('/event/debt-detail/' + id)"
-                >Chi tiết</el-button>
-              </div>
-            </div>
-            <div v-else-if="receiveOrPaidAmount.color === 'Red'" class="d-flex justify-between">
-              <div class="d-flex justify-between gap-10 items-center">
-                <span class="text-bold text-red">Phải trả nợ: </span>
-                <span class="text-bold text-red">{{ receiveOrPaidAmount.amountFormat }}</span>
-              </div>
-              <div>
-                <el-button
-                  type="primary"
-                  @click="handleRouter('/event/debt-detail/' + id)"
-                >Chi tiết</el-button>
-              </div>
-            </div>
-            <div v-else class="d-flex justify-center">
-<!--                <span class="text-bold"><el-button-->
+<!--            <div v-if="receiveOrPaidAmount.color === 'Green'" class="d-flex justify-between">-->
+<!--              <div class="d-flex justify-between gap-10 items-center">-->
+<!--                <span class="text-bold text-green">Chờ nhận lại: </span>-->
+<!--                <span class="text-bold text-green">{{ receiveOrPaidAmount.amountFormat }}</span>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <el-button-->
 <!--                  type="primary"-->
 <!--                  @click="handleRouter('/event/debt-detail/' + id)"-->
-<!--                >Chi tiết</el-button></span>-->
+<!--                >Chi tiết</el-button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-else-if="receiveOrPaidAmount.color === 'Red'" class="d-flex justify-between">-->
+<!--              <div class="d-flex justify-between gap-10 items-center">-->
+<!--                <span class="text-bold text-red">Phải trả nợ: </span>-->
+<!--                <span class="text-bold text-red">{{ receiveOrPaidAmount.amountFormat }}</span>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <el-button-->
+<!--                  type="primary"-->
+<!--                  @click="handleRouter('/event/debt-detail/' + id)"-->
+<!--                >Chi tiết</el-button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-else class="d-flex justify-center">-->
+<!--&lt;!&ndash;                <span class="text-bold"><el-button&ndash;&gt;-->
+<!--&lt;!&ndash;                  type="primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                  @click="handleRouter('/event/debt-detail/' + id)"&ndash;&gt;-->
+<!--&lt;!&ndash;                >Chi tiết</el-button></span>&ndash;&gt;-->
+<!--            </div>-->
+
+            <div class="d-flex justify-between items-center">
+              <div>
+                <span v-if="listReceipt.receiveAmountFormat" class="d-flex justify-between gap-10 items-center">
+                  <span class="text-bold text-green">Chờ nhận lại: </span>
+                  <span class="text-bold text-green">{{ listReceipt.receiveAmountFormat }}</span>
+                </span>
+                <span v-if="listReceipt.debtAmountFormat" class="d-flex justify-between gap-10 items-center">
+                  <span class="text-bold text-red">Phải trả nợ: </span>
+                  <span class="text-bold text-red">{{ listReceipt.debtAmountFormat }}</span>
+                </span>
+              </div>
+              <div>
+                <el-button
+                  v-if="listReceipt.receiveAmountFormat !== '0 ₫' || listReceipt.debtAmountFormat !== '0 ₫'"
+                  type="primary"
+                  @click="handleRouter('/event/debt-detail/' + id)"
+                >Chi tiết</el-button>
+              </div>
             </div>
 
           </el-card>
@@ -111,7 +131,8 @@
           </el-card>
         </div>
         <div class="btn-group text-center">
-          <el-button v-if="receiveOrPaidAmount.color === 'Green ' && listReceipt.eventStatus !== 0" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>
+<!--          <el-button v-if="receiveOrPaidAmount.color === 'Green ' && listReceipt.eventStatus !== 0" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>-->
+<!--          <el-button type="danger" v-if="listReceipt.receiveAmountFormat != listReceipt.debtAmountFormat" @click="handleRouter('/event/debt/' + $route.params.id )">{{ $t('home.pay') }}</el-button>-->
           <el-button v-if="listReceipt.eventStatus !== 0" type="primary" @click="handleRouter('/event/create-receipt/' + $route.params.id )">{{ $t('home.add_receipt') }}</el-button>
         </div>
       </div>

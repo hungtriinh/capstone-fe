@@ -192,12 +192,13 @@ export default {
         if (this.base64code) {
           await this.upBase64Img()
         }
-        const response = await this.$store.dispatch(PROFILE_UPDATE, {
+        const dto = {
           Avatar: this.sourceImg,
           UserName: this.accountForm.eventDescript,
           AllowAddFriendStatus: this.AllowAddFriendStatus ? 1 : 0,
           AllowInviteEventStatus: this.AllowInviteEventStatus ? 1 : 0
-        })
+        }
+        const response = await this.$store.dispatch(PROFILE_UPDATE, dto)
         if (response.statusCode === 202) {
           await this.$store.commit(INDEX_SET_SUCCESS, {
             show: true,

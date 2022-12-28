@@ -28,7 +28,9 @@
             <div class="d-flex justify-between">
               <div class="d-flex gap-10 items-center">
                 <div>
-                  <ShowAvatarElement :event="{ name: receipt.name }"></ShowAvatarElement>
+                  <el-badge is-dot class="event-status item" type="success">
+                    <ShowAvatarElement :event="{ name: receipt.name }"></ShowAvatarElement>
+                  </el-badge>
                 </div>
                 <div>
                   <span class="text-bold">{{ receipt.name }}</span><br>
@@ -45,7 +47,7 @@
             </div>
           </el-card>
           <div class="text-center" style="margin-top: 30px">
-            <el-button v-if="step === 1 && money !== '0 ₫' && receiveOrPaidAmount.color !== 'Green'" type="danger" @click="handlePaidCheckClick">{{ $t('home.pay') }}</el-button>
+            <el-button v-if="step === 1 && money !== '0 ₫'" type="danger" @click="handlePaidCheckClick">{{ $t('home.pay') }}</el-button>
           </div>
 
         </div>
@@ -56,10 +58,18 @@
       <div class="event-item">
         <el-timeline class="receipt-detail-card">
           <div class="event-title d-flex flex-wrap justify-between items-center cursor-pointer">
-            <div class="d-flex gap-5 items-center event-name">
-              <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
+            <div class="d-flex gap-10 items-center event-name">
+              <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">
+                <div v-if="user.avatar">
+                  ga
+                </div>
+                <div v-else>
+                  <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
+                </div>
+              </el-badge>
               <div class="event-content">
                 <h4 class="title text-bold">{{ user.name }}</h4>
+                <span class="time">{{ user.phone }}</span>
               </div>
             </div>
             <div class="d-flex items-center ">
@@ -121,13 +131,13 @@ export default {
   },
   watch: {
     async receiveOrPaidAmount() {
-      if (this.receiveOrPaidAmount.color === 'Green') {
-        this.step = 2
-        await this.getListReceipt()
-      } else {
-        this.step = 1
-        await this.getListEvent()
-      }
+      // if (this.receiveOrPaidAmount.color === 'Green') {
+      //   this.step = 2
+      //   await this.getListReceipt()
+      // } else {
+      //   this.step = 1
+      //   await this.getListEvent()
+      // }
     },
     async step(newValue, oldValue) {
       if (this.step === 1) {
@@ -139,7 +149,7 @@ export default {
   },
   async created() {
     await this.getStatus()
-    // await this.getListEvent()
+    await this.getListEvent()
   },
   methods: {
     async handlePaidCheckClick() {
