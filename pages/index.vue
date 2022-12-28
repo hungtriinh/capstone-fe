@@ -4,8 +4,8 @@
 <script>
 export default {
   name: 'IndexPage',
-  created() {
-    this.$router.push('/index.html')
+  mounted() {
+    console.log('asdlfjklasdfjlskdaf')
   }
 }
 </script>

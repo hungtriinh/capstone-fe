@@ -14,6 +14,8 @@
           Đang quét mã...
         </div>
       </qrcode-stream>
+<!--      <button class='btn' id="btnClick" onclick='window.open(this.result, "_blank");' style='position: absolute;top: 0;display: none'>Open Google search</button>-->
+
     </client-only>
   </div>
 </template>
@@ -66,7 +68,11 @@ export default {
 
       // some more delay, so users have time to read the message
       if (this.isValid) {
-        window.open(this.result)
+        // window.location.assign(this.result)
+        // document.getElementById('btnClick').click()
+        setTimeout(() => {
+          window.open(this.result, '_blank')
+        })
       } else {
         await this.timeout(2000)
       }
