@@ -19,6 +19,8 @@
               v-model="accountForm.eventName"
               :placeholder="$t('event.eventName')"
               autocomplete="off"
+              show-word-limit
+              maxlength="256"
               name="eventName"
               type="text"
               tabindex="2"
@@ -37,6 +39,8 @@
               name="eventDescript"
               tabindex="3"
               autocomplete="off"
+              show-word-limit
+              maxlength="1000"
               @focus="resetValidate('eventDescript')"
             >
             </el-input>
@@ -44,7 +48,7 @@
           <div class="d-flex align-items-center forgot-pass">
             <div
               class="content cursor-pointer login-page__forgot-password align-items-center">
-              <el-button class="add-member" @click="showAddMemberModal">{{ $t('event.add_member') }}</el-button>
+              <el-button type="primary" class="add-member" @click="showAddMemberModal">{{ $t('event.add_member') }}</el-button>
             </div>
           </div>
           <el-card  v-for="(receipt, key) in listDisplay" :key="key" :body-style="{ padding: '10px' }" class=" card-item mb-10 ">
@@ -63,6 +67,7 @@
           <el-form-item>
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
+                type="primary"
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
                 :disabled="disabledButton"
@@ -97,6 +102,29 @@ export default {
   name: 'LoginPage',
   middleware: 'auth',
   data() {
+    const validateLength = (rule, value, callback, message) => {
+      console.log('ádfsdf')
+      if (value && value.length > 256) {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
+
+    const validateLengthArea = (rule, value, callback, message) => {
+      if (value && value.length > 1000) {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
+    const validRequired = (rule, value, callback, message) => {
+      if (!value || value.trim() === '') {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
     return {
       token: '',
       user: {},
@@ -115,9 +143,12 @@ export default {
             required: true,
             message: this.$t('validation.required', { _field_: this.$t('event.eventName') }),
             trigger: 'blur'
-          }
+          },
+          { validator: validRequired, message: this.$t('validation.required', { _field_: this.$t('event.eventName') }), trigger: 'blur' },
+          { validator: validateLength, message: this.$t('validation.max', { _field_: this.$t('event.eventName') }), trigger: 'blur' }
         ],
         eventDescript: [
+          { validator: validateLengthArea, message: this.$t('validation.max_1000', { _field_: this.$t('event.eventDescript') }), trigger: 'blur' }
         ]
       },
       valid: false,
