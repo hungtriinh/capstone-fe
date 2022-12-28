@@ -170,12 +170,7 @@ export default {
           base64String: this.base64code
         })
         if (response.statusCode === 202) {
-          await this.$store.commit(INDEX_SET_SUCCESS, {
-            show: true,
-            text: response.message
-          })
           this.sourceImg = response.data
-          console.log(this.sourceImg)
         } else {
           await this.$store.commit(INDEX_SET_ERROR, {
             show: true,
