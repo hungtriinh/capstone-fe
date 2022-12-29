@@ -4323,7 +4323,7 @@ button {
 .el-page-header {
   .el-page-header__content {
     font-size: 16px;
-    color: $color-dark;
+    color: rgb(1 26 81 / 1);
   }
 }
 
@@ -4441,3 +4441,10 @@ button {
   color: $color-btn-active;
   font-weight: 700;
 }
+
+.el-collapse-item__header {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+
