@@ -15,7 +15,7 @@
           <div class="main-content">
             <el-checkbox-group v-model="listChecked" class="checkbox-group cb-group-hide-label" @change="handleCheckedCitiesChange">
 
-              <div v-for="(item, key) in listEvent" :key="key" class="d-flex items-center gap-5">
+              <div v-for="(item, key) in listEvent" :key="key" class="d-flex items-center gap-10">
                 <el-checkbox class="cb-hide-label" :label="item.receiptId" :value="item.receiptId"></el-checkbox>
                 <el-card :body-style="{ padding: '10px' }" class="card-item">
                 <div class="d-flex justify-between">
@@ -61,7 +61,7 @@
             </el-card>
               </div>
             </el-checkbox-group>
-            <el-checkbox class="check-all" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
+            <el-checkbox class="check-all mt-10" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
             <div class="btn-group justify-center d-flex items-center">
               <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(3)">Từ chối</el-button>
               <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(2)">Đồng ý</el-button>
@@ -96,7 +96,7 @@
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
-              <div class="d-flex justify-between">
+              <div class="d-flex justify-between flex-wrap">
 <!--                <span class="text-normal-sm">{{ user.name }}</span>-->
                 <div class="d-flex gap-5 items-center event-name">
                   <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">

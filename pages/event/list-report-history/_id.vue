@@ -50,7 +50,7 @@
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
-              <div class="d-flex justify-between">
+              <div class="d-flex justify-between flex-wrap">
                 <span class="text-normal-sm">{{ user.name }}</span>
                 <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmount}}</span>
               </div>
