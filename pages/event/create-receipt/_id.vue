@@ -109,7 +109,7 @@
               ></el-input>
             </div>
           </div>
-          <div ref="imageAvatar" class="content-input image-avatar">
+          <div ref="imageAvatar" class="content-input image-avatar-input">
             <el-form-item ref="imageDetail" label="" prop="imageDetail" :error="(error.key === 'image') ? error.value : ''">
               <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" multiple accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
               <img v-if="!imageDetailShow.length" src="/assets/icon/icon_user_default.svg" alt="">
@@ -163,13 +163,13 @@ export default {
   name: 'CreateReceiptPage',
   middleware: 'auth',
   data() {
-    const validArray = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('Người tham gia không được để trống'))
-      } else {
-        callback()
-      }
-    }
+    // const validArray = (rule, value, callback) => {
+    //   if (!value) {
+    //     callback(new Error('Người tham gia không được để trống'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       id: this.$route.params.id,
       imageDetailShow: [],
@@ -204,9 +204,6 @@ export default {
             message: this.$t('validation.required', { _field_: this.$t('receipt.amount') }),
             trigger: 'blur'
           }
-        ],
-        imageDetail: [
-          { validator: validArray, trigger: 'blur' }
         ]
       },
       valid: false,
@@ -398,7 +395,7 @@ export default {
         return
       }
       if (!this.imageDetailShow.length) {
-        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa up ảnh chứng từ' })
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa tải ảnh chứng từ' })
         return
       }
       try {

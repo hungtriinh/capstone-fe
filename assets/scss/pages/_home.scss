@@ -245,6 +245,21 @@
     .el-input--suffix .el-input__inner {
       padding-right: 45px;
     }
+    .el-input__inner {
+      font-weight: 700;
+    }
+    .el-select .el-input .el-select__caret {
+      color: $color-black !important;
+      font-weight: 700;
+      .el-icon-arrow-up:before {
+        color: $color-black;
+        font-weight: 700;
+      }
+    }
+    .el-input__icon {
+      color: $color-black !important;
+      font-weight: 700;
+    }
   }
   .pay-method {
     .total-money {

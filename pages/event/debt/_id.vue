@@ -8,7 +8,7 @@
           <div v-if="step===1">
             <el-card class="text-bold mb-10">
               <div class="btn-group d-flex  ">
-                <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
+                <el-checkbox class="check-all" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
               </div>
               <div class="mt-10">
                 <el-checkbox-group  v-model="checkedDebt" class="checkbox-group cb-group-hide-label" @change="handleCheckedCitiesChange">
@@ -92,19 +92,22 @@
                 <div class="text-center">
                   <span class="text-bold text-blue ">Vui lòng tải ảnh xác minh thanh toán</span>
                 </div>
-                <div ref="imageAvatar" class="content-input image-avatar">
-                  <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
-                  <img v-if="!imageDetailShow.length" class="text" src="/assets/icon/icon_user_default.svg" alt="">
-                  <div v-if="imageDetailShow.length" class="d-flex show-avatar">
-                    <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
-                      <img id="img-intro" class="show-image" :src="detail ? detail : '/assets/icon/icon_user_default.svg'" alt="">
-                      <img class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeImage(index)">
+                <div class="d-flex items-center justify-center">
+                  <div ref="imageAvatar" class="content-input image-avatar-input">
+                    <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
+                    <img v-if="!imageDetailShow.length" class="text" src="/assets/icon/icon_user_default.svg" alt="">
+                    <div v-if="imageDetailShow.length" class="d-flex show-avatar">
+                      <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
+                        <img id="img-intro" class="show-image" :src="detail ? detail : '/assets/icon/icon_user_default.svg'" alt="">
+                        <img class="image-close" src="/assets/icon/icon_close_image.svg" alt="" @click="removeImage(index)">
+                      </div>
+                    </div>
+                    <div class="button-upload">
+                      <button style="margin-left: 25px" type="button"><label for="upload-detail">Tải ảnh</label></button>
                     </div>
                   </div>
-                  <div class="button-upload">
-                    <button style="margin-left: 25px" type="button"><label for="upload-detail">Tải ảnh</label></button>
-                  </div>
                 </div>
+
               </el-card>
             </div>
             <div v-if="value === '2'" class="pay-method">
@@ -145,7 +148,7 @@
                 <div class="text-center">
                   <span class="text-bold text-blue ">Vui lòng tải ảnh xác minh thanh toán</span>
                 </div>
-                <div ref="imageAvatar" class="content-input image-avatar">
+                <div ref="imageAvatar" class="content-input image-avatar-input">
                   <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
                   <img v-if="!imageDetailShow.length" class="text" src="/assets/icon/icon_user_default.svg" alt="">
                   <div v-if="imageDetailShow.length" class="d-flex show-avatar">
@@ -161,7 +164,7 @@
               </el-card>
             </div>
             <div class="btn-group-step items-center d-flex  gap-10" :class=" !value ? 'mt-200' : 'mt-30'">
-              <el-button type="primary" @click="step=1" >Quay lại</el-button>
+              <el-button  @click="step=1" >Quay lại</el-button>
               <el-button :disabled="!value ? true : false" type="primary" @click="handlePay">Hoàn tất</el-button>
             </div>
           </div>
@@ -390,10 +393,6 @@ export default {
       }
       if (!this.checkedDebt.length) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chưa chọn khoản trả nợ' })
-        return
-      }
-      if (this.receiveOrPaidAmount.amount < this.totalMoney) {
-        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Bạn chỉ cần trả nợ ' + this.receiveOrPaidAmount.amountFormat })
         return
       }
       await this.getPaidCode()

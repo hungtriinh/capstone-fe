@@ -108,10 +108,10 @@
                         <el-image class="image-avatar" :preview-src-list="[user.avatar]" :src="user.avatar"/>
                       </div>
                       <div v-else>
-
                         <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
                       </div>
-                    </el-badge>                  </div>
+                    </el-badge>
+                  </div>
                   <div>
                     <span class="text-bold">{{ user.name }}</span><br>
                     <span class="time">{{ user.phone }}</span>
