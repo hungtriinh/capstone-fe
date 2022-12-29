@@ -48,7 +48,7 @@
     .event-item {
       //display: grid;
       //grid-template-columns: 20% auto 10%;
-      margin-bottom: 5px;
+      //margin-bottom: 5px;
       .event-name {
         max-width: 70%;
 
@@ -59,11 +59,11 @@
 
       }
       .event-title {
-        padding: 5px 5px 5px 2px;
+        padding: 10px 5px 10px 5px;
       }
       .event-title:hover {
         background-color: #E4E7ED;
-        border-radius: 5px;
+        border-radius: 20px;
       }
       .event-img {
         width: 48px;
@@ -74,6 +74,9 @@
 
       .divider {
         background-color: $border-2;
+      }
+      .event-timeline {
+        margin-right: 10px;
       }
     }
   }
@@ -151,7 +154,7 @@
 }
 .event-status {
   .el-badge__content.is-fixed {
-    top: 25px;
+    top: 30px;
   }
 }
 }

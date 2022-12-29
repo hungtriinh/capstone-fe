@@ -29,7 +29,12 @@
               <div class="d-flex gap-10 items-center">
                 <div>
                   <el-badge is-dot class="event-status item" type="success">
-                    <ShowAvatarElement :event="{ name: receipt.name }"></ShowAvatarElement>
+                    <div v-if="receipt.avatar">
+                      <el-image class="image-avatar" :preview-src-list="[receipt.avatar]" :src="receipt.avatar"/>
+                    </div>
+                    <div v-else>
+                      <ShowAvatarElement :event="{ name: receipt.name }"></ShowAvatarElement>
+                    </div>
                   </el-badge>
                 </div>
                 <div>
@@ -59,19 +64,19 @@
         <el-timeline class="receipt-detail-card">
           <div class="event-title d-flex flex-wrap justify-between items-center cursor-pointer">
             <div class="d-flex gap-10 items-center event-name">
-              <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">
-                <div v-if="user.avatar">
-                  ga
-                </div>
-                <div v-else>
-                  <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
-                </div>
-              </el-badge>
-              <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
-                <span class="time">{{ user.phone }}</span>
+            <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">
+              <div v-if="user.avatar">
+                <el-image class="image-avatar" :preview-src-list="[user.avatar]" :src="user.avatar"/>
               </div>
+              <div v-else>
+                <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
+              </div>
+            </el-badge>
+            <div class="event-content">
+              <h4 class="title text-bold">{{ user.name }}</h4>
+              <span class="time">{{ user.phone }}</span>
             </div>
+          </div>
             <div class="d-flex items-center ">
               <span class="text-bold" :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
             </div>
@@ -79,7 +84,21 @@
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
               <div class="d-flex justify-between flex-wrap">
-                <span class="text-normal-sm">{{ user.name }}</span>
+                <div class="d-flex gap-10 items-center event-name">
+                  <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">
+                    <div v-if="user.avatar">
+                      <el-image class="image-avatar" :preview-src-list="[user.avatar]" :src="user.avatar"/>
+                    </div>
+                    <div v-else>
+                      <ShowAvatarElement :event="{ name: user.name, color: receiptDetail.color }"></ShowAvatarElement>
+                    </div>
+                  </el-badge>
+                  <div class="event-content">
+                    <h4 class="title text-bold">{{ user.name }}</h4>
+                    <span class="time">{{ user.phone }}</span>
+                  </div>
+                </div>
+<!--                <span class="text-normal-sm">{{ user.name }}</span>-->
                 <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>
               </div>
             </el-card>
