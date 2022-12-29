@@ -338,19 +338,7 @@ h6 {
 /*------------------------------------*\
     #Align
 \*------------------------------------*/
-address,
-blockquote,
-dd,
-dl,
-fieldset,
-form,
-ol,
-p,
-pre,
-table,
-ul {
-  margin-bottom: 20px;
-}
+
 
 section {
   padding-top: 100px;
