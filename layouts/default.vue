@@ -7,7 +7,7 @@
       <nuxt />
     </div>
     <LoadingBar />
-      <div class="main-login">
+      <div class="main-login navigation-main">
         <FooterCommon/>
       </div>
     </client-only>

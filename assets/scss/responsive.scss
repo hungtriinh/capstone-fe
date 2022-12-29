@@ -46,8 +46,8 @@
   }
 }
 @media screen and (max-width: 450px) {
-  .main-login .navigation-bar .navigation {
-    max-width: 350px !important;
+  .main-login .navigation-bar {
+    //max-width: 375px !important;
   }
   .activity-page .activity {
     max-height: 685px;
@@ -55,14 +55,14 @@
 }
 
 @media screen and (max-width: 470px) {
-  .main-login .navigation-bar .navigation {
-    width: 86%;
+  .main-login .navigation-bar {
   }
 }
 
 @media screen and (max-width: 540px) {
-  .main-login .navigation-bar .navigation {
-    max-width: 450px;
+  .main-login .navigation-bar {
+    //max-width: 450px;
+    width: 100%;
   }
   .main-login .main-content-event {
     max-height: 600px;
