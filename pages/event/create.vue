@@ -54,8 +54,11 @@
           <el-card  v-for="(receipt, key) in listDisplay" :key="key" :body-style="{ padding: '10px' }" class=" card-item mb-10 ">
             <div class="d-flex justify-between">
               <div class="d-flex gap-10 items-center">
-                <div>
-                  <ShowAvatarElement :event="{ name: receipt.userPhone }"></ShowAvatarElement>
+                <div v-if="receipt.userAvatar">
+                  <el-image class="image-avatar" :preview-src-list="[receipt.userAvatar]" :src="receipt.userAvatar"/>
+                </div>
+                <div v-else>
+                  <ShowAvatarElement :event="{ name: receipt.userName }"></ShowAvatarElement>
                 </div>
                 <div>
                   <span class="text-bold">{{ receipt.userName }}</span><br>

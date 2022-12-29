@@ -8,6 +8,7 @@ export const state = () => ({
   loading: false,
   email: '',
   listFriends: [],
+  listFriendsNew: [],
   roleMember: [],
   isOtpPage: false
 })
@@ -35,6 +36,9 @@ export const mutations = {
   },
   setListFriends(state, listFriends) {
     state.listFriends = listFriends
+  },
+  setListFriendsNew(state, listFriendsNew) {
+    state.listFriendsNew = listFriendsNew
   },
   setRoleMember(state, roleMember) {
     state.roleMember = roleMember

@@ -16,7 +16,7 @@
             <el-input
               v-model="accountForm.search"
               placeholder="Tìm kiếm sự kiện"
-              @keyup.enter.native="searchEvent">
+              @input="searchFr">
               prefix-icon="el-icon-search">
             </el-input>
           </el-form>
@@ -70,9 +70,7 @@
   </div>
 </template>
 <script>
-// import { AUTH_REGISTER, INDEX_SET_ERROR, INDEX_SET_LOADING, INDEX_SET_SUCCESS, SET_EMAIL } from '@/store/store.const'
-// import { TYPE_REGISTER_OTP } from '@/store/store.const.js'
-// import { validPhoneNoPrefix } from '@/utils/validate'
+import _ from 'lodash'
 import { GET_EVENT_LIST, INDEX_SET_LOADING, EVENT_SEARCH, INDEX_SET_ERROR } from '~/store/store.const'
 
 export default {
@@ -134,6 +132,9 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
     },
+    searchFr: _.debounce(function(e) {
+      this.searchEvent()
+    }, 1000),
     handleRouter(router) {
       this.$router.push(router)
     }

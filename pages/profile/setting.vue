@@ -58,6 +58,8 @@
           id="eventDescript"
           ref="eventDescript"
           v-model="accountForm.eventDescript"
+          maxlength="50"
+          show-word-limit
           placeholder="Họ và tên"
           name="eventDescript"
           tabindex="3"
@@ -100,6 +102,13 @@ export default {
     FileUpload
   },
   data() {
+    const validRequired = (rule, value, callback, message) => {
+      if (!value || value.trim() === '') {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
     return {
       token: '',
       user: {},
@@ -124,9 +133,10 @@ export default {
         eventDescript: [
           {
             required: true,
-            message: this.$t('validation.required', { _field_: this.$t('event.eventDescript') }),
+            message: this.$t('validation.required', { _field_: 'Họ và tên' }),
             trigger: 'blur'
-          }
+          },
+          { validator: validRequired, message: this.$t('validation.required', { _field_: 'Họ và tên' }), trigger: 'blur' }
         ]
       },
       valid: false,
@@ -192,9 +202,11 @@ export default {
         if (this.base64code) {
           await this.upBase64Img()
         }
+        const name = this.accountForm.eventDescript.replace(/\s+/g, ' ').trim()
+
         const dto = {
           Avatar: this.sourceImg,
-          UserName: this.accountForm.eventDescript,
+          UserName: name,
           AllowAddFriendStatus: this.AllowAddFriendStatus ? 1 : 0,
           AllowInviteEventStatus: this.AllowInviteEventStatus ? 1 : 0
         }

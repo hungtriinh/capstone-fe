@@ -20,7 +20,7 @@
       <p class="text-xl font-semibold text-[#273253]">{{ profile.UserName }}</p>
       <p class="font-normal text-[#273253]">{{profile.PhoneNumber}} </p>
     </div>
-    <div class="d-flex justify-center mt-[40px]">
+    <div class=" justify-center mt-[40px]">
       <div>
         <div class="my-[8px]">
           <Card :text-color="'white'" :title="$t('profile.change_infor')" @click="handleRouter('/profile/setting')">

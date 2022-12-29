@@ -29,7 +29,7 @@
 
                       </div>
                       <div class="block" style="margin-bottom: 20px">
-                        <el-slider v-model="item.debtLeft" show-input :step="1" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
+                        <el-slider v-model="item.debtLeft" show-input :step="1000" :disabled="!item.check" :min="0" :max="item.maxSlider"></el-slider>
                       </div>
                     </div>
                 </el-checkbox-group>
