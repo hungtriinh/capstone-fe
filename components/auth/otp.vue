@@ -41,6 +41,7 @@
       <el-form-item>
         <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
           <el-button
+            type="primary"
             v-loading.fullscreen.lock="fullscreenLoading"
             :loading="loading"
             :disabled="disabledButton"

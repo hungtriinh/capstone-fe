@@ -76,6 +76,26 @@
               </div>
             </div>
 
+            <div v-if="type !== '1' && accountForm.receiptAmount">
+              <div class="checkbox-item">
+                <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                <div>
+                  <span class="text-bold">{{ $auth.user.UserName}} (Tôi)</span><br>
+                  <span class="text-bold">{{ $auth.user.PhoneNumber }}</span><br>
+                </div>
+                <el-input
+                  id="debit"
+                  ref="debit"
+                  autocomplete="off"
+                  v-model="fake"
+                  name="debit"
+                  type="text"
+                  tabindex="2"
+                  placeholder="Số tiền"
+                ></el-input>
+              </div>
+            </div>
+
             <div >
             <div v-for="(item, key) in chooseMember" :key="key" class="checkbox-item">
               <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
@@ -111,7 +131,7 @@
           </div>
           <div ref="imageAvatar" class="content-input image-avatar-input">
             <el-form-item ref="imageDetail" label="" prop="imageDetail" :error="(error.key === 'image') ? error.value : ''">
-              <input id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" multiple accept=".jpeg, .jpg, .png, .svg, .heic" @change="onFileChangeDetail">
+              <input :class="{'disabledImg' : disableImgUp}" :disabled="disableImgUp" id="upload-detail" ref="fileUploadDetail" style="display: none" type="file" max="3" multiple accept=".jpeg, .jpg, .png, .svg" @change="onFileChangeDetail">
               <img v-if="!imageDetailShow.length" src="/assets/icon/icon_user_default.svg" alt="">
               <div v-if="imageDetailShow.length" class="d-flex show-avatar">
                 <div v-for="(detail, index) in imageDetailShow" :key="index" class="show-detail">
@@ -120,7 +140,7 @@
                 </div>
               </div>
               <div class="button-upload">
-                <button type="button"><label for="upload-detail">Thêm ảnh chứng từ</label></button>
+                <button :class="{'disabledImg' : disableImgUp}" type="button"><label :class="{'disabledImg' : disableImgUp}" for="upload-detail">Thêm ảnh chứng từ</label></button>
               </div>
             </el-form-item>
           </div>
@@ -171,6 +191,7 @@ export default {
     //   }
     // }
     return {
+      fake: '',
       id: this.$route.params.id,
       imageDetailShow: [],
       token: '',
@@ -220,6 +241,9 @@ export default {
     ...mapState(['listFriends']),
     disabledButton() {
       return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
+    },
+    disableImgUp() {
+      return this.imageDetailShow.length >= 3
     }
   },
   watch: {

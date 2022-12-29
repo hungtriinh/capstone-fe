@@ -66,8 +66,8 @@
             </el-checkbox-group>
             <el-checkbox class="check-all mt-10" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
             <div class="btn-group justify-center d-flex items-center">
-              <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(3)">Từ chối</el-button>
-              <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(2)">Đồng ý</el-button>
+              <el-button :disabled="listChecked.length === 0" type="danger" icon="el-icon-delete" @click="openConfirmDialog(3)">Từ chối</el-button>
+              <el-button :disabled="listChecked.length === 0" type="success" icon="el-icon-check" @click="openConfirmDialog(2)">Đồng ý</el-button>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
                 </div>
               </el-badge>
               <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
+                <h4 class="title text-bold">{{ user.name }} <el-tag type="danger">Trả tiền</el-tag></h4>
                 <span class="time">{{ user.phone}}</span>
               </div>
             </div>
@@ -113,7 +113,7 @@
                     </el-badge>
                   </div>
                   <div>
-                    <span class="text-bold">{{ user.name }}</span><br>
+                    <span class="text-bold">{{ user.name }} <el-tag  type="success">Nhận tiền</el-tag></span><br>
                     <span class="time">{{ user.phone }}</span>
                   </div>
                 </div>
