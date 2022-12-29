@@ -35,7 +35,8 @@
         <p class="text-xs">{{$t('navigation.event')}}</p>
       </div>
       <div class="menu-icon cursor-pointer" :class="{'is-selected' : isSelectedRoute('/friends')}" @click="handleRouter('/friends')">
-        <svg
+        <el-badge v-if="count !== 0 && $route.path !== '/friends'" :value="count" class="item" type="danger">
+          <svg
           width="34"
           height="33"
           viewBox="0 0 34 33"
@@ -85,6 +86,59 @@
             stroke-linejoin="round"
           />
         </svg>
+        </el-badge>
+        <div v-else>
+          <svg
+            width="34"
+            height="33"
+            viewBox="0 0 34 33"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M25.5 9.84501C25.415 9.83126 25.3159 9.83126 25.2309 9.84501C23.2759 9.77626 21.7175 8.2225 21.7175 6.2975C21.7175 4.33125 23.3467 2.75 25.3725 2.75C27.3984 2.75 29.0275 4.345 29.0275 6.2975C29.0134 8.2225 27.455 9.77626 25.5 9.84501Z"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24.0408 19.8552C25.9816 20.1715 28.1208 19.8415 29.6225 18.8652C31.62 17.5727 31.62 15.4552 29.6225 14.1627C28.1066 13.1865 25.9391 12.8565 23.9983 13.1865"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M8.45743 9.84501C8.54243 9.83126 8.6416 9.83126 8.7266 9.84501C10.6816 9.77626 12.2399 8.2225 12.2399 6.2975C12.2399 4.33125 10.6108 2.75 8.58493 2.75C6.5591 2.75 4.92993 4.345 4.92993 6.2975C4.9441 8.2225 6.50243 9.77626 8.45743 9.84501Z"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9.9167 19.8552C7.97587 20.1715 5.83671 19.8415 4.33504 18.8652C2.33754 17.5727 2.33754 15.4552 4.33504 14.1627C5.85087 13.1865 8.01837 12.8565 9.9592 13.1865"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17 20.1165C16.915 20.1027 16.8159 20.1027 16.7309 20.1165C14.7759 20.0477 13.2175 18.494 13.2175 16.569C13.2175 14.6027 14.8467 13.0215 16.8725 13.0215C18.8984 13.0215 20.5275 14.6165 20.5275 16.569C20.5134 18.494 18.955 20.0615 17 20.1165Z"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12.8775 24.4476C10.88 25.7401 10.88 27.8576 12.8775 29.1501C15.1442 30.6214 18.8559 30.6214 21.1225 29.1501C23.12 27.8576 23.12 25.7401 21.1225 24.4476C18.87 22.9901 15.1442 22.9901 12.8775 24.4476Z"
+              stroke="#6B6969"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
         <p class="text-xs">{{$t('navigation.friends')}}</p>
       </div>
       <div class="menu-icon cursor-pointer" @click="handleRouter('/event/create')" :class="{'is-selected' : $route.path === ('/event/create')}">
@@ -185,11 +239,34 @@
 </template>
 <script>
 
+import { FRIEND_COUNT, INDEX_SET_LOADING } from '~/store/store.const'
+
 export default {
   name: 'NavigationPage',
+  created() {
+    this.countFriend()
+  },
+  data() {
+    return {
+      count: ''
+    }
+  },
   methods: {
     handleRouter(router) {
       this.$router.push(router)
+    },
+    async countFriend() {
+      this.$store.commit(INDEX_SET_LOADING, true)
+      try {
+        const response = await this.$store.dispatch(FRIEND_COUNT)
+        const { data, statusCode } = response
+        if (statusCode === 202) {
+          this.count = data
+        }
+      } catch (e) {
+        this.$store.commit(INDEX_SET_LOADING, false)
+      }
+      this.$store.commit(INDEX_SET_LOADING, false)
     },
     isSelectedRoute(route) {
       const currentPath = this.$route.path

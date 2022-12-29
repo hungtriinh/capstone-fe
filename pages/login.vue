@@ -138,8 +138,8 @@ export default {
       token: '',
       user: {},
       accountForm: {
-        phone: '966419062',
-        password: '0123456789',
+        phone: '',
+        password: '',
         remember: '',
         errors: {}
       },

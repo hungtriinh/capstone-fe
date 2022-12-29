@@ -69,7 +69,7 @@
                 </div>
               </el-badge>
               <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
+                <h4 class="title text-bold">{{ user.name }} <el-tag type="success">Trả tiền</el-tag></h4>
                 <span class="time">{{ user.phone}}</span>
               </div>
             </div>
@@ -92,7 +92,7 @@
                     </div>
                   </el-badge>
                   <div class="event-content">
-                    <h4 class="title text-bold">{{ user.name }}</h4>
+                    <h4 class="title text-bold">{{ user.name }} <el-tag type="primary">Tham gia</el-tag></h4>
                     <span class="time">{{ user.phone}}</span>
                   </div>
                 </div>

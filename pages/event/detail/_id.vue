@@ -7,8 +7,12 @@
             <!--          <img class="cursor-pointer" src="~/assets/images/icons/back.svg" alt="back" @click="handleRouter('/')">-->
             <i class="el-icon el-icon-back" @click="handleRouter('/event')"></i>
             <div class="d-flex cursor-pointer items-center gap-5"  @click="handleRouter('/event/setting/' + id)">
-              <ShowAvatarElement :event="{ name: listReceipt.eventName, color: listReceipt.color }"></ShowAvatarElement>
-
+              <el-badge v-if="listReceipt.number !== 0" :value="listReceipt.number" class="item" type="danger">
+                <ShowAvatarElement :event="{ name: listReceipt.eventName, color: listReceipt.color }"></ShowAvatarElement>
+              </el-badge>
+              <div v-else>
+                <ShowAvatarElement :event="{ name: listReceipt.eventName, color: listReceipt.color }"></ShowAvatarElement>
+              </div>
               <span class="d-flex items-center text-bold">{{ listReceipt.eventName }}<i class="el-icon event-navi el-icon-arrow-right"></i></span>
             </div>
           </div>

@@ -69,7 +69,7 @@
                 </div>
               </el-badge>
               <div class="event-content">
-                <h4 class="title text-bold">{{ user.name }}</h4>
+                <h4 class="title text-bold">{{ user.name }} <el-tag type="success">Trả tiền</el-tag></h4>
                 <span class="time">{{ user.phone}}</span>
               </div>
             </div>
@@ -78,15 +78,22 @@
             </div>
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
-            <el-card class="mb-10" v-for="(user, key) in receiptDetail.users" :key="key" placement="top">
-              <div class="d-flex flex-wrap justify-between">
-                <div class="d-flex gap-10 items-center">
-                  <div>
-                    <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
-                  </div>
-                  <div>
-                    <span class="text-bold">{{ user.name }}</span><br>
-                    <span class="time">{{ user.phone }}</span>
+            <el-card>
+              <div class="d-flex justify-between flex-wrap">
+                <!--                <span class="text-normal-sm">{{ user.name }}</span>-->
+                <div class="d-flex gap-5 items-center event-name">
+                  <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">
+                    <div v-if="user.avatar">
+                      <el-image class="image-avatar" :preview-src-list="[user.avatar]" :src="user.avatar"/>
+                    </div>
+                    <div v-else>
+
+                      <ShowAvatarElement :event="{ name: user.name }"></ShowAvatarElement>
+                    </div>
+                  </el-badge>
+                  <div class="event-content">
+                    <h4 class="title text-bold">{{ user.name }} <el-tag type="primary">Tham gia</el-tag></h4>
+                    <span class="time">{{ user.phone}}</span>
                   </div>
                 </div>
                 <span class="text-normal-sm"> </span><span :class="user.totalAmount >= 0 ? 'text-green' : 'text-red'">{{user.totalAmountFormat}}</span>

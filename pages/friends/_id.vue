@@ -1,6 +1,6 @@
 <template>
   <div class="main-login">
-    <div class="search d-flex justify-between items-center mb-5">
+    <div class="search d-flex justify-between items-center gap-10 mb-5">
       <el-form
         style="width: 100%"
         ref="accountForm"
@@ -13,7 +13,7 @@
           v-model="accountForm.search"
           placeholder="Tìm kiếm theo số điện thoại"
           prefix-icon="el-icon-search"
-          @keyup.enter.native="searchFriend">
+          @input="searchFr">
         </el-input>
       </el-form>
       <div>
@@ -32,11 +32,16 @@
         class="text-[#848484] font-semibold pb-1 cursor-pointer"
         :class="{ 'tab-selected': selectedTab === 'friendRequest' }"
       >
-        <el-badge :value="count" class="item">
+        <el-badge v-if="count !== 0 && selectedTab !== 'friendRequest'" :value="count" class="item">
           <span @click="handleChangeTab('friendRequest')">{{
             $t('friends.friends_request')
           }}</span>
         </el-badge>
+        <div v-else>
+        <span @click="handleChangeTab('friendRequest')">{{
+          $t('friends.friends_request')
+        }}</span>
+        </div>
       </div>
     </div>
     <CurrentFriendTab
@@ -53,6 +58,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import CurrentFriendTab from '@/components/friends/CurrentFriendTab.vue'
 import RequestFriendTab from '@/components/friends/RequestFriendTab.vue'
 import { FRIEND_LIST, FRIEND_LIST_REQUEST, INDEX_SET_LOADING, FRIEND_COUNT, FRIEND_SEARCH_LIST } from '~/store/store.const'
@@ -138,7 +144,10 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
-    }
+    },
+    searchFr: _.debounce(function(e) {
+      this.searchFriend()
+    }, 1000)
   }
 }
 </script>

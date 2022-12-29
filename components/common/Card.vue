@@ -37,6 +37,6 @@ export default {
 
 <style lang="scss" scoped>
 .custom-card {
-    width: 327px;
+    //width: 327px;
 }
 </style>

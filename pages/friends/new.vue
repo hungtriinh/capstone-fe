@@ -1,6 +1,6 @@
 <template>
   <div class="main-login">
-    <el-page-header content="Tìm kiếm bạn bè" @back="$router.push('/friends')">
+    <el-page-header content="Tìm kiếm người dùng" @back="$router.push('/friends')">
     </el-page-header>
     <div class="main-content"></div>
     <div class="justify-center mb-5">
@@ -13,9 +13,9 @@
       >
         <el-input
           v-model="accountForm.search"
-          placeholder="Tìm kiếm theo số điện thoại"
+          placeholder="Tìm kiếm"
           prefix-icon="el-icon-search"
-          @keyup.enter.native="searchFriend">
+          @input="searchFr">
         </el-input>
       </el-form>
     </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import FriendNew from '@/components/friends/FriendNew.vue'
 import {
   FRIEND_SEARCH,
@@ -96,7 +97,7 @@ export default {
     async searchFriend() {
       this.$store.commit(INDEX_SET_LOADING, true)
       try {
-        const response = await this.$store.dispatch(FRIEND_SEARCH, this.accountForm.search)
+        const response = await this.$store.dispatch(FRIEND_SEARCH, this.accountForm.search.trim())
         const { data, statusCode } = response
         if (statusCode === 202) {
           this.listFriend = data
@@ -105,7 +106,10 @@ export default {
         this.$store.commit(INDEX_SET_LOADING, false)
       }
       this.$store.commit(INDEX_SET_LOADING, false)
-    }
+    },
+    searchFr: _.debounce(function(e) {
+      this.searchFriend()
+    }, 1000)
   }
 }
 </script>

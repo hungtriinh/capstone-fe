@@ -67,6 +67,7 @@
           <el-form-item style="margin-top: 50px">
             <div :class="{'disabled' : disabledButton, 'common-button': 'common-button'}">
               <el-button
+                type="primary"
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
                 :disabled="disabledButton"
@@ -126,6 +127,13 @@ export default {
         callback()
       }
     }
+    const validRequired = (rule, value, callback, message) => {
+      if (!value || value.trim() === '') {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
     return {
       typeVerify: TYPE_REGISTER_OTP,
       token: '',
@@ -150,7 +158,8 @@ export default {
             required: true,
             message: this.$t('validation.required', { _field_: this.$t('register.name') }),
             trigger: 'blur'
-          }
+          },
+          { validator: validRequired, message: this.$t('validation.required', { _field_: this.$t('register.name') }), trigger: 'blur' }
         ],
         password: [
           {
@@ -219,10 +228,11 @@ export default {
       }
       try {
         await this.$store.commit(INDEX_SET_LOADING, true)
+        const name = this.accountForm.name.replace(/\s+/g, ' ').trim()
 
         const data = await this.$store.dispatch(AUTH_SIGNUP, {
           'Phone': this.user_register,
-          'Name': this.accountForm.name,
+          'Name': name,
           'Password': this.accountForm.password
         })
         switch (data.statusCode) {

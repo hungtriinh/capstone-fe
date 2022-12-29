@@ -1113,7 +1113,7 @@ button {
 }
 
 .el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
-  color: $color-white;
+  color: $color-btn-active;
   cursor: not-allowed;
   background-image: none;
   background-color: $color-btn-disable;
@@ -4451,4 +4451,13 @@ button {
   label {
     font-weight: 700;
   }
+}
+
+.img-activities {
+  width: 20px;
+  height: 20px;
+}
+
+.disabledImg {
+  cursor: not-allowed !important;
 }

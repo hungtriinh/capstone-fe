@@ -2,7 +2,7 @@
   <div class="main-login">
     <el-empty v-if="!listFriend.length" description="Không có người dùng khả dụng"></el-empty>
 
-    <div v-else class="d-flex justify-center">
+    <div v-else class="">
       <div>
         <FriendCard
           v-for="(item, index) in listFriend"

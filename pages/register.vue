@@ -49,7 +49,7 @@
               <el-button
                 v-loading.fullscreen.lock="fullscreenLoading"
                 :loading="loading"
-                type="custom-primary"
+                type="primary"
                 :disabled="disabledButton"
                 @click.native="sendOtp"
               >

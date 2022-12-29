@@ -2458,6 +2458,7 @@ a.back span {
     background-color: #ff7101;
     border-color: #ff7101;
     color: #ffffff;
+    display: none;
   }
 
   .navbar .navbar-toggler {
