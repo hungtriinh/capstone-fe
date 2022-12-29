@@ -79,7 +79,7 @@
           </div>
           <el-timeline-item v-for="(user, key) in receiptDetail.userDepts" :key="key" placement="top">
             <el-card>
-              <div class="d-flex justify-between">
+              <div class="d-flex justify-between flex-wrap">
                 <!--                <span class="text-normal-sm">{{ user.name }}</span>-->
                 <div class="d-flex gap-5 items-center event-name">
                   <el-badge is-dot class="event-status item" :type="user.role === 4 ?  'danger' : 'success'">

@@ -54,7 +54,7 @@
             <el-radio v-model="type" label="1">{{ $t('receipt.balance') }}</el-radio>
             <el-radio v-model="type" label="2">{{ $t('receipt.not_balance') }}</el-radio>
           </div>
-            <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>
+<!--            <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>-->
             <div v-if="type !== '2' && accountForm.receiptAmount">
               <div class="checkbox-item">
                 <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>

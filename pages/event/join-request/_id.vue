@@ -34,7 +34,7 @@
                 </div>
               </el-card>
             </el-checkbox-group>
-            <el-checkbox class="check-all" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
+            <el-checkbox class="check-all mt-10" v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"><span class="text-bold">{{ $t('event.check_all')}}</span></el-checkbox>
             <div class="btn-group justify-center bottom d-flex items-center">
               <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog(5)">Từ chối</el-button>
               <el-button type="success" icon="el-icon-check" @click="openConfirmDialog(4)">Đồng ý</el-button>
