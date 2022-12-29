@@ -13,7 +13,12 @@
                 <div class="member-role-avatar d-flex items-center mt-10 gap-10">
                   <div class="remove-btn">
                     <i v-if="eventStatus === 1 && role === 1" class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.inspector.userId)"></i>
-                    <ShowAvatarElement :event="{ name: listEvent.inspector.name, color: listEvent.color }"></ShowAvatarElement>
+                    <div v-if="listEvent.inspector.avatar">
+                      <el-image class="image-avatar-member" :preview-src-list="[listEvent.inspector.avatar]" :src="listEvent.inspector.avatar"/>
+                    </div>
+                    <div v-else>
+                      <ShowAvatarElement :event="{ name: listEvent.inspector.name, color: listEvent.color }"></ShowAvatarElement>
+                    </div>
                   </div>
                   <div>
                     <span class="text-bold">{{ listEvent.inspector.name }}</span>
@@ -42,7 +47,12 @@
                 <div class="member-cashier-avatar d-flex items-center mt-10 gap-10">
                   <div class="remove-btn">
                     <i v-if="eventStatus === 1 && role === 1" class="el-icon el-icon-error" @click="openDeteleDialog(listEvent.cashier.userId)"></i>
-                    <ShowAvatarElement :event="{ name: listEvent.cashier.name, color: listEvent.color }"></ShowAvatarElement>
+                    <div v-if="listEvent.cashier.avatar">
+                      <el-image class="image-avatar-member" :preview-src-list="[listEvent.cashier.avatar]" :src="listEvent.cashier.avatar"/>
+                    </div>
+                    <div v-else>
+                      <ShowAvatarElement :event="{ name: listEvent.cashier.name, color: listEvent.color }"></ShowAvatarElement>
+                    </div>
                   </div>
 
                   <div>
@@ -75,7 +85,13 @@
                   <div class="flex-between">
                     <div class="member-avatar d-flex items-center mt-10 gap-10">
                       <el-badge is-dot class="event-status item" :type="item.role === 4 ?  'danger' : 'success'">
-                        <ShowAvatarElement :event="{ name: item.name }"></ShowAvatarElement>
+                        <div v-if="item.avatar">
+                          <el-image class="image-avatar" :preview-src-list="[item.avatar]" :src="item.avatar"/>
+                        </div>
+                        <div v-else>
+
+                          <ShowAvatarElement :event="{ name: item.name }"></ShowAvatarElement>
+                        </div>
                       </el-badge>
                       <div>
                         <span class="text-bold">{{ item.name }}</span>

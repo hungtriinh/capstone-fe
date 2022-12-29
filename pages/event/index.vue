@@ -26,7 +26,7 @@
         <div class="main-content-event">
           <el-empty v-if="!listEvent.length" description="Bạn chưa tham gia sự kiện nào."></el-empty>
           <div v-else>
-            <el-card v-for="(item,key) in listEvent" :key="key"  :body-style="{ padding: '10px' }" class="card-item mb-10 event" >
+            <el-card v-for="(item,key) in listEvent" :key="key"  :body-style="{ padding: '0px' }" class="card-item mb-10 event" >
               <div class="event-item">
                 <el-timeline>
                   <div class="event-title d-flex justify-between items-center cursor-pointer"  @click="handleRouter('event/detail/' + item.eventId)">
@@ -45,18 +45,19 @@
                       <i style="margin-left: 3px" class=" el-icon-document"></i>
                     </div>
                   </div>
-                  <el-timeline-item v-if="item.debt.totalPeople !== 0" placement="top">
+                  <el-timeline-item class="event-timeline" v-if="item.debt.totalPeople !== 0" placement="top">
                     <el-card>
                       <span class="text-normal-sm">Bạn nợ {{ item.debt.totalPeople }} người khác</span>
                       <span class="text-red"> {{ item.debt.money.amountFormat }}</span>
                     </el-card>
                   </el-timeline-item>
-                  <el-timeline-item v-if="item.receive.totalPeople !== 0" placement="top">
+                  <el-timeline-item class="event-timeline" v-if="item.receive.totalPeople !== 0" placement="top">
                     <el-card>
                       <span class="text-normal-sm">{{ item.receive.totalPeople }} người khác nợ bạn </span>
                       <span class="text-green"> {{ item.receive.money.amountFormat }}</span>
                     </el-card>
                   </el-timeline-item>
+                  <el-timeline-item v-if="item.receive.totalPeople !== 0 || item.debt.totalPeople !== 0" class="event-timeline"><br></el-timeline-item>
                 </el-timeline>
                 <div>
                 </div>
