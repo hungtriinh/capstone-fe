@@ -18,7 +18,14 @@
           <div v-for="(item, key) in listFriend" :key="key" class="checkbox-item">
             <el-checkbox :label="item.userId" :value="item.userId"></el-checkbox>
             <el-badge is-dot class="event-status item" :type="item.friendStatus === 4 ?  'danger' : 'success'">
-              <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+              <div v-if="item.userAvatar">
+                <el-image class="image-avatar" :preview-src-list="[item.userAvatar]" :src="item.userAvatar"/>
+
+              </div>
+              <div v-else>
+
+                <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+              </div>
             </el-badge>
             <div>
               <span class="text-bold">{{ item.userName }}</span><br>
@@ -29,7 +36,7 @@
       </div>
       <div class="btn-group d-flex justify-center">
         <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">{{ $t('event.check_all')}}</el-checkbox>
-        <el-button class="button" type="danger" @click="sendInvite" >Mời bạn bè</el-button>
+        <el-button :disabled="!checkedFriends.length" class="button" type="danger" @click="sendInvite" >Mời bạn bè</el-button>
       </div>
     </div>
   </div>

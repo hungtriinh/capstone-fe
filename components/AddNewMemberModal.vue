@@ -3,15 +3,15 @@
     <div class="confirm-modal ">
       <div class="d-flex justify-between">
 
-      <div class="title text-bold text-center" > {{ $t('event.add_member') }} </div>
-      <i class="el-icon el-icon-close" @click="close"></i>
+        <div class="title text-bold text-center" > {{ $t('event.add_member') }} </div>
+        <i class="el-icon el-icon-close" @click="close"></i>
       </div>
 
-<!--      <el-input-->
-<!--        v-model="search"-->
-<!--        placeholder="Search"-->
-<!--        prefix-icon="el-icon-search">-->
-<!--      </el-input>-->
+      <!--      <el-input-->
+      <!--        v-model="search"-->
+      <!--        placeholder="Search"-->
+      <!--        prefix-icon="el-icon-search">-->
+      <!--      </el-input>-->
       <el-empty v-if="!listFriend.length" description="Không có thành viên nào"></el-empty>
 
       <div v-else class="">
@@ -40,10 +40,10 @@
 </template>
 
 <script>
-import { INDEX_SET_LIST_FRIEND } from '~/store/store.const'
+import { INDEX_SET_LIST_FRIEND_NEW } from '~/store/store.const'
 
 export default {
-  name: 'AddMemberModal',
+  name: 'AddNewMemberModal',
   props: {
     listFriend: {
       type: [],
@@ -85,7 +85,7 @@ export default {
       this.isIndeterminate = false
     },
     async create() {
-      await this.$store.commit(INDEX_SET_LIST_FRIEND, this.checkedFriends)
+      await this.$store.commit(INDEX_SET_LIST_FRIEND_NEW, this.checkedFriends)
       this.close()
     }
   }

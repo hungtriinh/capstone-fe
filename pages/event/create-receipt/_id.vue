@@ -57,9 +57,14 @@
 <!--            <div class="time text-red mb-10">Số tiền sẽ được chia cho cả bạn</div>-->
             <div v-if="type !== '2' && accountForm.receiptAmount">
               <div class="checkbox-item">
-                <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                <div v-if="$auth.user.Avatar">
+                  <el-image class="image-avatar" :preview-src-list="[$auth.user.Avatar]" :src="$auth.user.Avatar"/>
+                </div>
+                <div v-else>
+                  <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                </div>
                 <div>
-                  <span class="text-bold">{{ $auth.user.UserName}} (Tôi)</span><br>
+                  <span class="text-bold">{{ $auth.user.UserName}} <el-tag type="primary">Tôi</el-tag></span><br>
                   <span class="text-bold">{{ $auth.user.PhoneNumber }}</span><br>
                 </div>
                 <el-input
@@ -78,37 +83,55 @@
 
             <div v-if="type !== '1' && accountForm.receiptAmount">
               <div class="checkbox-item">
-                <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                <div v-if="$auth.user.Avatar">
+                  <el-image class="image-avatar" :preview-src-list="[$auth.user.Avatar]" :src="$auth.user.Avatar"/>
+                </div>
+                <div v-else>
+                  <ShowAvatarElement :event="{ name: $auth.user.UserName }"></ShowAvatarElement>
+                </div>
                 <div>
-                  <span class="text-bold">{{ $auth.user.UserName}} (Tôi)</span><br>
+                  <span class="text-bold">{{ $auth.user.UserName}} <el-tag type="primary">Tôi</el-tag></span><br>
                   <span class="text-bold">{{ $auth.user.PhoneNumber }}</span><br>
                 </div>
+                <el-form-item>
+
                 <el-input
                   id="debit"
-                  ref="debit"
+                  ref="fake"
                   autocomplete="off"
-                  v-model="fake"
+                  oninput="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*"
+                  disabled
+                  :value="accountForm.receiptAmount - total_count"
                   name="debit"
                   type="text"
                   tabindex="2"
                   placeholder="Số tiền"
                 ></el-input>
+                </el-form-item>
               </div>
             </div>
 
             <div >
             <div v-for="(item, key) in chooseMember" :key="key" class="checkbox-item">
-              <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+              <div v-if="item.userAvatar">
+                <el-image class="image-avatar" :preview-src-list="[item.userAvatar]" :src="item.userAvatar"/>
+              </div>
+              <div v-else>
+                <ShowAvatarElement :event="{ name: item.userName }"></ShowAvatarElement>
+              </div>
 
               <div>
                 <span class="text-bold">{{ item.userName }}</span><br>
                 <span class="text-bold">{{ item.userPhone }}</span><br>
               </div>
+              <el-form-item  :error="checkDebt(item.debt) === '' ? '' : checkDebt(item.debt)" >
+
               <el-input
                 v-if="type === '2'"
-                id="debit"
-                ref="debit"
+                id="debit_price"
+                ref="debit_price"
                 v-model.trim="item.debt"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*"
                 autocomplete="off"
                 name="debit"
                 type="text"
@@ -127,6 +150,7 @@
                 tabindex="2"
                 placeholder="Số tiền"
               ></el-input>
+              </el-form-item>
             </div>
           </div>
           <div ref="imageAvatar" class="content-input image-avatar-input">
@@ -160,13 +184,13 @@
         </div>
       </div>
     </div>
-    <AddMemberModal
+    <AddNewMemberModal
       v-show="addMember"
       :list-friend="listFriend"
       :list-id="listId"
       @close="closeAddMemberModal"
     >
-    </AddMemberModal>
+    </AddNewMemberModal>
   </div>
 </template>
 <script>
@@ -183,13 +207,20 @@ export default {
   name: 'CreateReceiptPage',
   middleware: 'auth',
   data() {
-    // const validArray = (rule, value, callback) => {
-    //   if (!value) {
-    //     callback(new Error('Người tham gia không được để trống'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validPrice = (rule, value, callback) => {
+      if (value && (value % 1000 !== 0 || Number(value) === 0)) {
+        callback(new Error('Số tiền phải khác 0 và là bội của 1000'))
+      } else {
+        callback()
+      }
+    }
+    const validRequired = (rule, value, callback, message) => {
+      if (!value || value.trim() === '') {
+        callback(new Error(message))
+      } else {
+        callback()
+      }
+    }
     return {
       fake: '',
       id: this.$route.params.id,
@@ -198,8 +229,11 @@ export default {
       user: {},
       type: '1',
       amount: '',
+      message: '',
       chooseMember: [],
       accountForm: {
+        debit_price: '',
+        fake: '',
         imageDetail: [],
         avatar: '',
         receiptName: '',
@@ -217,14 +251,18 @@ export default {
             required: true,
             message: this.$t('validation.required', { _field_: 'Tên chứng từ' }),
             trigger: 'blur'
-          }
+          },
+          { validator: validRequired, message: this.$t('validation.required', { _field_: 'Tên chứng từ' }), trigger: 'blur' }
+
         ],
         receiptAmount: [
           {
             required: true,
             message: this.$t('validation.required', { _field_: this.$t('receipt.amount') }),
             trigger: 'blur'
-          }
+          },
+          { validator: validPrice, trigger: 'blur' },
+          { validator: validRequired, message: 'Số tiền không thể bằng 0', trigger: 'blur' }
         ]
       },
       valid: false,
@@ -234,11 +272,12 @@ export default {
       addMember: false,
       listId: [],
       listFriend: [],
+      total_count: '',
       base64Image: ''
     }
   },
   computed: {
-    ...mapState(['listFriends']),
+    ...mapState(['listFriendsNew']),
     disabledButton() {
       return this.accountForm.receiptName === '' || this.accountForm.receiptAmount === ''
     },
@@ -247,13 +286,38 @@ export default {
     }
   },
   watch: {
-    listFriends() {
+    listFriendsNew() {
       this.listFriend.forEach((element) => {
-        if (this.listFriends.includes(element.userId)) {
+        if (this.listFriendsNew.includes(element.userId)) {
           this.chooseMember.push(element)
         }
       })
+    },
+    chooseMember: {
+      handler() {
+        let total = 0
+        this.chooseMember.forEach((element) => {
+          if (element.debt) {
+            total += Number(element.debt)
+          }
+        })
+        this.total_count = total
+        // this.accountForm.fake = this.accountForm.receiptAmount - this.total_count
+      },
+      deep: true
     }
+    // listDebt: {
+    //   handler() {
+    //     let total = 0
+    //     this.listDebt.forEach((element) => {
+    //       if (element.check) {
+    //         total += element.debtLeft
+    //       }
+    //     })
+    //     this.totalMoney = total
+    //   },
+    //   deep: true
+    // },
     // type() {
     //   if (this.type === 1) {
     //
@@ -264,6 +328,28 @@ export default {
     this.getListFriend()
   },
   methods: {
+    checkDebt(value) {
+      if (value === '') {
+        this.message = 'Số tiền không được để trống'
+        return 'Số tiền không được để trống'
+      }
+      if (Number(value) === 0) {
+        this.message = 'Số tiền phải khác 0 và là bội của 1000'
+        return 'Số tiền phải khác 0 và là bội của 1000'
+      }
+      if (value) {
+        if (value % 1000 === 0) {
+          this.message = ''
+          return ''
+        } else {
+          this.message = 'Số tiền phải khác 0 và là bội của 1000'
+          return 'Số tiền phải khác 0 và là bội của 1000'
+        }
+      } else {
+        this.message = ''
+        return ''
+      }
+    },
     handleRouter(router) {
       this.$router.push(router)
     },
@@ -410,6 +496,21 @@ export default {
       if (!this.isValid) {
         return
       }
+
+      let total_debt = false
+      let a = ''
+      this.chooseMember.forEach((element) => {
+        console.log(element)
+        if (element.debt === '' || !element.debt) {
+          total_debt = true
+        }
+        a = this.checkDebt(element.debt)
+      })
+      if (total_debt || a) {
+        this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa nhập đúng số tiền cho người tham gia.' })
+        return
+      }
+      console.log(total_debt)
       if (!this.chooseMember.length) {
         this.$store.commit(INDEX_SET_ERROR, { show: true, text: 'Lỗi !', message: 'Bạn chưa chọn người tham gia' })
         // this.$message({
@@ -426,7 +527,7 @@ export default {
         await this.$store.commit(INDEX_SET_LOADING, true)
         const dto = this.accountForm
         dto.eventLogo = ''
-        dto.MemberIds = this.listFriends
+        dto.MemberIds = this.listFriendsNew
         dto.eventId = this.id
         dto.userDepts = JSON.parse(JSON.stringify(this.chooseMember))
         dto.imglinks = this.imageDetailShow

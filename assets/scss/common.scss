@@ -4461,3 +4461,12 @@ button {
 .disabledImg {
   cursor: not-allowed !important;
 }
+
+.el-timeline-item__tail {
+  left: 3px;
+}
+
+.el-timeline-item__node--normal {
+  width: 10px;
+  height: 10px;
+}
