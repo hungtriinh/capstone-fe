@@ -93,7 +93,7 @@ export const actions = {
   },
   getFriendList(context, data) {
     return new Promise((resolve, reject) => {
-      handleApi(resolve, reject, this.$axios.get('friend'), context)
+      handleApi(resolve, reject, this.$axios.get('friend/add-member'), context)
     })
   },
   searchEvent(context, data) {
